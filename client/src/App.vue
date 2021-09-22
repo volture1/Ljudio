@@ -1,17 +1,51 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import MusicPlayer from './components/MusicPlayer.vue'
+import MusicPlayer from "./components/MusicPlayer.vue";
+import SideBar from './components/Sidebar.vue'
 </script>
 
 <template>
-<MusicPlayer/>
+  <div class="container">
+    <div class="sidebar"> 
+      
+    <SideBar/>
+    </div>
+    <div class="music-player"> 
+      
+    <MusicPlayer/>
+    </div>
+    
+    
+    
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-export default{ components: {MusicPlayer}}
+export default { components: { MusicPlayer, SideBar } };
 </script>
 
 
 <style>
+.container{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 50vh;
+}
+.sidebar{
+  background-color: blue;
+  width: 25%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+}
+.music-player{
+  background-color: red;
+  width: 75%;
+  height: 10vh;
+   position:fixed;
+  bottom:0;
+  
+}
 </style>

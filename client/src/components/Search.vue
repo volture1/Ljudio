@@ -1,7 +1,7 @@
 
 <template>
 <div>
-   <p> Detta är search komponenten </p>
+   <h1> Detta är search komponenten </h1>
 </div>
 </template>
 

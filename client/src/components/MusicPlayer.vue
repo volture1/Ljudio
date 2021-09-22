@@ -4,6 +4,7 @@
     <button @click="play('CtkZxnkbjtI')">The Black Page #2 live band</button>
     <button @click="pause()">Pause</button>
     <button @click="playVid()">Play</button>'
+    
   </div>
 </template>
 
