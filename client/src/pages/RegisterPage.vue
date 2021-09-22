@@ -57,10 +57,6 @@ export default {
     font-weight: 900;
   }
 
-  /* input[type=text]:focus {
-    border: 3px solid rgba(119, 136, 153, 0.5);
-  } */
-
   input[type=text]:focus {
     border: 3px solid rgb(22, 96, 165);
   }
@@ -107,7 +103,7 @@ export default {
   .register {
     width: 50vw;
     margin: 0 auto;
-    margin-top: 6em;
+    margin-top: 4em;
   }
 
   .pagetitle {
