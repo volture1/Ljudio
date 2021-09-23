@@ -9,6 +9,18 @@
     <div v-if="show == false">
       <button @click="volumeUnMute(), (show = true)">Unmute</button>
     </div>
+    <div class="wrapper">
+      <input
+        @change="setVolume(value)"
+        type="range"
+        min="0"
+        max="100"
+        step="1"
+        v-model="value"
+      />
+
+      <p>{{ value }}</p>
+    </div>
   </div>
 </template>
 
@@ -17,6 +29,7 @@ export default {
   data() {
     return {
       show: true,
+      value: 50,
     };
   },
   computed: {
@@ -45,6 +58,9 @@ export default {
     },
     volumeUnMute() {
       window.player.unMute();
+    },
+    setVolume(volume) {
+      window.player.setVolume(volume);
     },
     muteToggle() {
       this.muteToggle = !this.enable;
