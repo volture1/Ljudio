@@ -1,7 +1,9 @@
 <template>
   <div class="register">
     <div class="top">
-      <p class="goback-route">Home</p>
+      <router-link to="/">
+        <p class="goback-route">Home</p>
+      </router-link>
       <h1 class="pagetitle">Registration</h1>
     </div>
     <div class="productname-icon">
@@ -44,6 +46,11 @@ export default {
 </script>
 
 <style scoped>
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
 
   .break {
     width: 50%;

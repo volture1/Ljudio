@@ -1,7 +1,9 @@
 <template>
   <div class="login">
     <div class="top">
-      <p class="goback-route">Home</p>
+      <router-link to="/">
+        <p class="goback-route">Home</p>
+      </router-link>  
       <h1 class="pagetitle">Login</h1>
     </div>
     <div class="productname-icon">
@@ -31,6 +33,11 @@ export default {
 </script>
 
 <style scoped>
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
 
   .login {
     width: 50vw;
