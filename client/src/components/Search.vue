@@ -10,7 +10,12 @@
     </div>
 
     <div class="searchlist" v-if="this.test">
-      <div v-for="result in this.list" :key="result" class="result">
+      <div
+        @click="printVideoId(result.videoId)"
+        v-for="result in this.list"
+        :key="result"
+        class="result"
+      >
         <p>{{ result.name }}</p>
         <p>{{ result.artist.name }}</p>
       </div>
@@ -25,6 +30,8 @@ export default {
       api_key: "AIzaSyDXqGC3bzyIcfV90q_V61IZaM68S6I4m9E",
       url: "https://yt-music-api.herokuapp.com/api/yt/songs/",
       test: null,
+      songArray: [],
+      testId: "",
     };
   },
   computed: {
@@ -33,6 +40,9 @@ export default {
     },
   },
   methods: {
+    printVideoId(id) {
+      console.log(id);
+    },
     async fetch() {
       let search = document.querySelector(".input").value;
       document.querySelector(".input").value = "";
@@ -44,7 +54,8 @@ export default {
       console.log(isArr); */
 
       console.log(data.content);
-
+      
+    
       // let ids = [];
       // for(let item of data.content) {
       //   ids.push(item.id.videoId);
@@ -56,6 +67,9 @@ export default {
       // data = await res.json();
       // console.log(content.items);
       this.test = data.content;
+      // foreach(item in test){
+      //    console.log(item.name)
+      // }
     },
   },
 };
