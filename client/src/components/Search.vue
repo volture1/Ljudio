@@ -40,36 +40,15 @@ export default {
     },
   },
   methods: {
-    printVideoId(id) {
-      console.log(id);
+    printVideoId(id){
+      this.$store.commit('setSongId', id)
     },
     async fetch() {
       let search = document.querySelector(".input").value;
       document.querySelector(".input").value = "";
-      /* console.log(url); */
       let res = await fetch(this.url + search);
       let data = await res.json();
-
-      /* let isArr = data.items instanceof Array;
-      console.log(isArr); */
-
-      console.log(data.content);
-      
-    
-      // let ids = [];
-      // for(let item of data.content) {
-      //   ids.push(item.id.videoId);
-      // }
-      // console.log(ids);
-      // let idstr = this.multipleIdString(ids);
-      // console.log(idstr);
-      // res = await fetch(this.url2 + '?key=' + this.api_key + '&part=snippet,statistics,contentDetails&id=' + idstr);
-      // data = await res.json();
-      // console.log(content.items);
       this.test = data.content;
-      // foreach(item in test){
-      //    console.log(item.name)
-      // }
     },
   },
 };
