@@ -45,16 +45,16 @@ module.exports = (app,models) => {
 
   // Delete playlist 
   app.delete('/rest/playlists/:id', async (req, res) => {
-    let houseId = req.params.id
-    let house = await models['playlists'].remove({ _id: houseId })
-    res.json(house)
+    let playListId = req.params.id
+    let playList = await models['playlists'].remove({ _id: playListId })
+    res.json(playList)
   })
 
   // Delete liked
   app.delete('/rest/likeds/:id', async (req, res) => {
-    let bookingId = req.params.id
-    let booking = await models['likeds'].remove({ _id: bookingId })
-    res.json(booking)
+    let likedId = req.params.id
+    let liked = await models['likeds'].remove({ _id: likedId })
+    res.json(liked)
   })
 
 }

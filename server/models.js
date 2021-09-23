@@ -76,6 +76,10 @@ const User = mongoose.model('User',{
     playList:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Playlist' 
+    }],
+    liked:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Liked' 
     }]
 })
 

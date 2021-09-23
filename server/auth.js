@@ -5,7 +5,6 @@ const ConnectMongo = global.ConnectMongo
 
 module.exports = (app, models, dbCloudUrl) => {
   Object.defineProperty(exports,"__esModule",{value:true});
-  console.log("dbCloudUrl",dbCloudUrl)
   const User = models['users']
   const salt = '6cakeis78delicous';
   // session middleware
