@@ -16,8 +16,6 @@ import SideBar from './components/Sidebar.vue'
     <MusicPlayer/>
     </div>
     
-    
-    
     <router-view></router-view>
   </div>
 </template>
@@ -47,5 +45,25 @@ export default { components: { MusicPlayer, SideBar } };
    position:fixed;
   bottom:0;
   
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* background: rgb(0, 0, 0, 0.8); */
+  background: #18191A;
+}
+
+#app {
+  /* width: 100vw;
+  height: 100vh; */
+  font-family: 'PT Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* background: rgb(0, 0, 0, 0.8); */
+  color: white;
 }
 </style>
