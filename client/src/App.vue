@@ -6,20 +6,45 @@ import SideBar from "./components/Sidebar.vue";
 </script>
 
 <template>
-  <div class="container">
-    <div class="sidebar">
-      <SideBar />
+  <div>
+    <div class="container">
+      <div class="sidebar" v-if="renderCondition">
+        <SideBar />
+      </div>
+      <div class="music-player" v-if="renderCondition">
+        <MusicPlayer />
+      </div>
     </div>
-    <div class="music-player">
-      <MusicPlayer />
-    </div>
-
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default { components: { MusicPlayer, SideBar } };
+export default {
+  data() {
+    return {
+      renderCondition: true,
+    };
+  },
+  created() {
+    this.interval = setInterval(() => this.conditionalRender(), 1);
+  },
+  components: { MusicPlayer, SideBar },
+  methods: {
+    conditionalRender() {
+      //console.log(this.$route.path);
+      if (
+        this.$route.path == "/Register" ||
+        this.$route.path == "/" ||
+        this.$route.path == "/Login"
+      ) {
+        this.renderCondition = false;
+      } else {
+        this.renderCondition = true;
+      }
+    },
+  },
+};
 </script>
 
 
@@ -28,7 +53,7 @@ export default { components: { MusicPlayer, SideBar } };
 .container {
   display: flex;
   justify-content: space-between;
-  margin-left: 50vh;
+  margin-left: 20%;
 }
 .sidebar {
   background-color: #242526;
@@ -39,7 +64,7 @@ export default { components: { MusicPlayer, SideBar } };
 }
 .music-player {
   background-color: #242526;
-  width: 75%;
+  width: 80%;
   height: 10vh;
   position: fixed;
   bottom: 0;
@@ -52,7 +77,7 @@ export default { components: { MusicPlayer, SideBar } };
 
 body {
   /* background: rgb(0, 0, 0, 0.8); */
-  background: #18191A;
+  background: #18191a;
 }
 
 #app {

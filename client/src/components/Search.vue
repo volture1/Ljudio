@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <h1>Search</h1>
-
     <div class="search">
       <input type="text" class="input" />
     </div>
@@ -19,7 +18,6 @@
         Search songs
       </button>
     </div>
-
     <div class="search-list-songs">
       <div
         @click="printVideoId(result.videoId)"

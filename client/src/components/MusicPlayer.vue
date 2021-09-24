@@ -1,9 +1,18 @@
 <template>
-  <div>
-  
-    <img src="https://i.imgur.com/RMC8qWH.png" height="50" width="50" @click="playVid()"/>
+  <div class="music-player-container">
+    <img
+      src="https://i.imgur.com/RMC8qWH.png"
+      height="50"
+      width="50"
+      @click="playVid()"
+    />
 
-    <img src="https://i.imgur.com/hCwRSit.png" height="50" width="50" @click="pause()"/>
+    <img
+      src="https://i.imgur.com/hCwRSit.png"
+      height="50"
+      width="50"
+      @click="pause()"
+    />
 
     <div v-if="show">
       <button @click="volumeMute(), (show = false)">Mute</button>
@@ -67,3 +76,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.music-player-container {
+  display: flex;
+  justify-content: center;
+}
+</style>
