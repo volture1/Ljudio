@@ -31,14 +31,14 @@ export default { components: { MusicPlayer, SideBar } };
   margin-left: 50vh;
 }
 .sidebar {
-  background-color: blue;
+  background-color: #242526;
   width: 20%;
   height: 100vh;
   position: fixed;
   left: 0;
 }
 .music-player {
-  background-color: red;
+  background-color: #242526;
   width: 75%;
   height: 10vh;
   position: fixed;
@@ -52,7 +52,7 @@ export default { components: { MusicPlayer, SideBar } };
 
 body {
   /* background: rgb(0, 0, 0, 0.8); */
-  background: #18191a;
+  background: #18191A;
 }
 
 #app {

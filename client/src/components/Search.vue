@@ -6,12 +6,12 @@
       <input type="text" class="input" />
     </div>
     <div class="submit">
-      <!--<button @click="fetchArtists()">fetchArtists</button>-->
       <button
         @click="
           () => {
             fetch();
             fetchArtists();
+            fetchPlaylists();
           }
         "
         class="submit-btn"
@@ -37,8 +37,18 @@
         :key="result"
         class="result-artist"
       >
-        <img :src="this.artistImage" class="artist-image" id="imgId" />
+        <img :src="result.thumbnails[1].url" class="artist-image" />
         <p class="artist-name">{{ result.name }}</p>
+      </div>
+    </div>
+     <div class="search-list-playlist">
+      <div
+        v-for="result in this.listPlaylist"
+        :key="result"
+        class="result-playlist"
+      >
+        <img :src="result.thumbnails[1].url" class="playlist-image" />
+        <p class="playlist-name">{{ result.title }}</p>
       </div>
     </div>
   </div>
@@ -51,11 +61,12 @@ export default {
       api_key: "AIzaSyDXqGC3bzyIcfV90q_V61IZaM68S6I4m9E",
       url: "https://yt-music-api.herokuapp.com/api/yt/songs/",
       urlArtist: "https://yt-music-api.herokuapp.com/api/yt/artists/",
+      urlPlaylist: "https://yt-music-api.herokuapp.com/api/yt/playlists/",
       test: null,
       songArray: [],
       fiveSongs: [],
       artistArray: [],
-      artistImage: "",
+      playlistArray: [],
       testId: "",
     };
   },
@@ -64,8 +75,10 @@ export default {
       return this.fiveSongs;
     },
     listArtists() {
-      //return this.filteredArtistArray
       return this.artistArray;
+    },
+    listPlaylist() {
+      return this.playlistArray;
     },
   },
   methods: {
@@ -75,34 +88,30 @@ export default {
 
     async fetch() {
       let search = document.querySelector(".input").value;
-      //document.querySelector(".input").value = "";
       let res = await fetch(this.url + search);
       let data = await res.json();
 
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
       this.fiveSongs.splice(5, 15);
-      //console.table(this.songArray);
-      //console.table(this.fiveSongs);
-      // for (let i = 0; i >= 4; i++) {
-      //   //this.fiveSongs[i] = [...this.songArray[i]];
-      // }
     },
     async fetchArtists() {
       let search = document.querySelector(".input").value;
-      document.querySelector(".input").value = "";
       let res = await fetch(this.urlArtist + search);
       let data = await res.json();
 
       this.artistArray = [...data.content];
-      //console.table(this.artistArray);
-      //this.filteredArtistArray = [...this.artistArray];
       this.artistArray.splice(1, 99);
-      console.log(this.artistArray[0].thumbnails[0].url);
-      this.artistImage = this.artistArray[0].thumbnails[0].url;
+    },
+      async fetchPlaylists() {
+      let search = document.querySelector(".input").value;
+      document.querySelector(".input").value = "";
+      let res = await fetch(this.urlPlaylist + search);
+      let data = await res.json();
 
-      //console.log(this.artistArray);
-      //console.log(this.artistArray[0].thumbnails[0].url);
+      this.playlistArray = [...data.content];
+      this.playlistArray.splice(5, 15);
+      console.log(this.playlistArray)
     },
   },
 };
@@ -136,14 +145,21 @@ p {
 }
 .artist-image {
   border-radius: 4px;
-  height: 100px;
-  width: 100px;
+  height: 200px;
+  width: 200px;
   display: block;
   margin-left: auto;
   margin-right: auto;
   margin-top: auto;
   border-radius: 25px;
-  padding: 5px;
+}
+.playlist-image {
+  height: 200px;
+  width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 20px;
 }
 .submit-btn {
   outline: none;
@@ -178,15 +194,26 @@ p {
 }
 .result-artist {
   background-color: gray;
-  height: 150px;
-  width: 150px;
-  padding-top: 20px;
+  height: 200px;
+  width: 200px;
   border-radius: 25px;
+}
+.result-playlist {
+  background-color: gray;
+  height: 200px;
+  width: 200px;
+  border-radius: 25px;
+  margin-right: 20px;
+  margin-top: 40px;
 }
 
 .thumbnail {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   height: 60px;
+}
+.search-list-playlist {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

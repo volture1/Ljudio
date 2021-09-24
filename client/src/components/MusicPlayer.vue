@@ -1,12 +1,14 @@
 <template>
   <div>
-    <button @click="pause()">Pause</button>
-    <button @click="playVid()">Play</button>
+  
+    <img src="https://i.imgur.com/RMC8qWH.png" height="50" width="50" @click="playVid()"/>
+
+    <img src="https://i.imgur.com/hCwRSit.png" height="50" width="50" @click="pause()"/>
 
     <div v-if="show">
       <button @click="volumeMute(), (show = false)">Mute</button>
     </div>
-    <div v-if="show == false">
+    <div v-else>
       <button @click="volumeUnMute(), (show = true)">Unmute</button>
     </div>
     <div class="wrapper">
@@ -29,7 +31,7 @@ export default {
   data() {
     return {
       show: true,
-      value: 50,
+      value: 20,
     };
   },
   computed: {
@@ -61,9 +63,6 @@ export default {
     },
     setVolume(volume) {
       window.player.setVolume(volume);
-    },
-    muteToggle() {
-      this.muteToggle = !this.enable;
     },
   },
 };
