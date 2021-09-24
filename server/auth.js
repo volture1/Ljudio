@@ -1,3 +1,4 @@
+const { users } = require("./models");
 
 const crypto = global.crypto;
 const session = global.session;
@@ -38,6 +39,8 @@ module.exports = (app, models, dbCloudUrl) => {
     res.json(user)
   
   });
+
+  
   // Login
 
   app.post('/api/login', async (req, res) => {
@@ -75,8 +78,14 @@ module.exports = (app, models, dbCloudUrl) => {
       res.json({ error: 'Was not logged in' });
     }
   });
-  // Check if logged in
 
+  //get users
+  app.get('/api/users',async (req,res) =>{
+    let docs = await users.find()
+    res.json(docs)
+  })
+
+  // Check if logged in
   app.get('/api/login', (req, res) => {
 
     if (req.session.user !== undefined && req.session.user.length > 0 ) {

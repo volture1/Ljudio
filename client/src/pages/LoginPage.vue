@@ -11,24 +11,56 @@
       <img src="../assets/Logo.png" alt="" class="logo">
     </div>
     <hr class="break">
-    <div class="fields">
-      <input class="input" type="text" placeholder="Email" >
-      <input class="input" type="text" placeholder="Password" >
-    </div>
-    <div class="login-wrap">
-      <button class="btn">Log in</button>
-    </div>
+    <form @submit.prevent="handleSubmit">
+      <div class="fields">
+        <input class="input" v-model="email"      type="email" placeholder="Email" >
+        <input class="input" v-model="password"   type="password" placeholder="Password" >
+        <div v-if="tempError" class="error">{{tempError}}</div>
+      </div>
+      <div class="login-wrap">
+        <button class="btn">Log in</button>
+      </div>
+    </form>  
     <hr class="break">
     <div class="register-router-wrap">
       <p class="register-router">Don't have an account yet?</p>
-      <button class="btn">Register</button>
+      <button class="btn" @click="toggleRegister">Register</button>
     </div>
   </div>
 </template>
 
 <script>
-export default {
 
+export default {
+  data(){
+    return{
+      email:"",
+      password:"",
+      showRegister:false,
+      tempError:""
+    }
+  },
+  computed:{
+    isLoggedIn(){
+      return this.$store.state.currentUser != null
+    }
+  },
+  methods:{
+    toggleRegister(){
+      this.showRegister = !this.showRegister
+    },
+    async handleSubmit(){
+      const credentials = {
+        email:this.email,
+        password:this.password
+      }
+      console.log("credentials0",credentials)
+      await this.$store.dispatch('login',credentials)
+      if(!this.isLoggedIn){
+        this.tempError = "wrong email or password"
+      }
+    }
+  }
 }
 </script>
 
