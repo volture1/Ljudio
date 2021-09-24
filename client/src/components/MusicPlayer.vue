@@ -1,19 +1,21 @@
 <template>
   <div class="music-player-container">
-    <img
-      src="https://i.imgur.com/RMC8qWH.png"
-      height="50"
-      width="50"
-      @click="playVid()"
-    />
-
-    <img
-      src="https://i.imgur.com/hCwRSit.png"
-      height="50"
-      width="50"
-      @click="pause()"
-    />
-
+    <div v-if="!showButton">
+      <img
+        src="https://i.imgur.com/RMC8qWH.png"
+        height="50"
+        width="50"
+        @click="playVid(), (showButton = true)"
+      />
+    </div>
+    <div v-if="showButton">
+      <img
+        src="https://i.imgur.com/hCwRSit.png"
+        height="50"
+        width="50"
+        @click="pause(), (showButton = false)"
+      />
+    </div>
     <div v-if="show">
       <button @click="volumeMute(), (show = false)">Mute</button>
     </div>
@@ -40,6 +42,7 @@ export default {
   data() {
     return {
       show: true,
+      showButton: true,
       value: 20,
     };
   },
