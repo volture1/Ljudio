@@ -12,9 +12,4 @@ export default {};
 </script>
 
 <style scoped>
-.sidebar {
-  background-color: blue;
-  width: 25%;
-  height: 100%;
-}
 </style>
