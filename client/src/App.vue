@@ -26,6 +26,7 @@ export default { components: { MusicPlayer, SideBar } };
 
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
 .container{
   display: flex;
   justify-content: space-between;
@@ -44,8 +45,7 @@ export default { components: { MusicPlayer, SideBar } };
   height: 10vh;
    position:fixed;
   bottom:0;
-  
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
+}
 
 * {
   margin: 0;
