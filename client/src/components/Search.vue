@@ -1,23 +1,30 @@
 <template>
   <div class="container">
-    <h1>Search</h1>
     <div class="search">
       <input type="text" class="input" />
+      <div class="submit">
+        <img
+          src="https://i.imgur.com/nPCknKH.png"
+          height="40"
+          width="40"
+          @click="
+            () => {
+              fetch();
+              fetchArtists();
+              fetchPlaylists();
+            }
+          "
+          class="submit-btn"
+        />
+      </div>
     </div>
-    <div class="submit">
-      <button
-        @click="
-          () => {
-            fetch();
-            fetchArtists();
-            fetchPlaylists();
-          }
-        "
-        class="submit-btn"
-      >
-        Search songs
-      </button>
+    <div v-if="showEmpty" class="empty-container">
+      <img class="empty-image" src="https://i.imgur.com/v9DnpGQ.png" />
+      <h1 class="empty-text">
+        Find your favorite songs, artists and playlists!
+      </h1>
     </div>
+    <h1 v-if="showHeaders == true">Songs</h1>
     <div class="search-list-songs">
       <div
         @click="printVideoId(result.videoId)"
@@ -25,10 +32,14 @@
         :key="result"
         class="result"
       >
+        <img :src="result.thumbnails[0].url" height="40" width="40" />
         <p>{{ result.name }}</p>
+        <p>{{ result.album.name }}</p>
         <p>{{ result.artist.name }}</p>
+        <p>{{ result.duration }}</p>
       </div>
     </div>
+    <h1 v-if="showHeaders == true">Artists</h1>
     <div class="search-list-artists">
       <div
         v-for="result in this.listArtists"
@@ -39,6 +50,7 @@
         <p class="artist-name">{{ result.name }}</p>
       </div>
     </div>
+    <h1 v-if="showHeaders == true">Playlists</h1>
     <div class="search-list-playlist">
       <div
         v-for="result in this.listPlaylist"
@@ -70,6 +82,8 @@ export default {
       fiveSongs: [],
       artistArray: [],
       playlistArray: [],
+      showEmpty: true,
+      showHeaders: false,
       testId: "",
     };
   },
@@ -93,9 +107,11 @@ export default {
       let search = document.querySelector(".input").value;
       let str = search.replace(/\s/g, "");
       let res = await fetch(this.url + str);
+      this.showEmpty = false;
       let data = await res.json();
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
+      this.showHeaders = true;
       //console.log(this.songArray);
       // för att debugga låtar
       // for (let i = 0; i < this.songArray.length; i++) {
@@ -144,10 +160,10 @@ p {
 .input {
   padding: 1em;
   width: 25vw;
-  border-radius: 5px;
-  border: 1px solid lightgrey;
+  border-radius: 10px;
+  background-color: black;
   margin-top: 1em;
-  outline: none;
+  color: white;
 }
 .artist-name {
   text-align: center;
@@ -156,6 +172,8 @@ p {
   border-radius: 4px;
   height: 200px;
   width: 200px;
+  max-height: 100%;
+  max-width: 100%;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -171,15 +189,17 @@ p {
   border-radius: 20px;
 }
 .submit-btn {
-  outline: none;
+  margin-top: 20px;
+  margin-left: 10px;
+  /* outline: none;
   border-radius: 5px;
-  border: 1px solid lightgray;
+
   margin-top: 1em;
   color: black;
   background-color: rgba(255, 0, 0, 0.1);
   font-size: 14px;
   padding: 0.25em 2em;
-  cursor: pointer;
+  cursor: pointer; */
 }
 
 .submit-btn:hover {
@@ -195,10 +215,13 @@ p {
 .result {
   display: flex;
   justify-content: space-between;
+  row-gap: 10px;
   align-items: center;
   padding-right: 1em;
-  border: 1px solid lightgray;
+  padding-left: 1em;
+  height: 50px;
   border-radius: 5px;
+
   background-color: #c4c4c421;
 }
 .result-artist {
@@ -215,6 +238,10 @@ p {
   margin-right: 20px;
   margin-top: 40px;
 }
+.search-list-artists {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 
 .thumbnail {
   border-top-left-radius: 5px;
@@ -224,5 +251,25 @@ p {
 .search-list-playlist {
   display: flex;
   flex-wrap: wrap;
+}
+.search {
+  display: flex;
+  padding-bottom: 20px;
+  height: 100px;
+  align-items: center;
+}
+.empty-container {
+  display: flex;
+}
+.empty-image {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  height: 200px;
+  margin-left: 100px;
+}
+.empty-text {
+  margin-top: 140px;
+  margin-left: 20px;
+  color: gray;
 }
 </style>
