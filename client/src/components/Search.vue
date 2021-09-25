@@ -39,13 +39,18 @@
         <p class="artist-name">{{ result.name }}</p>
       </div>
     </div>
-     <div class="search-list-playlist">
+    <div class="search-list-playlist">
       <div
         v-for="result in this.listPlaylist"
         :key="result"
         class="result-playlist"
       >
-        <img :src="result.thumbnails[1].url" class="playlist-image" />
+        <img
+          v-if="result.thumbnails[0].url == undefined"
+          :src="result.thumbnails"
+          class="playlist-image"
+        />
+        <img v-else :src="result.thumbnails[0].url" class="playlist-image" />
         <p class="playlist-name">{{ result.title }}</p>
       </div>
     </div>
@@ -86,12 +91,18 @@ export default {
 
     async fetch() {
       let search = document.querySelector(".input").value;
-      let res = await fetch(this.url + search);
+      let str = search.replace(/\s/g, "");
+      let res = await fetch(this.url + str);
       let data = await res.json();
-
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
+      //console.log(this.songArray);
+      // för att debugga låtar
+      // for (let i = 0; i < this.songArray.length; i++) {
+      //   console.log(this.songArray[i]);
+      // }
       this.fiveSongs.splice(5, 15);
+      this.$store.commit("setSongArray", this.songArray);
     },
     async fetchArtists() {
       let search = document.querySelector(".input").value;
@@ -101,15 +112,15 @@ export default {
       this.artistArray = [...data.content];
       this.artistArray.splice(1, 99);
     },
-      async fetchPlaylists() {
+    async fetchPlaylists() {
       let search = document.querySelector(".input").value;
-      document.querySelector(".input").value = "";
+      //document.querySelector(".input").value = "";
       let res = await fetch(this.urlPlaylist + search);
       let data = await res.json();
 
       this.playlistArray = [...data.content];
       this.playlistArray.splice(5, 15);
-      console.log(this.playlistArray)
+      console.log(this.playlistArray);
     },
   },
 };
