@@ -263,8 +263,13 @@ p {
   background-color: #c4c4c421;
 }
 .result:hover {
-  background-image: linear-gradient(rgba(104, 104, 219, 0.301), rgb(199, 207, 247, 0.301));
+  background-image: linear-gradient(
+    rgba(104, 104, 219, 0.301),
+    rgb(199, 207, 247, 0.301)
+  );
   z-index: 99;
+  box-shadow: 5px 5px 5px teal;
+  cursor: pointer;
 }
 .result-artist {
   background-color: gray;
@@ -318,7 +323,9 @@ p {
   color: gray;
 }
 .show-more-button {
-  text-align:right;
+  text-align: right;
+  cursor:pointer;
+  
 }
 .lds-ring {
   display: inline-block;
@@ -356,7 +363,6 @@ p {
     transform: rotate(360deg);
   }
 }
-
 
 /* #clip {
   position: absolute;

@@ -12,22 +12,23 @@
         </div>
       </div>
     </div>
-    <div class="play-pause-button">
-      <div v-if="!showButton">
-        <img
-          src="https://i.imgur.com/RMC8qWH.png"
-          height="35"
-          width="35"
-          @click="playVid(), (showButton = true)"
-        />
-      </div>
-      <div v-if="showButton">
-        <img
-          src="https://i.imgur.com/hCwRSit.png"
-          height="35"
-          width="35"
-          @click="pause(), (showButton = false), test()"
-        />
+    <div class="play-pause-button-container" @click="()=>{if(!showButton){
+      playVid(), (showButton = true)}else{pause(), (showButton = false)}}">
+      <div class="play-pause-button">
+         <div v-if="!showButton">
+          <img
+            src="https://i.imgur.com/RMC8qWH.png"
+            height="20"
+            width="20"
+          />
+        </div>
+        <div v-if="showButton">
+          <img
+            src="https://i.imgur.com/hCwRSit.png"
+            height="20"
+            width="20"
+          />
+        </div> 
       </div>
     </div>
     <div class="volume-divs">
@@ -152,9 +153,20 @@ export default {
   color: darkgray;
 }
 .play-pause-button {
-  margin-left: 20px;
-  padding-top: 20px;
+  margin-top: 15px;
+  
   text-align: center;
+  align-content: center;
+  
+}
+.play-pause-button-container {
+  margin-top: 20px;
+  height: 50px;
+  width: 50px;
+  
+  border-radius: 50%;
+  background-color: #C4C4C4;
+  
 }
 .mute-unMute-button {
   margin-right: 5px;
@@ -192,7 +204,7 @@ export default {
     height: 0;
     border-radius: 10px;
     background: #434343;
-    box-shadow: -80px 0 0 80px #43e5f7;
+    box-shadow: -82px 0 0 80px #43e5f7;
   }
   #slider:hover input[type="range"]::-webkit-slider-thumb {
     width: 10px;
@@ -201,9 +213,9 @@ export default {
     border-radius: 50%;
     background: #c4c4c4;
   }
-  #volumebar{
-    height:10px;
-    width:150px;
+  #volumebar {
+    height: 10px;
+    width: 150px;
   }
 }
 </style>
