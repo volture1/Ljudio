@@ -32,7 +32,7 @@ export default {
   components: { MusicPlayer, SideBar },
   methods: {
     conditionalRender() {
-      //console.log(this.$route.path);
+      
       if (
         this.$route.path == "/Register" ||
         this.$route.path == "/" ||
@@ -65,7 +65,7 @@ export default {
 .music-player {
   background-color: #242526;
   width: 80%;
-  height: 1vh;
+  height: 10vh;
   position: fixed;
   bottom: 0;
 }
