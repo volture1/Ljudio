@@ -36,7 +36,7 @@
         <p>{{ result.name }}</p>
         <p>{{ result.album.name }}</p>
         <p>{{ result.artist.name }}</p>
-        <p>{{ result.duration }}</p>
+        <p>{{ calculateDuration(result.duration) }}</p>
       </div>
     </div>
     <h1 v-if="showHeaders == true">Artists</h1>
@@ -101,6 +101,15 @@ export default {
   methods: {
     printVideoId(id) {
       this.$store.commit("setSongId", id);
+    },
+    calculateDuration(duration) {
+      let time = new Date(duration);
+      //var dateWithouthSecond = new Date();
+      let newTime = time.toLocaleTimeString(navigator.language, {
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      return newTime;
     },
 
     async fetch() {
