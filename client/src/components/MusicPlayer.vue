@@ -4,7 +4,7 @@
       <p style="text-decoration: underline">Currently Playing</p>
       <div v-for="result in this.list" :key="result" class="result">
         <div>
-          <img class="result-song-image" :src="result.thumbnails[0].url"  />
+          <img class="result-song-image" :src="result.thumbnails[0].url" />
         </div>
         <div>
           <p class="result-name">{{ result.name }}</p>
@@ -36,21 +36,21 @@
           <!-- <button @click="volumeMute(), (show = false)">Mute</button> https://i.imgur.com/IM2EjNx.png  https://i.imgur.com/TYwXoNs.png unmute -->
           <img
             src="https://i.imgur.com/IM2EjNx.png"
-            height="35"
-            width="35"
+            height="20"
+            width="20"
             @click="volumeUnMute(), (show = true)"
           />
         </div>
         <div v-if="show">
           <img
             src="https://i.imgur.com/TYwXoNs.png"
-            height="35"
-            width="35"
+            height="20"
+            width="20"
             @click="volumeMute(), (show = false)"
           />
         </div>
       </div>
-      <div class="volume-slider">
+      <div id="slider" class="volume-slider">
         <input
           @change="setVolume(value)"
           type="range"
@@ -58,6 +58,7 @@
           max="100"
           step="1"
           v-model="value"
+          id="volumebar"
         />
 
         <p>{{ value }}</p>
@@ -134,7 +135,6 @@ export default {
 }
 .result {
   display: flex;
-  
 }
 .result-name {
   color: white;
@@ -145,7 +145,7 @@ export default {
 .result-song-image {
   height: 35px;
   width: 35x;
-  margin-right:10px;
+  margin-right: 10px;
 }
 .song-content-container {
   margin-top: 10px;
@@ -158,6 +158,7 @@ export default {
 }
 .mute-unMute-button {
   margin-right: 5px;
+  margin-top: 12px;
   padding-left: 20px;
   padding-top: 20px;
 }
@@ -167,5 +168,42 @@ export default {
 }
 .volume-slider {
   padding-top: 30px;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  input[type="range"] {
+    overflow: hidden;
+    width: 80px;
+    -webkit-appearance: none;
+    background-color: #1d1e1f;
+    border-radius: 10px;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+    -webkit-appearance: none;
+    color: #4c6175;
+    margin-top: -1px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 0;
+    height: 0;
+    border-radius: 10px;
+    background: #434343;
+    box-shadow: -80px 0 0 80px #43e5f7;
+  }
+  #slider:hover input[type="range"]::-webkit-slider-thumb {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+    background: #c4c4c4;
+  }
+  #volumebar{
+    height:10px;
+    width:150px;
+  }
 }
 </style>

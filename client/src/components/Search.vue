@@ -48,7 +48,7 @@
           <p>{{ calculateDuration(result.duration) }}</p>
         </div>
         <div v-if="showMore == false && this.list.length > 4">
-          <p @click="showMore = true">Show more</p>
+          <p class="show-more-button" @click="showMore = true">Show more</p>
         </div>
       </div>
       <h1 v-if="showHeaders == true">Artists</h1>
@@ -317,6 +317,9 @@ p {
   margin-left: 20px;
   color: gray;
 }
+.show-more-button {
+  text-align:right;
+}
 .lds-ring {
   display: inline-block;
   position: relative;
@@ -353,6 +356,7 @@ p {
     transform: rotate(360deg);
   }
 }
+
 
 /* #clip {
   position: absolute;
