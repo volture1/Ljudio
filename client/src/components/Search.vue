@@ -8,10 +8,10 @@
           height="40"
           width="40"
           @click="
-            () => {
-              fetch();
-              fetchArtists();
-              fetchPlaylists();
+            async () => {
+              await fetch();
+              await fetchArtists();
+              await fetchPlaylists();
             }
           "
           class="submit-btn"
@@ -24,51 +24,62 @@
         Find your favorite songs, artists and playlists!
       </h1>
     </div>
-    <h1 v-if="showHeaders == true">Songs</h1>
-    <div class="search-list-songs">
-      <div
-        @click="printVideoId(result.videoId)"
-        v-for="result in this.list"
-        :key="result"
-        class="result"
-      >
-        <img :src="result.thumbnails[1].url" height="40" width="40" />
-        <p>{{ result.name }}</p>
-        <p>{{ result.album.name }}</p>
-        <p>{{ result.artist.name }}</p>
-        <p>{{ calculateDuration(result.duration) }}</p>
-      </div>
+    <div v-if="!doneLoading" class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
-    <h1 v-if="showHeaders == true">Artists</h1>
-    <div class="search-list-artists">
-      <div
-        v-for="result in this.listArtists"
-        :key="result"
-        class="result-artist"
-      >
-        <img :src="result.thumbnails[1].url" class="artist-image" />
-        <p class="artist-name">{{ result.name }}</p>
-      </div>
-    </div>
-    <h1 v-if="showHeaders == true">Playlists</h1>
-    <div class="search-list-playlist">
-    
-      <div
-        v-for="result in this.listPlaylist"
-        :key="result"
-        class="result-playlist"
-      >
-        <div v-if="result.thumbnails.url">
-          <img id="clip" :src="result.thumbnails.url" class="playlist-image" />
-          <p class="playlist-name">{{ result.title }}</p>
+    <div v-if="doneLoading" class="search-contents">
+      <h1 v-if="showHeaders == true">Songs</h1>
+      <div class="search-list-songs">
+        <div
+          @click="printVideoId(result.videoId)"
+          v-for="result in this.list"
+          :key="result"
+          class="result"
+        >
+          <img :src="result.thumbnails[1].url" height="40" width="40" />
+          <p>{{ result.name }}</p>
+          <p>{{ result.album.name }}</p>
+          <p>{{ result.artist.name }}</p>
+          <p>{{ calculateDuration(result.duration) }}</p>
         </div>
-        <div v-else>
-          <img
-            id="clip"
-            :src="result.thumbnails[0].url"
-            class="playlist-image"
-          />
-          <p class="playlist-name">{{ result.title }}</p>
+      </div>
+      <h1 v-if="showHeaders == true">Artists</h1>
+      <div class="search-list-artists">
+        <div
+          v-for="result in this.listArtists"
+          :key="result"
+          class="result-artist"
+        >
+          <img :src="result.thumbnails[1].url" class="artist-image" />
+          <p class="artist-name">{{ result.name }}</p>
+        </div>
+      </div>
+      <h1 v-if="showHeaders == true">Playlists</h1>
+      <div class="search-list-playlist">
+        <div
+          v-for="result in this.listPlaylist"
+          :key="result"
+          class="result-playlist"
+        >
+          <div v-if="result.thumbnails.url">
+            <img
+              id="clip"
+              :src="result.thumbnails.url"
+              class="playlist-image"
+            />
+            <p class="playlist-name">{{ result.title }}</p>
+          </div>
+          <div v-else>
+            <img
+              id="clip"
+              :src="result.thumbnails[0].url"
+              class="playlist-image"
+            />
+            <p class="playlist-name">{{ result.title }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -88,6 +99,7 @@ export default {
       fiveSongs: [],
       artistArray: [],
       playlistArray: [],
+      doneLoading: false,
       showEmpty: true,
       showHeaders: false,
       testId: "",
@@ -118,6 +130,7 @@ export default {
     },
 
     async fetch() {
+      this.doneLoading = false;
       let search = document.querySelector(".input").value;
       let str = search.replace(/\s/g, "");
       let res = await fetch(this.url + str);
@@ -149,6 +162,7 @@ export default {
       console.log(this.playlistArray);
       console.log("next is the url of the first");
       console.log(this.listPlaylist[0].thumbnails);
+      this.doneLoading = true;
     },
   },
 };
@@ -281,6 +295,43 @@ p {
   margin-left: 20px;
   color: gray;
 }
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-left: 100px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* #clip {
   position: absolute;
   clip: rect(0, 120px, 40px, 0);
