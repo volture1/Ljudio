@@ -65,7 +65,7 @@
         <img
           id="clip"
           v-else
-          :src="result.thumbnails[2].url"
+          :src="result.thumbnails[1].url"
           class="playlist-image"
         />
         <p class="playlist-name">{{ result.title }}</p>
