@@ -32,7 +32,7 @@
         :key="result"
         class="result"
       >
-        <img :src="result.thumbnails[0].url" height="40" width="40" />
+        <img :src="result.thumbnails[1].url" height="40" width="40" />
         <p>{{ result.name }}</p>
         <p>{{ result.album.name }}</p>
         <p>{{ result.artist.name }}</p>
@@ -62,7 +62,12 @@
           :src="result.thumbnails"
           class="playlist-image"
         />
-        <img v-else :src="result.thumbnails[0].url" class="playlist-image" />
+        <img
+          id="clip"
+          v-else
+          :src="result.thumbnails[2].url"
+          class="playlist-image"
+        />
         <p class="playlist-name">{{ result.title }}</p>
       </div>
     </div>
@@ -179,10 +184,11 @@ p {
 }
 .artist-image {
   border-radius: 4px;
-  height: 200px;
-  width: 200px;
-  max-height: 100%;
-  max-width: 100%;
+  display: block;
+
+  width: auto;
+  height: auto;
+
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -190,9 +196,11 @@ p {
   border-radius: 25px;
 }
 .playlist-image {
-  height: 200px;
-  width: 200px;
   display: block;
+  width: 140px;
+  height: 120px;
+  max-height: 140px;
+  max-width: 120px;
   margin-left: auto;
   margin-right: auto;
   border-radius: 20px;
@@ -235,16 +243,19 @@ p {
 }
 .result-artist {
   background-color: gray;
-  height: 200px;
-  width: 200px;
+  height: 140px;
+  width: 120px;
   border-radius: 25px;
+  color: black;
 }
 .result-playlist {
   background-color: gray;
-  height: 200px;
-  width: 200px;
+
+  height: 140px;
+  width: 120px;
+
   border-radius: 25px;
-  margin-right: 20px;
+  margin-right: 30px;
   margin-top: 40px;
 }
 .search-list-artists {
@@ -281,4 +292,8 @@ p {
   margin-left: 20px;
   color: gray;
 }
+/* #clip {
+  position: absolute;
+  clip: rect(0, 120px, 40px, 0);
+} */
 </style>
