@@ -65,7 +65,7 @@ export default {
 .music-player {
   background-color: #242526;
   width: 80%;
-  height: 10vh;
+  height: 1vh;
   position: fixed;
   bottom: 0;
 }

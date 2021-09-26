@@ -52,23 +52,31 @@
     </div>
     <h1 v-if="showHeaders == true">Playlists</h1>
     <div class="search-list-playlist">
+      <!-- <div v-if="this.listPlaylist[0] !== 'undefined'" class="search-list-playlist"> -->
       <div
         v-for="result in this.listPlaylist"
         :key="result"
         class="result-playlist"
       >
-        <img
-          v-if="result.thumbnails[0].url == undefined"
-          :src="result.thumbnails"
-          class="playlist-image"
-        />
-        <img
-          id="clip"
-          v-else
-          :src="result.thumbnails[1].url"
-          class="playlist-image"
-        />
-        <p class="playlist-name">{{ result.title }}</p>
+        <div v-if="result.thumbnails.url">
+          <img id="clip" :src="result.thumbnails.url" class="playlist-image" />
+          <p class="playlist-name">{{ result.title }}</p>
+        </div>
+        <div v-else>
+          <img
+            id="clip"
+            :src="result.thumbnails[0].url"
+            class="playlist-image"
+          />
+          <p class="playlist-name">{{ result.title }}</p>
+          <!-- <div
+          v-if="
+            () => {
+              result.thumbnails[0].url !== undefined;
+            }
+          "
+        > -->
+        </div>
       </div>
     </div>
   </div>
@@ -123,6 +131,7 @@ export default {
       let res = await fetch(this.url + str);
       this.showEmpty = false;
       let data = await res.json();
+
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
       this.showHeaders = true;
@@ -132,7 +141,7 @@ export default {
       //   console.log(this.songArray[i]);
       // }
       this.fiveSongs.splice(5, 15);
-      this.$store.commit("setSongArray", this.songArray);
+      //this.$store.commit("setSongArray", this.songArray);
     },
     async fetchArtists() {
       let search = document.querySelector(".input").value;
@@ -143,6 +152,7 @@ export default {
       this.artistArray.splice(1, 99);
     },
     async fetchPlaylists() {
+      this.listPlaylistArray = [];
       let search = document.querySelector(".input").value;
       //document.querySelector(".input").value = "";
       let res = await fetch(this.urlPlaylist + search);
@@ -151,6 +161,8 @@ export default {
       this.playlistArray = [...data.content];
       this.playlistArray.splice(5, 15);
       console.log(this.playlistArray);
+      console.log("next is the url of the first");
+      console.log(this.listPlaylist[0].thumbnails);
     },
   },
 };
@@ -208,19 +220,10 @@ p {
 .submit-btn {
   margin-top: 20px;
   margin-left: 10px;
-  /* outline: none;
-  border-radius: 5px;
-
-  margin-top: 1em;
-  color: black;
-  background-color: rgba(255, 0, 0, 0.1);
-  font-size: 14px;
-  padding: 0.25em 2em;
-  cursor: pointer; */
 }
 
 .submit-btn:hover {
-  background-color: rgba(255, 0, 0, 0.25);
+  cursor: pointer;
 }
 
 .search-list-songs {
