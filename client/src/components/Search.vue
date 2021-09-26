@@ -12,6 +12,7 @@
               await fetch();
               await fetchArtists();
               await fetchPlaylists();
+              this.showMore = false;
             }
           "
           class="submit-btn"
@@ -33,6 +34,7 @@
     <div v-if="doneLoading" class="search-contents">
       <h1 v-if="showHeaders == true">Songs</h1>
       <div class="search-list-songs">
+        <p v-if="this.list.length < 1">No songs found :/</p>
         <div
           @click="printVideoId(result.videoId)"
           v-for="result in this.list"
@@ -45,8 +47,12 @@
           <p>{{ result.artist.name }}</p>
           <p>{{ calculateDuration(result.duration) }}</p>
         </div>
+        <div v-if="showMore == false && this.list.length > 1">
+          <p @click="showMore = true">Show more</p>
+        </div>
       </div>
       <h1 v-if="showHeaders == true">Artists</h1>
+      <p v-if="this.listArtists.length < 1">No artists found :/</p>
       <div class="search-list-artists">
         <div
           v-for="result in this.listArtists"
@@ -59,6 +65,7 @@
       </div>
       <h1 v-if="showHeaders == true">Playlists</h1>
       <div class="search-list-playlist">
+        <p v-if="this.listPlaylist < 1">No songs found :/</p>
         <div
           v-for="result in this.listPlaylist"
           :key="result"
@@ -100,18 +107,20 @@ export default {
       artistArray: [],
       playlistArray: [],
       doneLoading: false,
+      showMore: false,
       showEmpty: true,
       showHeaders: false,
       testId: "",
     };
   },
-  // created() {
-  //   this.setupLoading;
-  // },
 
   computed: {
     list() {
-      return this.fiveSongs;
+      if (!this.showMore) {
+        return this.fiveSongs;
+      } else {
+        return this.songArray;
+      }
     },
     listArtists() {
       return this.artistArray;
@@ -124,9 +133,6 @@ export default {
     printVideoId(id) {
       this.$store.commit("setSongId", id);
     },
-    setupLoading() {
-      this.doneLoading = false;
-    },
     calculateDuration(duration) {
       let time = new Date(duration);
       let newTime = time.toLocaleTimeString(navigator.language, {
@@ -135,7 +141,6 @@ export default {
       });
       return newTime;
     },
-
     async fetch() {
       this.doneLoading = false;
       let search = document.querySelector(".input").value;
@@ -166,9 +171,6 @@ export default {
 
       this.playlistArray = [...data.content];
       this.playlistArray.splice(5, 15);
-      console.log(this.playlistArray);
-      console.log("next is the url of the first");
-      console.log(this.listPlaylist[0].thumbnails);
       this.doneLoading = true;
     },
   },
@@ -219,8 +221,9 @@ p {
   margin-right: auto;
   margin-top: auto;
   border-radius: 25px;
-  -webkit-clip-path: polygon(0 0, 0 100px, 100px 80px, 100px 0);
-  clip-path: polygon(0 0, 0 100px, 150px 1px, 100px 0);
+  /*---to cut off the image in any way
+   -webkit-clip-path: polygon(0 0, 0 100px, 100px 80px, 100px 0);
+  clip-path: polygon(0 0, 0 100px, 150px 1px, 100px 0); */
 }
 .playlist-image {
   display: block;
