@@ -1,9 +1,10 @@
 <template>
   <div class="music-player-container">
     <div class="song-content-container">
-      <p>Currently Playing</p>
+      <p style="text-decoration: underline">Currently Playing</p>
       <div v-for="result in this.list" :key="result" class="">
-        <p>{{ result.name }}</p>
+        <p >{{ result.name }}</p>
+        <p>{{ result.artist.name }}</p>
       </div>
     </div>
     <div class="play-pause-button">
@@ -125,6 +126,10 @@ export default {
   display: flex;
   justify-content: space-around;
   width: 100%;
+}
+.song-content-container {
+  margin-top: 10px;
+  color: darkgray;
 }
 .play-pause-button {
   margin-left: 20px;
