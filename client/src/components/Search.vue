@@ -47,7 +47,7 @@
           <p>{{ result.artist.name }}</p>
           <p>{{ calculateDuration(result.duration) }}</p>
         </div>
-        <div v-if="showMore == false && this.list.length > 1">
+        <div v-if="showMore == false && this.list.length > 4">
           <p @click="showMore = true">Show more</p>
         </div>
       </div>
@@ -187,6 +187,7 @@ h1 {
   padding-bottom: 10px;
 }
 p {
+  user-select: none;
   font-family: "PT Sans", sans-serif;
   font-size: 14px;
 }
@@ -259,8 +260,11 @@ p {
   padding-left: 1em;
   height: 50px;
   border-radius: 5px;
-
   background-color: #c4c4c421;
+}
+.result:hover {
+  background-image: linear-gradient(rgba(104, 104, 219, 0.301), rgb(199, 207, 247, 0.301));
+  z-index: 99;
 }
 .result-artist {
   background-color: gray;

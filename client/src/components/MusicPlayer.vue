@@ -2,25 +2,30 @@
   <div class="music-player-container">
     <div class="song-content-container">
       <p style="text-decoration: underline">Currently Playing</p>
-      <div v-for="result in this.list" :key="result" class="">
-        <p >{{ result.name }}</p>
-        <p>{{ result.artist.name }}</p>
+      <div v-for="result in this.list" :key="result" class="result">
+        <div>
+          <img class="result-song-image" :src="result.thumbnails[0].url"  />
+        </div>
+        <div>
+          <p class="result-name">{{ result.name }}</p>
+          <p class="result-artist-name">{{ result.artist.name }}</p>
+        </div>
       </div>
     </div>
     <div class="play-pause-button">
       <div v-if="!showButton">
         <img
           src="https://i.imgur.com/RMC8qWH.png"
-          height="50"
-          width="50"
+          height="35"
+          width="35"
           @click="playVid(), (showButton = true)"
         />
       </div>
       <div v-if="showButton">
         <img
           src="https://i.imgur.com/hCwRSit.png"
-          height="50"
-          width="50"
+          height="35"
+          width="35"
           @click="pause(), (showButton = false), test()"
         />
       </div>
@@ -31,16 +36,16 @@
           <!-- <button @click="volumeMute(), (show = false)">Mute</button> https://i.imgur.com/IM2EjNx.png  https://i.imgur.com/TYwXoNs.png unmute -->
           <img
             src="https://i.imgur.com/IM2EjNx.png"
-            height="50"
-            width="50"
+            height="35"
+            width="35"
             @click="volumeUnMute(), (show = true)"
           />
         </div>
         <div v-if="show">
           <img
             src="https://i.imgur.com/TYwXoNs.png"
-            height="50"
-            width="50"
+            height="35"
+            width="35"
             @click="volumeMute(), (show = false)"
           />
         </div>
@@ -78,6 +83,7 @@ export default {
       return this.$store.state.currentSong;
     },
     list() {
+      console.log(this.currentSongArray);
       return this.currentSongArray;
     },
   },
@@ -96,7 +102,6 @@ export default {
       let data = await res.json();
       this.currentSongArray = [...data.content];
       this.currentSongArray.splice(1, 99);
-      console.log(this.currentSongArray[0]);
     },
     play(id) {
       window.player.loadVideoById(id);
@@ -127,6 +132,21 @@ export default {
   justify-content: space-around;
   width: 100%;
 }
+.result {
+  display: flex;
+  
+}
+.result-name {
+  color: white;
+}
+.result-artist-name {
+  font-size: 12px;
+}
+.result-song-image {
+  height: 35px;
+  width: 35x;
+  margin-right:10px;
+}
 .song-content-container {
   margin-top: 10px;
   color: darkgray;
@@ -146,6 +166,6 @@ export default {
   padding-right: 40px;
 }
 .volume-slider {
-  padding-top: 40px;
+  padding-top: 30px;
 }
 </style>
