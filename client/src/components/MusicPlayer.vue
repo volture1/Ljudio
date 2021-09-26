@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       show: true,
-      showButton: true,
+      showButton: false,
       currentSongArray: [],
       value: 20,
       api_key: "AIzaSyDDCSvtOP78gVYp6K2EQXbWYYBe66qm6fk",
@@ -84,6 +84,7 @@ export default {
     songId(newId, oldId) {
       this.play(newId);
       this.fetchCurrentSong(newId);
+      this.showButton = true;
     },
   },
   methods: {
@@ -99,7 +100,6 @@ export default {
     play(id) {
       window.player.loadVideoById(id);
       window.player.playVideo();
-      
     },
     pause() {
       window.player.pauseVideo();
