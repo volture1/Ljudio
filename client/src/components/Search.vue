@@ -24,7 +24,7 @@
         Find your favorite songs, artists and playlists!
       </h1>
     </div>
-    <div v-if="!doneLoading" class="lds-ring">
+    <div v-if="!doneLoading && !showEmpty" class="lds-ring">
       <div></div>
       <div></div>
       <div></div>
@@ -105,6 +105,10 @@ export default {
       testId: "",
     };
   },
+  // created() {
+  //   this.setupLoading;
+  // },
+
   computed: {
     list() {
       return this.fiveSongs;
@@ -119,6 +123,9 @@ export default {
   methods: {
     printVideoId(id) {
       this.$store.commit("setSongId", id);
+    },
+    setupLoading() {
+      this.doneLoading = false;
     },
     calculateDuration(duration) {
       let time = new Date(duration);
@@ -170,7 +177,13 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
-
+h1 {
+  font-size: 25px;
+  font-family: "Poppins", sans-serif;
+  text-decoration: underline;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 p {
   font-family: "PT Sans", sans-serif;
   font-size: 14px;
@@ -206,6 +219,8 @@ p {
   margin-right: auto;
   margin-top: auto;
   border-radius: 25px;
+  -webkit-clip-path: polygon(0 0, 0 100px, 100px 80px, 100px 0);
+  clip-path: polygon(0 0, 0 100px, 150px 1px, 100px 0);
 }
 .playlist-image {
   display: block;
