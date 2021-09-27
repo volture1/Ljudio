@@ -144,8 +144,6 @@ export default {
     },
     pause() {
       window.player.pauseVideo();
-
-      console.log(this.testId);
     },
 
     playVid() {
@@ -156,8 +154,6 @@ export default {
       window.player.onNext(
         this.initPlaylist(this.playlistVideoIds[this.testId])
       );
-
-      //player.nextVideo();
     },
     playPrevious() {
       this.testId = this.testId - 1;

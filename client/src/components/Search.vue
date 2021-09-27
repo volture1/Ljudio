@@ -148,6 +148,7 @@ export default {
   methods: {
     printVideoId(id) {
       this.$store.commit("setSongId", id);
+      this.$store.commit("setPlaylist", this.songArray);
     },
     calculateDuration(duration) {
       let time = new Date(duration);
@@ -173,9 +174,9 @@ export default {
 
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
-      
+
       this.playlist.songs = [...this.songArray];
-      this.$store.commit("setPlaylist", this.songArray);
+      //this.$store.commit("setPlaylist", this.songArray);
       this.showHeaders = true;
       this.fiveSongs.splice(5, 15);
     },
