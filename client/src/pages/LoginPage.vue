@@ -1,37 +1,41 @@
 <template>
-  <div class="login">
-    <div class="top">
-      <router-link to="/">
-        <p class="goback-route">Home</p>
-      </router-link>  
-      <h1 class="pagetitle">Login</h1>
-    </div>
-    <div class="productname-icon">
-      <h3 class="productname">Ljudio</h3>
-      <img src="../assets/Logo.png" alt="" class="logo">
-    </div>
-    <hr class="break">
-    <form @submit.prevent="handleSubmit">
-      <div class="fields">
-        <input class="input" v-model="email"      type="email" placeholder="Email" >
-        <input class="input" v-model="password"   type="password" placeholder="Password" >
-        <div v-if="tempError" class="error">{{tempError}}</div>
+   <div class="backdrop" @mousedown.self="closeBox">
+    <div class="login">
+      <div class="top">
+        <router-link to="/">
+          <p class="goback-route">Home</p>
+        </router-link>  
+        <h1 class="pagetitle">Login</h1>
       </div>
-      <div class="login-wrap">
-        <button class="btn">Log in</button>
+      <div class="productname-icon">
+        <h3 class="productname">Ljudio</h3>
+        <img src="../assets/Logo.png" alt="" class="logo">
       </div>
-    </form>  
-    <hr class="break">
-    <div class="register-router-wrap">
-      <p class="register-router">Don't have an account yet?</p>
-      <button class="btn" @click="toggleRegister">Register</button>
+      <hr class="break">
+      <form @submit.prevent="handleSubmit">
+        <div class="fields">
+          <input class="input" v-model="email"      type="email" placeholder="Email" >
+          <input class="input" v-model="password"   type="password" placeholder="Password" >
+          <div v-if="tempError" class="error">{{tempError}}</div>
+        </div>
+        <div class="login-wrap">
+          <button class="btn">Log in</button>          
+          <HomePage/>
+        </div>
+      </form>  
+      <hr class="break">
+      <div class="register-router-wrap">
+        <p class="register-router">Don't have an account yet?</p>
+        <button class="btn" @click="toggleRegister">Register</button>
+      </div>
     </div>
-  </div>
+   </div> 
 </template>
 
 <script>
-
+import HomePage from "./HomePage.vue"
 export default {
+  component(){HomePage},
   data(){
     return{
       email:"",
@@ -46,6 +50,10 @@ export default {
     }
   },
   methods:{
+    closeBox() {
+      this.$emit("close");
+      this.showSignUp = false;
+    },
     toggleRegister(){
       this.showRegister = !this.showRegister
     },

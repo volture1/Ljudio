@@ -20,8 +20,10 @@ const actions = {
       method:'POST',
       body:JSON.stringify(credentials)
     })
+    console.log("user0",user)
     try{
       user = await user.json()
+      console.log("user1",user)
       store.commit('setCurrentUser',user)
     }catch{
       console.log("user",user)
