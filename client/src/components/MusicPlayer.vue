@@ -12,25 +12,28 @@
         </div>
       </div>
     </div>
-    <div class="play-pause-button-container" @click="()=>{if(!showButton){
-      playVid(), (showButton = true)}else{pause(), (showButton = false)}}">
+    <div
+      class="play-pause-button-container"
+      @click="
+        () => {
+          if (!showButton) {
+            playVid(), (showButton = true);
+          } else {
+            pause(), (showButton = false);
+          }
+        }
+      "
+    >
       <div class="play-pause-button">
-         <div v-if="!showButton">
-          <img
-            src="https://i.imgur.com/RMC8qWH.png"
-            height="20"
-            width="20"
-          />
+        <div v-if="!showButton">
+          <img src="https://i.imgur.com/RMC8qWH.png" height="20" width="20" />
         </div>
         <div v-if="showButton">
-          <img
-            src="https://i.imgur.com/hCwRSit.png"
-            height="20"
-            width="20"
-          />
-        </div> 
+          <img src="https://i.imgur.com/hCwRSit.png" height="20" width="20" />
+        </div>
       </div>
     </div>
+    <p @click="playNext()">test</p>
     <div class="volume-divs">
       <div class="mute-unMute-button">
         <div v-if="!show">
@@ -75,45 +78,64 @@ export default {
       show: true,
       showButton: false,
       currentSongArray: [],
+      playListVideoIds: [],
+      playlist: [],
+      playlistSong: {},
+      testId: 0,
+      increment: 0,
+      song: null,
       value: 20,
       api_key: "AIzaSyDDCSvtOP78gVYp6K2EQXbWYYBe66qm6fk",
       url: "www.googleapis.com/youtube/v3/videos",
     };
   },
   computed: {
+    playlistFetched() {
+      return this.$store.state.playlist;
+    },
     songId() {
       return this.$store.state.currentSong;
     },
     list() {
-      console.log(this.currentSongArray);
       return this.currentSongArray;
     },
   },
   watch: {
     songId(newId, oldId) {
-      this.play(newId);
-      this.fetchCurrentSong(newId);
+      this.testId = 0;
+      this.initPlaylist(newId);
       this.showButton = true;
     },
   },
   methods: {
-    async fetchCurrentSong(song) {
-      let res = await fetch(
-        "https://yt-music-api.herokuapp.com/api/yt/songs/" + song
-      );
-      let data = await res.json();
-      this.currentSongArray = [...data.content];
-      this.currentSongArray.splice(1, 99);
-    },
-    play(id) {
-      window.player.loadVideoById(id);
-      window.player.playVideo();
+    initPlaylist(id) {
+      this.playlist = [...this.playlistFetched];
+      this.playlistVideoIds = this.playlist.map((a) => a.videoId);
+
+      let i = 0;
+      this.playlist.forEach((element) => {
+        if (element.videoId == id) {
+          this.testId = i;
+          this.currentSongArray[0] = element;
+          window.player.loadPlaylist(this.playlistVideoIds, i, 0);
+        }
+        i++;
+      });
+      i = 0;
     },
     pause() {
       window.player.pauseVideo();
+
+      console.log(this.testId);
     },
+
     playVid() {
       window.player.playVideo();
+    },
+    playNext() {
+      this.testId = this.testId + 1;
+      this.initPlaylist(this.playlistVideoIds[this.testId]);
+      player.nextVideo();
     },
     volumeMute() {
       window.player.mute();
@@ -154,19 +176,17 @@ export default {
 }
 .play-pause-button {
   margin-top: 15px;
-  
+
   text-align: center;
   align-content: center;
-  
 }
 .play-pause-button-container {
   margin-top: 20px;
   height: 50px;
   width: 50px;
-  
+
   border-radius: 50%;
-  background-color: #C4C4C4;
-  
+  background-color: #c4c4c4;
 }
 .mute-unMute-button {
   margin-right: 5px;

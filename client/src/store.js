@@ -2,11 +2,14 @@ import { createStore } from 'vuex';
 
 const state = {
   currentSong: '',
-  currentSongList: [],
+  playlist: [],
 }
 const mutations = {
   setSongId(state, currentSong){
     state.currentSong = currentSong
+  },
+  setPlaylist(state, playlist) {
+    state.playlist = playlist
   },
 }
 const actions = {

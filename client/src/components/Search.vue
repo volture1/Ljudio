@@ -36,10 +36,20 @@
       <div class="search-list-songs">
         <p v-if="this.list.length < 1">No songs found :/</p>
         <div
-          @click="printVideoId(result.videoId)"
           v-for="result in this.list"
           :key="result"
           class="result"
+          @change="
+            () => {
+              this.testId++;
+            }
+          "
+          @click="
+            () => {
+              printVideoId(result.videoId);
+              //testie(this.testId);
+            }
+          "
         >
           <img :src="result.thumbnails[1].url" height="40" width="40" />
           <p>{{ result.name }}</p>
@@ -48,7 +58,12 @@
           <p>{{ calculateDuration(result.duration) }}</p>
         </div>
         <div v-if="showMore == false && this.list.length > 4">
-          <p class="show-more-button" @click="showMore = true">Show more</p>
+          <p
+            class="show-more-button"
+            @click="(showMore = true), (this.testId = 0)"
+          >
+            Show more
+          </p>
         </div>
       </div>
       <h1 v-if="showHeaders == true">Artists</h1>
@@ -107,10 +122,11 @@ export default {
       artistArray: [],
       playlistArray: [],
       doneLoading: false,
+      playlist: [{ videoId: null, songs: [] }],
       showMore: false,
       showEmpty: true,
       showHeaders: false,
-      testId: "",
+      testId: 0,
     };
   },
 
@@ -141,6 +157,12 @@ export default {
       });
       return newTime;
     },
+    testie(id) {
+      console.log(id);
+    },
+    increment() {
+      this.testId++;
+    },
     async fetch() {
       this.doneLoading = false;
       let search = document.querySelector(".input").value;
@@ -151,6 +173,9 @@ export default {
 
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
+      
+      this.playlist.songs = [...this.songArray];
+      this.$store.commit("setPlaylist", this.songArray);
       this.showHeaders = true;
       this.fiveSongs.splice(5, 15);
     },
@@ -182,13 +207,13 @@ export default {
 h1 {
   font-size: 25px;
   font-family: "Poppins", sans-serif;
-  text-decoration: underline;
+
   padding-top: 10px;
   padding-bottom: 10px;
 }
 p {
   user-select: none;
-  font-family: "PT Sans", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
 }
 
@@ -209,6 +234,8 @@ p {
 }
 .artist-name {
   text-align: center;
+  margin-top: 5px;
+  color: #ffffff;
 }
 .artist-image {
   border-radius: 4px;
@@ -221,20 +248,21 @@ p {
   margin-left: auto;
   margin-right: auto;
   margin-top: auto;
-  border-radius: 25px;
+  border-radius: 50%;
   /*---to cut off the image in any way
    -webkit-clip-path: polygon(0 0, 0 100px, 100px 80px, 100px 0);
   clip-path: polygon(0 0, 0 100px, 150px 1px, 100px 0); */
 }
 .playlist-image {
   display: block;
-  width: 140px;
+  width: 120px;
   height: 120px;
-  max-height: 140px;
-  max-width: 120px;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 20px;
+  border-radius: 50%;
+}
+.playlist-name {
+  text-align: center;
+  margin-top: 5px;
+  color: #ffffff;
 }
 .submit-btn {
   margin-top: 20px;
@@ -273,20 +301,20 @@ p {
 }
 .result-artist {
   background-color: gray;
-  height: 140px;
+  height: 120px;
   width: 120px;
-  border-radius: 25px;
+  border-radius: 50%;
+  margin-bottom: 10px;
   color: black;
 }
 .result-playlist {
   background-color: gray;
-
-  height: 140px;
+  height: 120px;
   width: 120px;
-
-  border-radius: 25px;
+  border-radius: 50%;
   margin-right: 30px;
-  margin-top: 40px;
+
+  margin-bottom: 60px;
 }
 .search-list-artists {
   padding-top: 20px;
@@ -324,8 +352,7 @@ p {
 }
 .show-more-button {
   text-align: right;
-  cursor:pointer;
-  
+  cursor: pointer;
 }
 .lds-ring {
   display: inline-block;
