@@ -12,6 +12,16 @@
         </div>
       </div>
     </div>
+    <div class="previous-button">
+      <img
+        @click="playNext()"
+        class="previous-button-img"
+        src="https://i.imgur.com/ETVl9xB.png"
+        height="20"
+        width="20"
+      />
+    </div>
+
     <div
       class="play-pause-button-container"
       @click="
@@ -26,20 +36,29 @@
     >
       <div class="play-pause-button">
         <div v-if="!showButton">
-          <img src="https://i.imgur.com/RMC8qWH.png" height="20" width="20" />
+          <img src="https://i.imgur.com/dbNIEwh.png" height="20" width="20" />
         </div>
         <div v-if="showButton">
-          <img src="https://i.imgur.com/hCwRSit.png" height="20" width="20" />
+          <img src="https://i.imgur.com/5Jf6Api.png" height="20" width="20" />
         </div>
       </div>
     </div>
-    <p @click="playNext()">test</p>
+    <div class="next-button">
+      <img
+        @click="playNext()"
+        class="next-button-img"
+        src="https://i.imgur.com/8Z5NSCt.png"
+        height="20"
+        width="20"
+      />
+    </div>
+
     <div class="volume-divs">
       <div class="mute-unMute-button">
         <div v-if="!show">
           <!-- <button @click="volumeMute(), (show = false)">Mute</button> https://i.imgur.com/IM2EjNx.png  https://i.imgur.com/TYwXoNs.png unmute -->
           <img
-            src="https://i.imgur.com/IM2EjNx.png"
+            src="https://i.imgur.com/YfMCNW6.png"
             height="20"
             width="20"
             @click="volumeUnMute(), (show = true)"
@@ -47,7 +66,7 @@
         </div>
         <div v-if="show">
           <img
-            src="https://i.imgur.com/TYwXoNs.png"
+            src="https://i.imgur.com/PeMJYZ9.png"
             height="20"
             width="20"
             @click="volumeMute(), (show = false)"
@@ -134,8 +153,20 @@ export default {
     },
     playNext() {
       this.testId = this.testId + 1;
-      this.initPlaylist(this.playlistVideoIds[this.testId]);
-      player.nextVideo();
+      window.player.onNext(
+        this.initPlaylist(this.playlistVideoIds[this.testId])
+      );
+
+      //player.nextVideo();
+    },
+    playPrevious() {
+      this.testId = this.testId - 1;
+      window.player.onPrevious(
+        this.initPlaylist(this.playlistVideoIds[this.testId])
+      );
+      window.player.previous()
+
+      //player.nextVideo();
     },
     volumeMute() {
       window.player.mute();
@@ -187,6 +218,28 @@ export default {
 
   border-radius: 50%;
   background-color: #c4c4c4;
+}
+.previous-button {
+  margin-top: 20px;
+  height: 35px;
+  width: 35px;
+  background-color: #c4c4c4;
+  border-radius: 50%;
+}
+.previous-button-img {
+  margin-top: 8px;
+  margin-left: 8px;
+}
+.next-button {
+  margin-top: 20px;
+  height: 35px;
+  width: 35px;
+  background-color: #c4c4c4;
+  border-radius: 50%;
+}
+.next-button-img {
+  margin-top: 8px;
+  margin-left: 8px;
 }
 .mute-unMute-button {
   margin-right: 5px;
