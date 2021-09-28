@@ -1,3 +1,4 @@
+const { users } = require("./models");
 
 const crypto = global.crypto;
 const session = global.session;
@@ -29,6 +30,7 @@ module.exports = (app, models, dbCloudUrl) => {
 
     const hash = crypto.createHmac('sha256', salt)
       .update(req.body.password).digest('hex');
+    console.log("hash",hash)
     // Create new user
     let user = new models['users']({ ...req.body, password: hash });
     await user.save();
@@ -41,22 +43,23 @@ module.exports = (app, models, dbCloudUrl) => {
     let data = await users.find();
     res.json(data);
   });
-
-
+  
   // Login
 
   app.post('/api/login', async (req, res) => {
     // note: req.session is unique per user/browser
-    if (req.session.user !== undefined && req.session.user.length > 0) {
-  
-      res.json(req.session.user);
-
-      return;
+    if (req.session.user){
+      delete req.session.user
     }
+    
     // Encrypt password
 
+    let password = req.body.password
+    console.log('password before hash',password)
+    console.log('req.body',req.body);
+    
     const hash = crypto.createHmac('sha256', salt)
-      .update(req.body.password).digest('hex');
+    .update(req.body.password).digest('hex');
     // Search for user
     let user = await User.find({ $and: [{ email: req.body.email }, { password: hash }] })
     if (user.length > 0) {
@@ -80,8 +83,15 @@ module.exports = (app, models, dbCloudUrl) => {
       res.json({ error: 'Was not logged in' });
     }
   });
-  // Check if logged in
 
+
+  //get users
+  app.get('/api/users',async (req,res) =>{
+    let docs = await users.find()
+    res.json(docs)
+  })
+
+  // Check if logged in
   app.get('/api/login', (req, res) => {
 
     if (req.session.user !== undefined && req.session.user.length > 0 ) {

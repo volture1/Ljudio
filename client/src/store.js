@@ -3,7 +3,9 @@ import { createStore } from 'vuex';
 const state = {
   currentSong: '',
   currentSongList: [],
-  currentUser: {}
+  currentUser: {},
+  loggedIn:false,
+  playlist: [],
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -11,6 +13,9 @@ const mutations = {
   },
   setCurrentUser(state, user) {
     state.currentUser = user;
+  },
+  setPlaylist(state, playlist) {
+    state.playlist = playlist
   }
 }
 const actions = {
@@ -29,6 +34,18 @@ const actions = {
     }catch{
       console.warn("Registration error");
     }
+},
+  async login(store,credentials){
+    console.log("credentials is ",credentials);
+    let res = await fetch('/api/login',{
+      method:'post',
+      headers: { 'Content-Type': 'application/json' },
+      body:JSON.stringify(credentials)
+    })
+    console.log("user0",res)
+    let user = await res.json()
+    console.log("user1",user)
+    store.commit('setCurrentUser',user)
   }
 }
 export default createStore({ state, mutations, actions })
