@@ -15,13 +15,20 @@ import SideBar from './components/Sidebar.vue'
       
     <MusicPlayer/>
     </div>
-    
+    {{currentUser}}
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default { components: { MusicPlayer, SideBar } };
+export default { 
+  components: { MusicPlayer, SideBar },
+  computed: {
+    currentUser() {
+      return this.$store.state.currentUser;
+    }
+  }
+};
 </script>
 
 
@@ -33,8 +40,8 @@ export default { components: { MusicPlayer, SideBar } };
   margin-left: 50vh;
 }
 .sidebar{
-  background-color: blue;
-  width: 25%;
+  background-color: rgba(36, 37, 38, 0.5);
+  width: 20%;
   height: 100vh;
   position: fixed;
   left: 0;
