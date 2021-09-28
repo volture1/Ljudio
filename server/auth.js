@@ -82,15 +82,6 @@ module.exports = (app, models, dbCloudUrl) => {
     }
   });
 
-    /* //get who am I
-    app.get('/api/login',async (req,res) =>{
-      if (req.session.user !== undefined && req.session.user.length > 0) {
-  
-        res.json(req.session.user);
-  
-        return;
-      }
-    }) */
 
   //get users
   app.get('/api/users',async (req,res) =>{

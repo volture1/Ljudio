@@ -19,43 +19,43 @@
           <div v-if="tempError" class="error">{{tempError}}</div>
         </div>
         <div class="login-wrap">
-          <button class="btn">Log in</button>          
-          <HomePage/>
-        </div>
+          <button class="btn">Log in</button>  
+           <div class="test">{{isLoggedIn}}</div>          
+        </div> 
       </form>  
       <hr class="break">
       <div class="register-router-wrap">
         <p class="register-router">Don't have an account yet?</p>
-        <button class="btn" @click="toggleRegister">Register</button>
+        <button class="btn" @click="register">Register</button>       
       </div>
     </div>
    </div> 
 </template>
 
 <script>
-import HomePage from "./HomePage.vue"
+
+
 export default {
-  component(){HomePage},
+  components:{RegisterPage},
   data(){
     return{
       email:"",
       password:"",
-      showRegister:false,
       tempError:""
     }
   },
   computed:{
-    isLoggedIn(){
-      return this.$store.state.currentUser != null
+    isLoggedIn(){     
+      return this.$store.state.currentUser.length != 0
     }
   },
   methods:{
     closeBox() {
       this.$emit("close");
-      this.showSignUp = false;
+      this.showRegister = false;
     },
-    toggleRegister(){
-      this.showRegister = !this.showRegister
+    register(){
+      this.$router.push('/Register')     
     },
     async handleSubmit(){
       const credentials = {
@@ -63,10 +63,11 @@ export default {
         password:this.password
       }
       console.log("credentials0",credentials)
-      await this.$store.dispatch('login',credentials)
+      await this.$store.dispatch('login',credentials)   
       if(!this.isLoggedIn){
         this.tempError = "wrong email or password"
       }
+      this.$router.push('/Home')
     }
   }
 }

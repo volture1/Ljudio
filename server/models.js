@@ -69,8 +69,8 @@ const User = mongoose.model('User',{
         type:String,
         required:true
     },
-    firstName:String,
-    lastName:String,
+    firstname:String,
+    lastname:String,
     birthday:Date,
     gender:String,
     playList:[{

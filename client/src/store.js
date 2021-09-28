@@ -4,6 +4,7 @@ const state = {
   currentSong: '',
   currentSongList: [],
   loggedIn:false,
+  currentUser:[]
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -16,20 +17,15 @@ const mutations = {
 const actions = {
   async login(store,credentials){
     console.log("credentials is ",credentials);
-    let user = await fetch('/api/login',{
-      method:'POST',
+    let res = await fetch('/api/login',{
+      method:'post',
+      headers: { 'Content-Type': 'application/json' },
       body:JSON.stringify(credentials)
     })
-    console.log("user0",user)
-    try{
-      user = await user.json()
-      console.log("user1",user)
-      store.commit('setCurrentUser',user)
-    }catch{
-      console.log("user",user)
-      console.warn("Wrong information")
-    }
-  } 
-
+    console.log("user0",res)
+    let user = await res.json()
+    console.log("user1",user)
+    store.commit('setCurrentUser',user)
+  }
 }
 export default createStore({ state, mutations, actions })
