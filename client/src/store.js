@@ -4,7 +4,8 @@ const state = {
   currentSong: '',
   currentSongList: [],
   loggedIn:false,
-  currentUser:[]
+  currentUser:[],
+  playlist: [],
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -12,7 +13,10 @@ const mutations = {
   },
   setCurrentUser(state,currentUser){
     state.currentUser = currentUser
-  }
+  },
+  setPlaylist(state, playlist) {
+    state.playlist = playlist
+  },
 }
 const actions = {
   async login(store,credentials){
