@@ -36,7 +36,6 @@
 
 
 export default {
-  components:{RegisterPage},
   data(){
     return{
       email:"",
