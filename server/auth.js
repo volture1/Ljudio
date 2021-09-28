@@ -38,6 +38,15 @@ module.exports = (app, models, dbCloudUrl) => {
     res.json(user)
   
   });
+
+  // get users
+  app.get('/api/users', async(req, res) => {
+    let users = await models['users'];
+    let data = await users.find();
+    res.json(data);
+  });
+
+
   // Login
 
   app.post('/api/login', async (req, res) => {

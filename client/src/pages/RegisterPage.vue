@@ -12,36 +12,75 @@
     </div>
     <hr class="break" />
     <div class="fields">
-      <input class="input" type="text" placeholder="Full name" >
-      <input class="input" type="text" placeholder="Email">
-      <input class="input" type="text" placeholder="Username (optional)">
-      <input class="input" type="text" placeholder="Password">
+      <input class="input" type="text" placeholder="Full name" name="fullname" v-model="user.name">
+      <input class="input" type="text" placeholder="Email" name="email" v-model="user.email">
+      <input class="input" type="text" placeholder="Username (optional)" name="username">
+      <input class="input" type="password" placeholder="Password" name="password" v-model="user.password">
       <div class="birthinput-wrap">
-        <input class="input" type="text" placeholder="Day">
-        <input class="input" type="text" placeholder="Month">
-        <input class="input input-year" type="text" placeholder="Year">
+        <input class="input" type="text" placeholder="Day" name="day" v-model="user.birthday">
+        <input class="input" type="text" placeholder="Month" name="month" v-model="user.birthmonth">
+        <input class="input input-year" type="text" placeholder="Year" name="year" v-model="user.birthyear">
       </div>
       <div class="gender-selection">
         <div class="gender-options">
-          <input class="input-gender" type="checkbox">
+          <input @click="setGender($event)" class="input-gender" type="checkbox" name="male" :disabled="this.genderSelected.male">
           <label class="genderlabel" for="">Male</label>
         </div>
         <div class="gender-options">
-          <input class="input-gender" type="checkbox">
+          <input @click="setGender($event)" class="input-gender" type="checkbox" name="female" :disabled="this.genderSelected.female">
           <label class="genderlabel" for="">Female</label>
         </div>
       </div>
     </div>
     <hr class="break" />
     <div class="submit-wrap">
-      <button class="submit">Sign up</button>
+      <button @click="register()" class="submit">Sign up</button>
     </div>
   </div>
 </template>
 
 <script>
-export default {
 
+export default {
+  data() {
+    return {
+      user: {
+        name: '',
+        email: '',
+        password: '',
+        birthday: '',
+        birthmonth: '',
+        birthyear: '',
+        gender: ''
+      },
+      genderSelected: {male: false, female: false}
+    }
+  },
+  methods: {
+    setGender(event) {
+      switch(event.target.name) {
+        case 'male':
+          this.genderSelected.female = !this.genderSelected.female;
+          this.user.gender = event.target.name;
+          break;
+        case 'female':
+          this.genderSelected.male = !this.genderSelected.male;
+          this.user.gender = event.target.name;
+          break;
+      }
+    },
+    async register() {
+      let credentials = {
+        fullname: this.user.name,
+        email: this.user.email,
+        password: this.user.password,
+        birth: this.user.birthday + '-' + this.user.birthmonth + '-' + this.user.birthyear,
+        gender: this.user.gender
+      }
+      
+      await this.$store.dispatch('register', credentials);
+    }
+  }
 }
 </script>
 
@@ -58,13 +97,17 @@ export default {
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  input[type=text] {
+  input[type=text], input[type=password] {
     color: white;
     font-size: 14px;
     font-weight: 900;
   }
 
   input[type=text]:focus {
+    border: 3px solid rgb(22, 96, 165);
+  }
+
+  input[type=password]:focus {
     border: 3px solid rgb(22, 96, 165);
   }
 
