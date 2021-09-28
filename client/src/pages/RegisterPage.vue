@@ -71,14 +71,21 @@ export default {
     },
     async register() {
       let credentials = {
-        fullname: this.user.name,
+        firstname: this.user.name.split(' ')[0],
+        lastname: this.user.name.split(' ')[1],
         email: this.user.email,
         password: this.user.password,
-        birth: this.user.birthday + '-' + this.user.birthmonth + '-' + this.user.birthyear,
-        gender: this.user.gender
+        birthday: this.user.birthday + '-' + this.user.birthmonth + '-' + this.user.birthyear,
+        gender: this.user.gender,
+        playlist: null,
+        liked: null
       }
       
       await this.$store.dispatch('register', credentials);
+      this.$router.push('/Home');
+      /* for(let attr in this.user) {
+        attr = '';
+      } */
     }
   }
 }

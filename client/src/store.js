@@ -18,7 +18,9 @@ const actions = {
     let user = await fetch('/api/users', {
       method: 'POST',
       body: JSON.stringify(credentials),
-      headers: 'application/json'
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     try{
       user = await user.json();

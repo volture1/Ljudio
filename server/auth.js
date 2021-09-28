@@ -20,7 +20,6 @@ module.exports = (app, models, dbCloudUrl) => {
   // Route to register a user
   app.post('/api/users', async (req, res) => {
     // Encrypt password
-
     const duplicateEmail = await models['users'].find({ email: req.body.email })
 
     if (duplicateEmail.length > 0) {
@@ -28,15 +27,12 @@ module.exports = (app, models, dbCloudUrl) => {
       return;
     }
 
-
     const hash = crypto.createHmac('sha256', salt)
       .update(req.body.password).digest('hex');
     // Create new user
     let user = new models['users']({ ...req.body, password: hash });
-    
     await user.save();
-    res.json(user)
-  
+    res.json(user);
   });
 
   // get users
