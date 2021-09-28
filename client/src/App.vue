@@ -3,10 +3,15 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
 import SideBar from "./components/Sidebar.vue";
+
+
 </script>
+
+
 
 <template>
   <div>
+<marmoset-viewer src="/file.mview" :width="800" :height="600" :auto-start="true" />
     <div class="container">
       <div class="sidebar" v-if="renderCondition">
         <SideBar />
@@ -46,6 +51,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style>

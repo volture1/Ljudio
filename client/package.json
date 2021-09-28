@@ -7,7 +7,11 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "add": "^2.0.6",
     "vue": "^3.2.14",
+    "vue-marmoset-viewer": "^2.0.2",
+    "vue-mobile-sized-view": "^0.1.1",
+    "vue-mq": "^1.0.1",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
   },
