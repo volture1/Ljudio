@@ -16,7 +16,10 @@ const mutations = {
   },
   setPlaylist(state, playlist) {
     state.playlist = playlist
-  }
+  },
+  setLoggedIn(state,loggedIn){
+    state.loggedIn = loggedIn
+  },
 }
 const actions = {
   async register(store, credentials) {
@@ -30,7 +33,9 @@ const actions = {
     try{
       user = await user.json();
       console.log('success');
+      console.log('user when register',user)
       store.commit('setCurrentUser', user); 
+      store.commit('setLoggedIn',true);
     }catch{
       console.warn("Registration error");
     }
@@ -45,7 +50,8 @@ const actions = {
     console.log("user0",res)
     let user = await res.json()
     console.log("user1",user)
-    store.commit('setCurrentUser',user)
+    store.commit('setCurrentUser',user[0])
+    store.commit('setLoggedIn',true)
   }
 }
 export default createStore({ state, mutations, actions })

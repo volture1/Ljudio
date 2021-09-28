@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <div class="top">
-      <router-link to="/">
+      <router-link to="/Home">
         <p class="goback-route">Home</p>
       </router-link>
       <h1 class="pagetitle">Registration</h1>

@@ -43,7 +43,6 @@ export default {
     sessionStorage.setItem('store', JSON.stringify(this.$store.state))
     })
     console.log('sessionStorage store',sessionStorage.store)
-    console.log('sessionStorage currentUser',sessionStorage.store.currentUser)
   },
   methods: {
     conditionalRender() {

@@ -10,7 +10,7 @@
     </div>
     <div class="user-section">
       <Useravatar class="avatar"/>
-      <h3 class="username">{{currentUser[0].firstname}} {{currentUser[0].lastname}}</h3>
+      <h3 class="username" v-if="loggedIn">{{currentUser.firstname}} {{currentUser.lastname}}</h3>
     </div>
     <div class="routes-section">
       <p class="route">Home</p>
@@ -20,7 +20,7 @@
       <p class="route">Playlist</p>
       <p class="route">Search</p>
       <p class="route">Liked</p>
-      <p class="route">Social</p>
+      <p class="route">Social</p>      
     </div>
     <div class="musicplayer-section"></div>
   </div>
@@ -35,7 +35,12 @@ export default {
   computed: {
     currentUser() {
       return this.$store.state.currentUser;
-    }
+    },
+    loggedIn(){
+      console.log("loggedIn i SideBar",this.$store.state.loggedIn)
+      return this.$store.state.loggedIn;
+    },
+
   }
 };
 </script>

@@ -45,7 +45,7 @@ export default {
   },
   computed:{
     isLoggedIn(){     
-      return this.$store.state.currentUser != null;
+      return this.$store.state.loggedIn;
     }
   },
   methods:{
