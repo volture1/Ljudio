@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="music-player-container">
     <div class="song-content-container">
       <p style="text-decoration: underline">Currently Playing</p>
@@ -42,6 +43,7 @@
           <img src="https://i.imgur.com/5Jf6Api.png" height="20" width="20" />
         </div>
       </div>
+      
     </div>
     <div class="next-button">
       <img
@@ -56,7 +58,6 @@
     <div class="volume-divs">
       <div class="mute-unMute-button">
         <div v-if="!show">
-          <!-- <button @click="volumeMute(), (show = false)">Mute</button> https://i.imgur.com/IM2EjNx.png  https://i.imgur.com/TYwXoNs.png unmute -->
           <img
             src="https://i.imgur.com/YfMCNW6.png"
             height="20"
@@ -88,6 +89,20 @@
       </div>
     </div>
   </div>
+    <div id="sliderProgressBar" class="progress-slider">
+      <p>{{this.formatMMSS(this.progress)}}</p>
+        <input
+          @change="seekTo(this.progress)"
+          type="range"
+          min="0"
+          :max="this.sliderDuration"
+          step="1"
+          v-model="this.progress"
+          id="seekbar"
+        />
+      <p>{{this.duration}}</p>
+    </div>
+</div>
 </template>
 
 <script>
@@ -102,8 +117,12 @@ export default {
       playlistSong: {},
       testId: 0,
       increment: 0,
+      duration: 0,
+      sliderDuration: 0,
       song: null,
       value: 20,
+      progressValue: 0,
+      progress: 0,
       api_key: "AIzaSyDDCSvtOP78gVYp6K2EQXbWYYBe66qm6fk",
       url: "www.googleapis.com/youtube/v3/videos",
     };
@@ -137,10 +156,40 @@ export default {
           this.testId = i;
           this.currentSongArray[0] = element;
           window.player.loadPlaylist(this.playlistVideoIds, i, 0);
+          this.duration = this.calculateDuration(element.duration);
+          this.UpdateCurrentTime();
+          this.sliderDuration = this.formatSeconds(this.duration);
         }
         i++;
       });
       i = 0;
+    },
+    UpdateCurrentTime(){
+    this.interval = setInterval(() => this.progress = Math.round(window.player.getCurrentTime()), 1000);
+    },
+    formatMMSS(time){
+      let newTime;
+      let minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+      if(seconds < 10){
+        newTime = minutes.toString() +':0'+ seconds.toString();
+      }else{
+        newTime = minutes.toString() +':'+ seconds.toString();
+      }
+      return newTime;
+    },
+    formatSeconds(time){ 
+      let a = time.split(':'); 
+      let seconds = (+a[0]) * 60 + (+a[1]); 
+      return seconds;
+    },
+    calculateDuration(duration) {
+      let time = new Date(duration);
+      let newTime = time.toLocaleTimeString(navigator.language, {
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      return newTime;
     },
     pause() {
       window.player.pauseVideo();
@@ -161,8 +210,6 @@ export default {
         this.initPlaylist(this.playlistVideoIds[this.testId])
       );
       window.player.previous()
-
-      //player.nextVideo();
     },
     volumeMute() {
       window.player.mute();
@@ -173,6 +220,15 @@ export default {
     setVolume(volume) {
       window.player.setVolume(volume);
     },
+    seekTo(sec){
+      window.player.seekTo(sec);
+    },
+    getDuration(){
+      window.player.getDuration();
+    },
+    currentTime(){
+      window.player.getCurrentTime();
+    }
   },
 };
 </script>
@@ -182,6 +238,7 @@ export default {
   display: flex;
   justify-content: space-around;
   width: 100%;
+  height: 80%;
 }
 .result {
   display: flex;
@@ -208,7 +265,6 @@ export default {
   align-content: center;
 }
 .play-pause-button-container {
-  margin-top: 20px;
   height: 50px;
   width: 50px;
 
@@ -251,7 +307,7 @@ export default {
   padding-top: 30px;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  input[type="range"] {
+  input[id="volumebar"] {
     overflow: hidden;
     width: 80px;
     -webkit-appearance: none;
@@ -259,14 +315,14 @@ export default {
     border-radius: 10px;
   }
 
-  input[type="range"]::-webkit-slider-runnable-track {
+  input[id="volumebar"]::-webkit-slider-runnable-track {
     height: 10px;
     -webkit-appearance: none;
     color: #4c6175;
     margin-top: -1px;
   }
 
-  input[type="range"]::-webkit-slider-thumb {
+  input[id="volumebar"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 0;
@@ -275,7 +331,7 @@ export default {
     background: #434343;
     box-shadow: -82px 0 0 80px #43e5f7;
   }
-  #slider:hover input[type="range"]::-webkit-slider-thumb {
+  #slider:hover input[id="volumebar"]::-webkit-slider-thumb {
     width: 10px;
     height: 10px;
 
@@ -285,6 +341,44 @@ export default {
   #volumebar {
     height: 10px;
     width: 150px;
+  }
+  .progress-slider{
+    justify-content: center;
+    display: flex;
+  }
+  #seekbar{
+    width: 50vh;
+    height: 10px;
+  }
+  
+  input[id="seekbar"] {
+    overflow: hidden;
+    width: 50vh;
+    -webkit-appearance: none;
+    background-color: #1d1e1f;
+    border-radius: 10px;
+  }
+
+  input[id="seekbar"]::-webkit-slider-runnable-track {
+    height: 10px;
+    -webkit-appearance: none;
+    color: #4c6175;
+    margin-top: -1px;
+  }
+  input[id="seekbar"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 0;
+    height: 0;
+    border-radius: 10px;
+    background: #434343;
+    box-shadow: -402px 0 0 400px #43e5f7;
+  }
+  #sliderProgressBar:hover input[id="seekbar"]::-webkit-slider-thumb {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #c4c4c4;
   }
 }
 </style>
