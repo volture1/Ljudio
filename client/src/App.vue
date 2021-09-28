@@ -2,49 +2,72 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
-import SideBar from './components/Sidebar.vue'
+import SideBar from "./components/Sidebar.vue";
 </script>
 
 <template>
-  <div class="container">
-    <div class="sidebar"> 
-      
-    <SideBar/>
+  <div>
+    <div class="container">
+      <div class="sidebar" v-if="renderCondition">
+        <SideBar />
+      </div>
+      <div class="music-player" v-if="renderCondition">
+        <MusicPlayer />
+      </div>
     </div>
-    <div class="music-player"> 
-      
-    <MusicPlayer/>
-    </div>
-    
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default { components: { MusicPlayer, SideBar } };
+export default {
+  data() {
+    return {
+      renderCondition: true,
+    };
+  },
+  created() {
+    this.interval = setInterval(() => this.conditionalRender(), 1);
+  },
+  components: { MusicPlayer, SideBar },
+  methods: {
+    conditionalRender() {
+      
+      if (
+        this.$route.path == "/Register" ||
+        this.$route.path == "/" ||
+        this.$route.path == "/Login"
+      ) {
+        this.renderCondition = false;
+      } else {
+        this.renderCondition = true;
+      }
+    },
+  },
+};
 </script>
 
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=PT+Sans&display=swap');
-.container{
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
+.container {
   display: flex;
   justify-content: space-between;
-  margin-left: 50vh;
+  margin-left: 20%;
 }
-.sidebar{
-  background-color: blue;
-  width: 25%;
+.sidebar {
+  background-color: #242526;
+  width: 20%;
   height: 100vh;
   position: fixed;
   left: 0;
 }
-.music-player{
-  background-color: red;
-  width: 75%;
+.music-player {
+  background-color: #242526;
+  width: 80%;
   height: 10vh;
-   position:fixed;
-  bottom:0;
+  position: fixed;
+  bottom: 0;
 }
 
 * {
@@ -54,13 +77,13 @@ export default { components: { MusicPlayer, SideBar } };
 
 body {
   /* background: rgb(0, 0, 0, 0.8); */
-  background: #18191A;
+  background: #18191a;
 }
 
 #app {
   /* width: 100vw;
   height: 100vh; */
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* background: rgb(0, 0, 0, 0.8); */
