@@ -15,7 +15,6 @@ import SideBar from "./components/Sidebar.vue";
         <MusicPlayer />
       </div>
     </div>
-    {{currentUser}}
     <router-view></router-view>
   </div>
 </template>
@@ -35,6 +34,16 @@ export default {
   },
   created() {
     this.interval = setInterval(() => this.conditionalRender(), 1);
+    // access sessionStorage when the page is loading
+    if (sessionStorage.getItem('store')) {
+    this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem('store'))))
+    }
+    //save the store data to the sessionStrorage  before page refresh 
+    window.addEventListener('beforeunload', () => {
+    sessionStorage.setItem('store', JSON.stringify(this.$store.state))
+    })
+    console.log('sessionStorage store',sessionStorage.store)
+    console.log('sessionStorage currentUser',sessionStorage.store.currentUser)
   },
   methods: {
     conditionalRender() {

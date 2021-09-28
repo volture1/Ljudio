@@ -10,7 +10,7 @@
     </div>
     <div class="user-section">
       <Useravatar class="avatar"/>
-      <h3 class="username">{{currentUser.firstname}} {{currentUser.lastname}}</h3>
+      <h3 class="username">{{currentUser[0].firstname}} {{currentUser[0].lastname}}</h3>
     </div>
     <div class="routes-section">
       <p class="route">Home</p>
