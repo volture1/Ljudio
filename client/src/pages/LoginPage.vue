@@ -1,5 +1,4 @@
-<template>
-   <div class="backdrop" @mousedown.self="closeBox">
+<template>  
     <div class="login">
       <div class="top">
         <router-link to="/">
@@ -29,7 +28,6 @@
         <button class="btn" @click="register">Register</button>       
       </div>
     </div>
-   </div> 
 </template>
 
 <script>
@@ -49,10 +47,6 @@ export default {
     }
   },
   methods:{
-    closeBox() {
-      this.$emit("close");
-      this.showRegister = false;
-    },
     register(){
       this.$router.push('/Register')     
     },
