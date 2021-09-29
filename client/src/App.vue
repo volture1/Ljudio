@@ -11,7 +11,7 @@ import SideBar from "./components/Sidebar.vue";
 
 <template>
   <div>
-<marmoset-viewer src="/file.mview" :width="800" :height="600" :auto-start="true" />
+
     <div class="container">
       <div class="sidebar" v-if="renderCondition">
         <SideBar />

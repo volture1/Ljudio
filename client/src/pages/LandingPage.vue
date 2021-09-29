@@ -1,5 +1,6 @@
 <template>
   <div class="landingpage">
+    
     <div class="nav">
       <div class="leftnav-side">
         <h3 class="productname">Logio</h3>
