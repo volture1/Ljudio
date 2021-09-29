@@ -6,6 +6,7 @@ const state = {
   currentUser: {},
   loggedIn:false,
   playlist: [],
+  duplicateEmail:'',
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -16,25 +17,38 @@ const mutations = {
   },
   setPlaylist(state, playlist) {
     state.playlist = playlist
-  }
+  },
+  setLoggedIn(state,loggedIn){
+    state.loggedIn = loggedIn
+  },
+  setDuplicateEmail(state,duplicateEmail){
+    state.duplicateEmail = duplicateEmail
+  },
 }
 const actions = {
+  //Register
   async register(store, credentials) {
-    let user = await fetch('/api/users', {
+    let res = await fetch('/api/users', {
       method: 'POST',
       body: JSON.stringify(credentials),
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    try{
-      user = await user.json();
-      console.log('success');
+      let user = await res.json();
+      console.log('user when register',user)
+      if (user.error == 'Email already in use'){
+        store.commit('setDuplicateEmail','Email already in use')  
+        store.commit('setLoggedIn',false);        
+        console.log('duplicateEmail',this.state.duplicateEmail)
+        return
+      }
+      store.commit('setDuplicateEmail','')  
+      console.log('success');     
       store.commit('setCurrentUser', user); 
-    }catch{
-      console.warn("Registration error");
-    }
-},
+      store.commit('setLoggedIn',true);
+  },
+  //Login
   async login(store,credentials){
     console.log("credentials is ",credentials);
     let res = await fetch('/api/login',{
@@ -46,6 +60,7 @@ const actions = {
     let user = await res.json()
     console.log("user1",user)
     store.commit('setCurrentUser',user)
+    store.commit('setLoggedIn',true);
   },
   async getPlaylists(store, userId) {
     let playlists = await fetch('/rest/playlists/user/' + userId);

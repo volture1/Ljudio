@@ -113,7 +113,12 @@ export default {
   computed: {
     currentUser() {
       return this.$store.state.currentUser[0];
-    }
+    },
+    loggedIn(){
+      console.log("loggedIn i SideBar",this.$store.state.loggedIn)
+      return this.$store.state.loggedIn;
+    },
+
   }
 };
 </script>

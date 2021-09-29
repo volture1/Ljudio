@@ -90,7 +90,7 @@ module.exports = (app, models, dbCloudUrl) => {
     let docs = await users.find()
     res.json(docs)
   })
-
+  
   // Check if logged in
   app.get('/api/login', (req, res) => {
 

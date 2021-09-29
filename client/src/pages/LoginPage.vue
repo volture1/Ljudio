@@ -42,14 +42,10 @@ export default {
   },
   computed:{
     isLoggedIn(){     
-      return this.$store.state.currentUser != null;
+      return this.$store.state.loggedIn;
     }
   },
   methods:{
-    closeBox() {
-      this.$emit("close");
-      this.showRegister = false;
-    },
     register(){
       this.$router.push('/Register')     
     },

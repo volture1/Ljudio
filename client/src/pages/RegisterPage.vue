@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <div class="top">
-      <router-link to="/">
+      <router-link to="/Home">
         <p class="goback-route">Home</p>
       </router-link>
       <h1 class="pagetitle">Registration</h1>
@@ -14,6 +14,7 @@
     <div class="fields">
       <input class="input" type="text" placeholder="Full name" name="fullname" v-model="user.name">
       <input class="input" type="text" placeholder="Email" name="email" v-model="user.email">
+      <p class="errorEmail" v-if="isDuplicatedEmail">Email already in use</p>
       <input class="input" type="text" placeholder="Username (optional)" name="username">
       <input class="input" type="password" placeholder="Password" name="password" v-model="user.password">
       <div class="birthinput-wrap">
@@ -34,7 +35,7 @@
     </div>
     <hr class="break" />
     <div class="submit-wrap">
-      <button @click="register()" class="submit">Sign up</button>
+      <button @click="register()" class="submit">Sign up</button>      
     </div>
   </div>
 </template>
@@ -51,10 +52,23 @@ export default {
         birthday: '',
         birthmonth: '',
         birthyear: '',
-        gender: ''
+        gender: '',
+        isDuplicatedEmail:false,
+        isLoggedIn:false,
       },
       genderSelected: {male: false, female: false}
     }
+  },
+  computed:{
+    isLoggedIn(){
+      console.log('isLoggedIn',this.$store.state.loggedIn)
+      return this.$store.state.loggedIn;
+    },
+    isDuplicatedEmail(){
+       if (this.$store.state.duplicateEmail == 'Email already in use'){      
+        return true
+      }
+    },
   },
   methods: {
     setGender(event) {
@@ -82,7 +96,15 @@ export default {
       }
       
       await this.$store.dispatch('register', credentials);
-      this.$router.push('/Home');
+     /*  if (this.$store.state.duplicateEmail == 'Email already in use'){        
+        this.isDuplicateEmail = true
+        console.log('this.duplicateEmail in register metod',this.isDuplicateEmail)
+      } */
+      if (this.isLoggedIn){
+         console.log('this.isLoggedIn before push to home',this.isLoggedIn)
+        this.$router.push('/Home');
+      }
+      
       /* for(let attr in this.user) {
         attr = '';
       } */
@@ -117,7 +139,9 @@ export default {
   input[type=password]:focus {
     border: 3px solid rgb(22, 96, 165);
   }
-
+  .errorEmail {
+    color:red
+  }
   /* .top {
     width: 75%;
     margin: 0 auto;
