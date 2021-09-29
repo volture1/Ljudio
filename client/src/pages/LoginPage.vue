@@ -1,5 +1,4 @@
 <template>
-   <div class="backdrop" @mousedown.self="closeBox">
     <div class="login">
       <div class="top">
         <router-link to="/">
@@ -14,22 +13,20 @@
       <hr class="break">
       <form @submit.prevent="handleSubmit">
         <div class="fields">
-          <input class="input" v-model="email"      type="email" placeholder="Email" >
-          <input class="input" v-model="password"   type="password" placeholder="Password" >
+          <input class="input" v-model="email" type="email" placeholder="Email" >
+          <input class="input" v-model="password" type="password" placeholder="Password" >
           <div v-if="tempError" class="error">{{tempError}}</div>
         </div>
         <div class="login-wrap">
-          <button class="btn">Log in</button>  
-           <div class="test">{{isLoggedIn}}</div>          
+          <button class="btn">Log in</button>          
         </div> 
       </form>  
       <hr class="break">
       <div class="register-router-wrap">
         <p class="register-router">Don't have an account yet?</p>
-        <button class="btn" @click="register">Register</button>       
+        <button class="btn register-btn" @click="register">Register</button>       
       </div>
     </div>
-   </div> 
 </template>
 
 <script>
@@ -73,7 +70,6 @@ export default {
 </script>
 
 <style scoped>
-
   a {
     text-decoration: none;
     color: white;
@@ -142,13 +138,13 @@ export default {
     box-sizing: border-box;
   }
 
-  input[type=text] {
+  input[type=email], input[type=password] {
     color: white;
     font-size: 14px;
     font-weight: 900;
   }
 
-  input[type=text]:focus {
+  input[type=email]:focus, input[type=password]:focus {
     border: 3px solid rgb(22, 96, 165);
   }
 
@@ -182,9 +178,14 @@ export default {
     color: white;
     font-size: 16px;
     font-weight: 900;
+    margin-top: 2em;
   }
 
   .btn:hover {
     opacity: 0.8;
+  }
+
+  .register-btn {
+    margin-top: 0.25em;
   }
 </style>

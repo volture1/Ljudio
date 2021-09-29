@@ -11,12 +11,11 @@ import SideBar from "./components/Sidebar.vue";
       <div class="sidebar" v-if="renderCondition">
         <SideBar />
       </div>
+      <router-view></router-view>
       <div class="music-player" v-if="renderCondition">
         <MusicPlayer />
       </div>
     </div>
-    {{currentUser}}
-    <router-view></router-view>
   </div>
 </template>
 
@@ -35,6 +34,16 @@ export default {
   },
   created() {
     this.interval = setInterval(() => this.conditionalRender(), 1);
+    // access sessionStorage when the page is loading
+    if(sessionStorage.getItem('store')){
+      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem('store'))))
+    };
+    // save the store data to the sessionStorage before page refresh
+    window.addEventListener('beforeunload', () => {
+      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
+    });
+    console.log('sessionStorage store', sessionStorage.store);
+    /* console.log('sessionStorage currentUser', sessionStorage.store.currentUser); */
   },
   methods: {
     conditionalRender() {
@@ -59,7 +68,7 @@ export default {
 .container {
   display: flex;
   justify-content: space-between;
-  margin-left: 20%;
+  /* margin-left: 20%; */
 }
 .sidebar{
   background-color: rgba(36, 37, 38, 0.5);
@@ -74,6 +83,7 @@ export default {
   height: 10vh;
   position: fixed;
   bottom: 0;
+  right: 0;
 }
 
 * {

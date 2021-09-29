@@ -9,6 +9,25 @@ module.exports = (app,models) => {
     res.json(docs)
   })
 
+  // update playlist
+  app.put('/rest/playlists/:id', async (req, res) => {
+    let model = models['playlists'];
+    let docs = await model.findById(req.params.id);
+
+    for(let song of req.body.songList) {
+      if(docs.songList.includes(song)) {
+        res.json('Playlist already contains song');
+        return;
+      } else {
+        console.log(song);
+        docs.songList.push(song);
+      }
+    }
+
+    await docs.save();
+    res.json(docs);
+  })
+
   // Get users likeds by userId
   app.get('/rest/likeds/user/:id', async (req, res) => {
     let model = models['likeds']
@@ -42,6 +61,21 @@ module.exports = (app,models) => {
     await docs.save()
     res.json(docs)
   })
+
+  // get songs
+  app.get('/rest/songs', async (req, res) => {
+    let model = await models['songs'];
+    let data = await model.find();
+    res.json(data);
+  })
+
+  // get playlists
+  app.get('/rest/playlists', async (req, res) => {
+    let model = await models['playlists'];
+    let data = await model.find();
+    res.json(data);
+  })
+
 
   // Delete playlist 
   app.delete('/rest/playlists/:id', async (req, res) => {

@@ -46,6 +46,23 @@ const actions = {
     let user = await res.json()
     console.log("user1",user)
     store.commit('setCurrentUser',user)
+  },
+  async getPlaylists(store, userId) {
+    let playlists = await fetch('/rest/playlists/user/' + userId);
+    playlists = await playlists.json();
+    console.log(playlists);
+    store.commit('setPlaylist', playlists);
+  },
+  async createPlaylist(store, playlist) {
+    let playlists = await fetch('/rest/playlists', {
+      method: 'POST',
+      body: JSON.stringify(playlist),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    playlists = await playlists.json();
+    store.commit('setPlaylist', playlist);
   }
 }
 export default createStore({ state, mutations, actions })
