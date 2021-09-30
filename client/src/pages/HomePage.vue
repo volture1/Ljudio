@@ -27,15 +27,14 @@
                 <div class="optionbtn"></div>
               </div>
             </div>
-            <p class="playlist-content">{{playlist.songList.length}} songs</p>
+            <p class="playlist-content">{{playlist.songList.length}} songs • <!-- {{allSongsDurationPL(playlist)}} --> {{durationPL(playlist)}}</p>
             <!-- <p class="duration">{{getDuration(playlist.songList[0].duration)}}</p> -->
           </div>
         </div>
       </div>
-      <p @click="createNewPlaylist">+Create new playlist</p>
+      <!-- <p @click="createNewPlaylist">+Create new playlist</p> -->
     </div>
-    <!-- {{getSongs}} -->
-    {{playlists}}
+    {{getSongs}}
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -74,7 +73,8 @@ export default ({
     }
   },
   async mounted() {
-    await this.$store.dispatch('getPlaylists', this.currentUser._id) && await this.$store.dispatch('getSongs');
+    await this.$store.dispatch('getPlaylists', this.currentUser._id);
+    await this.$store.dispatch('getSongs');
   },
   methods: {
     async createNewPlaylist() {
@@ -88,12 +88,41 @@ export default ({
     },
     getDuration(ms) {
       let minutes = Math.floor(ms/60000);
+      minutes = String(minutes).split('');
+      if(minutes.length == 1) {
+        minutes = minutes;
+      } else {
+        minutes = minutes[0];
+      }
       let seconds = ((ms % 60000) / 1000).toFixed(0);
       return (
         seconds == 60 ? 
         (minutes+1) + '00' :
         minutes + ':' + (seconds < 10 ? '0' : '') + seconds
       );
+    },
+    durationPL(playlist) {
+      let sum = 0;
+      let fixedSongList = [];
+      let songs = this.getSongs;
+      
+      for(let i = 0; i < playlist.songList.length; i++) {
+        for(let j = 0; j < songs.length; j++) {
+          if(playlist.songList[i] === songs[j]._id) {
+            fixedSongList.push(songs[j]);
+          }
+        }
+      }
+
+      for(let i = 0; i < fixedSongList.length; i++) {
+        sum += fixedSongList[i].duration;
+      }
+
+      sum = this.getDuration(sum);
+      return sum;
+    },
+    durationAllSongs() {
+
     },
     userAllSongs() {
       let amount = 0;
@@ -108,7 +137,7 @@ export default ({
     },
     async getAllSongs(){
       let songID = '61545c82936c2c6e0f3adfd2';
-      let data = await fetch('rest/songs');
+      let data = await fetch('/rest/songs');
       let res = await data.json();
       return res;
     }
