@@ -1,7 +1,6 @@
 <template>
   <div class="video-container">
-    <p @click="this.setupVideoPlayer()">ShowVideoComponent</p>
-    <p>{{ getVideoId }}</p>
+   
   </div>
 </template>
 
@@ -13,7 +12,10 @@ export default {
     };
   },
   created() {
-    console.log("video component is created");
+    document.getElementById("yt-player").style.display = "inline";
+    document.getElementById("yt-player").style.margin = "10% 0 0 40%";
+    document.getElementById("yt-player").videoId = getVideoId();
+    window.player.loadVideoById(getVideoId());
   },
   computed: {
     getVideoId() {
@@ -23,10 +25,6 @@ export default {
   methods: {
     test() {
       console.log(this.getVideoId());
-    },
-    setupVideoPlayer() {
-      window.player.height = "1000";
-      window.player.width = "1000";
     },
   },
 };
