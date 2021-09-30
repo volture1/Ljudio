@@ -1,108 +1,107 @@
 <template>
-<div>
-  <div class="music-player-container">
-    <div class="song-content-container">
-      <p style="text-decoration: underline">Currently Playing</p>
-      <div v-for="result in this.list" :key="result" class="result">
-        <div>
-          <img class="result-song-image" :src="result.thumbnails[0].url" />
-        </div>
-        <div>
-          <p class="result-name">{{ result.name }}</p>
-          <p class="result-artist-name">{{ result.artist.name }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="previous-button">
-      <img
-        @click="playNext()"
-        class="previous-button-img"
-        src="https://i.imgur.com/ETVl9xB.png"
-        height="20"
-        width="20"
-      />
-    </div>
-
-    <div
-      class="play-pause-button-container"
-      @click="
-        () => {
-          if (!showButton) {
-            playVid(), (showButton = true);
-          } else {
-            pause(), (showButton = false);
-          }
-        }
-      "
-    >
-      <div class="play-pause-button">
-        <div v-if="!showButton">
-          <img src="https://i.imgur.com/dbNIEwh.png" height="20" width="20" />
-        </div>
-        <div v-if="showButton">
-          <img src="https://i.imgur.com/5Jf6Api.png" height="20" width="20" />
+  <div>
+    <div class="music-player-container">
+      <div class="song-content-container">
+        <p style="text-decoration: underline">Currently Playing</p>
+        <div v-for="result in this.list" :key="result" class="result">
+          <div>
+            <img class="result-song-image" :src="result.thumbnails[0].url" />
+          </div>
+          <div>
+            <p class="result-name">{{ result.name }}</p>
+            <p class="result-artist-name">{{ result.artist.name }}</p>
+          </div>
         </div>
       </div>
-      
-    </div>
-    <div class="next-button">
-      <img
-        @click="playNext()"
-        class="next-button-img"
-        src="https://i.imgur.com/8Z5NSCt.png"
-        height="20"
-        width="20"
-      />
-    </div>
-
-    <div class="volume-divs">
-      <div class="mute-unMute-button">
-        <div v-if="!show">
-          <img
-            src="https://i.imgur.com/YfMCNW6.png"
-            height="20"
-            width="20"
-            @click="volumeUnMute(), (show = true)"
-          />
-        </div>
-        <div v-if="show">
-          <img
-            src="https://i.imgur.com/PeMJYZ9.png"
-            height="20"
-            width="20"
-            @click="volumeMute(), (show = false)"
-          />
-        </div>
-      </div>
-      <div id="slider" class="volume-slider">
-        <input
-          @change="setVolume(value)"
-          type="range"
-          min="0"
-          max="100"
-          step="1"
-          v-model="value"
-          id="volumebar"
+      <div class="previous-button">
+        <img
+          @click="playNext()"
+          class="previous-button-img"
+          src="https://i.imgur.com/ETVl9xB.png"
+          height="20"
+          width="20"
         />
-
-        <p>{{ value }}</p>
       </div>
+
+      <div
+        class="play-pause-button-container"
+        @click="
+          () => {
+            if (!showButton) {
+              playVid(), (showButton = true);
+            } else {
+              pause(), (showButton = false);
+            }
+          }
+        "
+      >
+        <div class="play-pause-button">
+          <div v-if="!showButton">
+            <img src="https://i.imgur.com/dbNIEwh.png" height="20" width="20" />
+          </div>
+          <div v-if="showButton">
+            <img src="https://i.imgur.com/5Jf6Api.png" height="20" width="20" />
+          </div>
+        </div>
+      </div>
+      <div class="next-button">
+        <img
+          @click="playNext()"
+          class="next-button-img"
+          src="https://i.imgur.com/8Z5NSCt.png"
+          height="20"
+          width="20"
+        />
+      </div>
+
+      <div class="volume-divs">
+        <div class="mute-unMute-button">
+          <div v-if="!show">
+            <img
+              src="https://i.imgur.com/YfMCNW6.png"
+              height="20"
+              width="20"
+              @click="volumeUnMute(), (show = true)"
+            />
+          </div>
+          <div v-if="show">
+            <img
+              src="https://i.imgur.com/PeMJYZ9.png"
+              height="20"
+              width="20"
+              @click="volumeMute(), (show = false)"
+            />
+          </div>
+        </div>
+        <div id="slider" class="volume-slider">
+          <input
+            @change="setVolume(value)"
+            type="range"
+            min="0"
+            max="100"
+            step="1"
+            v-model="value"
+            id="volumebar"
+          />
+
+          <p>{{ value }}</p>
+        </div>
+      </div>
+    </div>
+    <div id="sliderProgressBar" class="progress-slider">
+      <p>{{ this.formatMMSS(this.progress) }}</p>
+      <input
+        @change="seekTo(this.progress)"
+        type="range"
+        min="0"
+        :max="this.sliderDuration"
+        step="1"
+        v-model="this.progress"
+        id="seekbar"
+      />
+      <p>{{ this.duration }}</p>
     </div>
   </div>
-    <div id="sliderProgressBar" class="progress-slider">
-      <p>{{this.formatMMSS(this.progress)}}</p>
-        <input
-          @change="seekTo(this.progress)"
-          type="range"
-          min="0"
-          :max="this.sliderDuration"
-          step="1"
-          v-model="this.progress"
-          id="seekbar"
-        />
-      <p>{{this.duration}}</p>
-    </div>
-</div>
 </template>
 
 <script>
@@ -137,12 +136,29 @@ export default {
     list() {
       return this.currentSongArray;
     },
+    check() {
+      return this.progress;
+    },
   },
   watch: {
     songId(newId, oldId) {
       this.testId = 0;
       this.initPlaylist(newId);
       this.showButton = true;
+    },
+    check(newTime) {
+      if (newTime >= this.sliderDuration) {
+        this.testId += 1;
+        this.initPlaylist(this.playlistVideoIds[this.testId]);
+      }
+      if (this.testId == 20 && newTime == this.sliderDuration) {
+        console.log("array is over");
+        this.showButton = false;
+        //add logic for repeat if(repeat){
+        //this.testId= 0;
+        //this.initPlaylist(this.playlistVideIds[this.testId])
+        //}
+      }
     },
   },
   methods: {
@@ -164,23 +180,27 @@ export default {
       });
       i = 0;
     },
-    UpdateCurrentTime(){
-    this.interval = setInterval(() => this.progress = Math.round(window.player.getCurrentTime()), 1000);
+    UpdateCurrentTime() {
+      this.interval = setInterval(
+        () => (this.progress = Math.round(window.player.getCurrentTime())),
+        1000
+      );
     },
-    formatMMSS(time){
+
+    formatMMSS(time) {
       let newTime;
       let minutes = Math.floor(time / 60);
       let seconds = time % 60;
-      if(seconds < 10){
-        newTime = minutes.toString() +':0'+ seconds.toString();
-      }else{
-        newTime = minutes.toString() +':'+ seconds.toString();
+      if (seconds < 10) {
+        newTime = minutes.toString() + ":0" + seconds.toString();
+      } else {
+        newTime = minutes.toString() + ":" + seconds.toString();
       }
       return newTime;
     },
-    formatSeconds(time){ 
-      let a = time.split(':'); 
-      let seconds = (+a[0]) * 60 + (+a[1]); 
+    formatSeconds(time) {
+      let a = time.split(":");
+      let seconds = +a[0] * 60 + +a[1];
       return seconds;
     },
     calculateDuration(duration) {
@@ -209,7 +229,7 @@ export default {
       window.player.onPrevious(
         this.initPlaylist(this.playlistVideoIds[this.testId])
       );
-      window.player.previous()
+      window.player.previous();
     },
     volumeMute() {
       window.player.mute();
@@ -220,15 +240,15 @@ export default {
     setVolume(volume) {
       window.player.setVolume(volume);
     },
-    seekTo(sec){
+    seekTo(sec) {
       window.player.seekTo(sec);
     },
-    getDuration(){
+    getDuration() {
       window.player.getDuration();
     },
-    currentTime(){
+    currentTime() {
       window.player.getCurrentTime();
-    }
+    },
   },
 };
 </script>
@@ -342,15 +362,15 @@ export default {
     height: 10px;
     width: 150px;
   }
-  .progress-slider{
+  .progress-slider {
     justify-content: center;
     display: flex;
   }
-  #seekbar{
+  #seekbar {
     width: 50vh;
     height: 10px;
   }
-  
+
   input[id="seekbar"] {
     overflow: hidden;
     width: 50vh;
