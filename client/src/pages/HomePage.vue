@@ -3,7 +3,7 @@
     <div class="section">
       <h3 class="section-title">My media</h3>
       <div class="info-more-p">
-        <p class="details">{{playlists.length}} Playlist • {{playlists[0].songList.length}} Song</p>
+        <p class="details">{{playlists.length}} Playlist • {{userAllSongs()}} Song</p>
         <p class="more">More</p>
       </div>
       <div class="content-preview">
@@ -34,7 +34,8 @@
       </div>
       <p @click="createNewPlaylist">+Create new playlist</p>
     </div>
-    {{getSongs}}
+    <!-- {{getSongs}} -->
+    {{playlists}}
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -94,6 +95,17 @@ export default ({
         minutes + ':' + (seconds < 10 ? '0' : '') + seconds
       );
     },
+    userAllSongs() {
+      let amount = 0;
+
+      for(let i = 0; i < this.playlists.length; i++) {
+        for(let j = 0; j < this.playlists[i].songList.length; j++) {
+          amount++;
+        }
+      }
+
+      return amount;
+    },
     async getAllSongs(){
       let songID = '61545c82936c2c6e0f3adfd2';
       let data = await fetch('rest/songs');
@@ -148,9 +160,6 @@ export default ({
   }
 
   .content-preview {
-    /* display: flex;
-    flex-wrap: row wrap;
-    gap: 2em; */
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 2em;
