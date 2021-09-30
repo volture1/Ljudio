@@ -9,11 +9,11 @@
           </div>
           <div>
             <p class="result-name">{{ result.name }}</p>
-            <div v-if="result.artist.name"> 
+            <div v-if="result.artist.name">
               <p class="result-artist-name">{{ result.artist.name }}</p>
             </div>
             <div v-else v-for="artist in result.artist" :key="artist">
-            <p class="result-artist-name">{{ artist.name }}</p>
+              <p class="result-artist-name">{{ artist.name }}</p>
             </div>
           </div>
         </div>
@@ -176,7 +176,7 @@ export default {
     },
   },
   methods: {
-    initPlaylist(id) {
+    async initPlaylist(id) {
       this.playlist = [...this.playlistFetched];
       this.playlistVideoIds = this.playlist.map((a) => a.videoId);
 
@@ -189,6 +189,7 @@ export default {
           this.duration = this.calculateDuration(element.duration);
           this.UpdateCurrentTime();
           this.sliderDuration = this.formatSeconds(this.duration);
+          this.$store.commit("setSongId", this.playListVideoIds[i]);
         }
         i++;
       });
@@ -268,7 +269,6 @@ export default {
   justify-content: space-between;
   width: 100%;
   height: 80%;
-  
 }
 .result {
   display: flex;
@@ -276,7 +276,6 @@ export default {
 
 .result-name {
   color: white;
-  
 }
 .result-artist-name {
   font-size: 12px;
@@ -293,13 +292,15 @@ export default {
   color: darkgray;
   text-overflow: ellipsis;
   white-space: nowrap;
-
 }
 .play-pause-button {
   margin-top: 15px;
 
   text-align: center;
   align-content: center;
+}
+.play-pause-button-container:hover {
+  background-color: #e0def798;
 }
 .play-pause-button-container {
   height: 50px;
@@ -317,6 +318,9 @@ export default {
   background-color: #c4c4c4;
   border-radius: 50%;
 }
+.previous-button:hover {
+  background-color: #e0def798;
+}
 .previous-button-img {
   margin-top: 8px;
   margin-left: 8px;
@@ -327,6 +331,9 @@ export default {
   width: 35px;
   background-color: #c4c4c4;
   border-radius: 50%;
+}
+.next-button:hover {
+  background-color: #e0def798;
 }
 .next-button-img {
   margin-top: 8px;
