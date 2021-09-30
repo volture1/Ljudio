@@ -5,7 +5,7 @@ module.exports = (app,models) => {
  // Get users playlist by userId
   app.get('/rest/playlists/user/:id', async (req, res) => {
     let model = models['playlists']
-    let docs = await model.find({ userId: req.params.id }).populate(['userId']).exec()
+    let docs = await model.find({ userId: req.params.id }).populate(['userId','songList']).exec()
     res.json(docs)
   })
 
@@ -41,8 +41,8 @@ module.exports = (app,models) => {
   //update recentlyPlayed
   app.put('/rest/recentlyplayeds/user/:id',async(req,res) =>{
     let model = models['recentlyplayeds'];
-    let docs =  await model.find({userId:req.params.id}) 
-    let firstSong = docs[0].songList[0]    
+    let docs =  await model.find({userId:req.params.id}).populate(['userId','songList']).exec() 
+    let firstSong = docs[0].songList[0]._id.toString()
     console.log('firstSong',firstSong)
     for(let song of req.body.songList) {
       console.log('song',song)  
@@ -61,7 +61,7 @@ module.exports = (app,models) => {
   //Get recentlyPlayed by userId
   app.get('/rest/recentlyplayeds/user/:id',async(req,res) =>{
     let model = models['recentlyplayeds']
-    let docs = await model.find({userId:req.params.id}).populate(['userId']).exec()
+    let docs = await model.find({userId:req.params.id}).populate(['userId','songList']).exec()
     res.json(docs)
   })
 
@@ -81,13 +81,24 @@ module.exports = (app,models) => {
     res.json(docs)
   })
 
-  // Add a new liked
+  // Create a liked
   app.post('/rest/likeds', async (req, res) => {
     let model = models['likeds']
     let doc = req.body
     let docs = await new model(doc)
     await docs.save()
     res.json(docs)
+  })
+
+  //Add a new song to liked
+  app.put('/rest/likeds/user/:id',async(req,res)=>{
+    let model = models['likeds'];
+    console.log('model liked',model)
+    let docs =  await model.find({userId:req.params.id}).populate(['userId','songList']).exec() 
+    console.log('liked docs',docs)
+    docs[0].songList.splice(0,0,song)
+    await docs[0].save()
+    res.json(docs[0])
   })
 
   // Add a new song
