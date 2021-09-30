@@ -12,8 +12,9 @@
           <p class="navlink">Register</p>
         </router-link>
         <router-link to="/Login">
-          <p class="navlink">Log in</p>
-        </router-link>
+          <p class="navlink" v-if="!isLoggedIn">Log in</p>
+        </router-link>        
+        <p class="loggedIn" v-if="isLoggedIn">Hej {{currentUser.firstname}}</p>
       </div>
     </div>
     <div class="content">
@@ -38,7 +39,14 @@
 
 <script>
 export default {
-
+   computed:{
+    isLoggedIn(){     
+      return this.$store.state.loggedIn;
+    },
+    currentUser(){      
+      return this.$store.state.currentUser;
+    }
+  },
 }
 </script>
 

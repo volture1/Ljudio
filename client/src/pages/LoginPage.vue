@@ -1,7 +1,7 @@
 <template>
     <div class="login">
       <div class="top">
-        <router-link to="/">
+        <router-link to="/Home">
           <p class="goback-route">Home</p>
         </router-link>  
         <h1 class="pagetitle">Login</h1>
@@ -13,12 +13,12 @@
       <hr class="break">
       <form @submit.prevent="handleSubmit">
         <div class="fields">
-          <input class="input" v-model="email" type="email" placeholder="Email" >
+          <input class="input" v-model="email"  type="email" placeholder="Email" >
           <input class="input" v-model="password" type="password" placeholder="Password" >
           <div v-if="tempError" class="error">{{tempError}}</div>
         </div>
         <div class="login-wrap">
-          <button class="btn">Log in</button>          
+          <button class="btn" >Log in</button>            
         </div> 
       </form>  
       <hr class="break">
@@ -37,13 +37,22 @@ export default {
     return{
       email:"",
       password:"",
-      tempError:""
+      tempError:"",
     }
   },
   computed:{
-    isLoggedIn(){     
+    isLoggedIn(){  
       return this.$store.state.loggedIn;
-    }
+    },
+    currentUser(){      
+      return this.$store.state.currentUser;
+    },
+    checkEmail(){
+      if (this.email == this.currentUser.email){
+        this.tempError = "email or password can not be null"
+        return 
+      }
+    },
   },
   methods:{
     register(){
@@ -54,12 +63,23 @@ export default {
         email:this.email,
         password:this.password
       }
-      console.log("credentials0",credentials)
+     
+      if(credentials.email =='' || credentials.password =='' ){
+         this.tempError = "Email or password can not be null"
+        return
+      }
+      if(credentials.email === this.currentUser[0].email){
+          this.tempError = "You have already login"          
+          return
+      }
       await this.$store.dispatch('login',credentials)   
       if(!this.isLoggedIn){
         this.tempError = "wrong email or password"
+        return
+      } else{        
+         this.$router.push('/Home')
       }
-      this.$router.push('/Home')
+     
     }
   }
 }
