@@ -97,8 +97,6 @@
             v-model="value"
             id="volumebar"
           />
-
-          <p>{{ value }}</p>
         </div>
       </div>
     </div>
@@ -156,9 +154,10 @@ export default {
   },
   watch: {
     songId(newId, oldId) {
-      this.testId = 0;
+
       this.initPlaylist(newId);
       this.showButton = true;
+
     },
     check(newTime) {
       if (newTime >= this.sliderDuration) {
@@ -168,15 +167,13 @@ export default {
       if (this.testId == 20 && newTime == this.sliderDuration) {
         console.log("array is over");
         this.showButton = false;
-        //add logic for repeat if(repeat){
-        //this.testId= 0;
-        //this.initPlaylist(this.playlistVideIds[this.testId])
-        //}
+       
       }
     },
   },
   methods: {
-    async initPlaylist(id) {
+    initPlaylist(id) {
+      this.$store.commit("setSongId", this.playListVideoIds[this.testId]);
       this.playlist = [...this.playlistFetched];
       this.playlistVideoIds = this.playlist.map((a) => a.videoId);
 
@@ -189,7 +186,6 @@ export default {
           this.duration = this.calculateDuration(element.duration);
           this.UpdateCurrentTime();
           this.sliderDuration = this.formatSeconds(this.duration);
-          this.$store.commit("setSongId", this.playListVideoIds[i]);
         }
         i++;
       });
