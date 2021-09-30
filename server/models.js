@@ -46,7 +46,7 @@ const Song = mongoose.model('Song',{
     },
     dateAdded:{
         type:Date,
-        require:true
+        require:false
     },
     duration:{
         type:String,
@@ -58,8 +58,8 @@ const Song = mongoose.model('Song',{
     onlySound:{
         type:Boolean,
         require:true
-    }
-
+    },
+    dateAddedToRecent:Date,
 })
 const User = mongoose.model('User',{
     email:{
@@ -85,9 +85,21 @@ const User = mongoose.model('User',{
     }]
 })
 
+const RecentlyPlayed = mongoose.model('RecentlyPlayed',{
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
+    songList:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Song'
+    }] 
+})
+
 module.exports = {
     users:User,
     likeds:Liked,
     playlists:Playlist,
-    songs:Song
+    songs:Song,
+    recentlyplayeds:RecentlyPlayed
 }
