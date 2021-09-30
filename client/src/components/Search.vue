@@ -51,11 +51,28 @@
             }
           "
         >
-          <img :src="result.thumbnails[1].url" height="40" width="40" />
-          <p>{{ result.name }}</p>
-          <p>{{ result.album.name }}</p>
-          <p>{{ result.artist.name }}</p>
-          <p>{{ calculateDuration(result.duration) }}</p>
+          <img
+            id="result-image"
+            :src="result.thumbnails[1].url"
+            height="40"
+            width="40"
+          />
+
+          <p id="result-text">{{ result.name }}</p>
+          <p id="result-text">{{ result.album.name }}</p>
+          <div  v-if="result.artist.name">
+            <p id="result-text">{{ result.artist.name }}</p>
+          </div>
+          <div class="result-multiple-artists" v-else>
+            <div class="result-single-artist">
+            <p  v-for="artist in result.artist" :key="artist"  id="result-text-artist">
+              {{ artist.name }}
+            </p>
+            </div>
+          </div>
+          <p id="result-text">
+            {{ calculateDuration(result.duration) }}
+          </p>
         </div>
         <div v-if="showMore == false && this.list.length > 4">
           <p
@@ -219,10 +236,10 @@ p {
 }
 
 .container {
-  margin: 0 auto;
-  width: 50vw;
+  width: 75%;
   display: flex;
   flex-direction: column;
+  margin-left: 23%;
 }
 
 .input {
@@ -281,15 +298,44 @@ p {
 }
 
 .result {
-  display: flex;
-  justify-content: space-between;
-  row-gap: 10px;
-  align-items: center;
-  padding-right: 1em;
-  padding-left: 1em;
+  /*   display: flex;
+ justify-content: space-between;
+  
+
+   align-content: center;
+   flex-direction: row; */
+  margin-right: 5px;
   height: 50px;
   border-radius: 5px;
   background-color: #c4c4c421;
+}
+#result-text {
+  width: 20%;
+  margin-top: 15px;
+  float: left;
+  display: inline;
+}
+#result-image {
+  margin-right: 12%;
+  margin-left: 2%;
+  margin-top: 5px;
+  float: left;
+  display: inline;
+}
+
+.result-multiple-artists{
+  /* position: relative; */
+  width: 20%;
+  margin-top: 10px;
+  float: left;
+  display: inline;
+  
+}
+.result-single-artist {
+ flex-basis: 10%;
+  display:flex;
+  flex-direction: column;
+  flex-grow: 0;
 }
 .result:hover {
   background-image: linear-gradient(

@@ -32,7 +32,6 @@ export default {
   components: { MusicPlayer, SideBar },
   methods: {
     conditionalRender() {
-      
       if (
         this.$route.path == "/Register" ||
         this.$route.path == "/" ||
@@ -54,6 +53,7 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-left: 20%;
+  
 }
 .sidebar {
   background-color: #242526;
