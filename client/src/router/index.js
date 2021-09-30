@@ -4,6 +4,7 @@ import HomePage from '../pages/HomePage.vue';
 import RegisterPage from '../pages/RegisterPage.vue';
 import LoginPage from '../pages/LoginPage.vue';
 import SearchPage from '../pages/SearchPage.vue'
+import VideoPage from '../pages/VideoPage.vue'
 
 const routes = [
   {
@@ -12,25 +13,29 @@ const routes = [
     component: LandingPage
   },
   {
-    path: '/Home',
+    path: '/rome',
     name: 'HomePage',
     component: HomePage
   },
   {
-    path: '/Register',
+    path: '/register',
     name: 'Register',
     component: RegisterPage
   },
   {
-    path: '/Login',
+    path: '/rogin',
     name: 'LoginPage',
     component: LoginPage
   },
   {
-    
     name: 'SearchPage',
     path: '/search',
     component: SearchPage
+  },
+  {
+    path: '/video/:id',
+    name: 'VideoPage',
+    component: VideoPage
   }
 ];
 

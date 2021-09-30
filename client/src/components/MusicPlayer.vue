@@ -1,108 +1,120 @@
 <template>
-<div>
-  <div class="music-player-container">
-    <div class="song-content-container">
-      <p style="text-decoration: underline">Currently Playing</p>
-      <div v-for="result in this.list" :key="result" class="result">
-        <div>
-          <img class="result-song-image" :src="result.thumbnails[0].url" />
-        </div>
-        <div>
-          <p class="result-name">{{ result.name }}</p>
-          <p class="result-artist-name">{{ result.artist.name }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="previous-button">
-      <img
-        @click="playNext()"
-        class="previous-button-img"
-        src="https://i.imgur.com/ETVl9xB.png"
-        height="20"
-        width="20"
-      />
-    </div>
-
-    <div
-      class="play-pause-button-container"
-      @click="
-        () => {
-          if (!showButton) {
-            playVid(), (showButton = true);
-          } else {
-            pause(), (showButton = false);
-          }
-        }
-      "
-    >
-      <div class="play-pause-button">
-        <div v-if="!showButton">
-          <img src="https://i.imgur.com/dbNIEwh.png" height="20" width="20" />
-        </div>
-        <div v-if="showButton">
-          <img src="https://i.imgur.com/5Jf6Api.png" height="20" width="20" />
+  <div>
+    <div class="music-player-container">
+      <div
+        @click="$router.push('/video/' + this.playlistVideoIds[this.testId])"
+        class="song-content-container"
+      >
+        <p style="text-decoration: underline">Currently Playing</p>
+        <div v-for="result in this.list" :key="result" class="result">
+          <div>
+            <img class="result-song-image" :src="result.thumbnails[0].url" />
+          </div>
+          <div>
+            <p class="result-name">{{ result.name }}</p>
+            <p class="result-artist-name">{{ result.artist.name }}</p>
+          </div>
         </div>
       </div>
-      
-    </div>
-    <div class="next-button">
-      <img
-        @click="playNext()"
-        class="next-button-img"
-        src="https://i.imgur.com/8Z5NSCt.png"
-        height="20"
-        width="20"
-      />
-    </div>
-
-    <div class="volume-divs">
-      <div class="mute-unMute-button">
-        <div v-if="!show">
+      <div class="song-controls">
+        <div class="previous-button">
           <img
-            src="https://i.imgur.com/YfMCNW6.png"
+            @click="this.playPrevious()"
+            class="previous-button-img"
+            src="https://i.imgur.com/ETVl9xB.png"
             height="20"
             width="20"
-            @click="volumeUnMute(), (show = true)"
           />
         </div>
-        <div v-if="show">
+
+        <div
+          class="play-pause-button-container"
+          @click="
+            () => {
+              if (!showButton) {
+                playVid(), (showButton = true);
+              } else {
+                pause(), (showButton = false);
+              }
+            }
+          "
+        >
+          <div class="play-pause-button">
+            <div v-if="!showButton">
+              <img
+                src="https://i.imgur.com/dbNIEwh.png"
+                height="20"
+                width="20"
+              />
+            </div>
+            <div v-if="showButton">
+              <img
+                src="https://i.imgur.com/5Jf6Api.png"
+                height="20"
+                width="20"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="next-button">
           <img
-            src="https://i.imgur.com/PeMJYZ9.png"
+            @click="playNext()"
+            class="next-button-img"
+            src="https://i.imgur.com/8Z5NSCt.png"
             height="20"
             width="20"
-            @click="volumeMute(), (show = false)"
           />
         </div>
       </div>
-      <div id="slider" class="volume-slider">
-        <input
-          @change="setVolume(value)"
-          type="range"
-          min="0"
-          max="100"
-          step="1"
-          v-model="value"
-          id="volumebar"
-        />
 
-        <p>{{ value }}</p>
+      <div class="volume-divs">
+        <div class="mute-unMute-button">
+          <div v-if="!show">
+            <img
+              src="https://i.imgur.com/YfMCNW6.png"
+              height="20"
+              width="20"
+              @click="volumeUnMute(), (show = true)"
+            />
+          </div>
+          <div v-if="show">
+            <img
+              src="https://i.imgur.com/PeMJYZ9.png"
+              height="20"
+              width="20"
+              @click="volumeMute(), (show = false)"
+            />
+          </div>
+        </div>
+        <div id="slider" class="volume-slider">
+          <input
+            @change="setVolume(value)"
+            type="range"
+            min="0"
+            max="100"
+            step="1"
+            v-model="value"
+            id="volumebar"
+          />
+
+          <p>{{ value }}</p>
+        </div>
       </div>
+    </div>
+    <div id="sliderProgressBar" class="progress-slider">
+      <p id="progress-text">{{ this.formatMMSS(this.progress) }}</p>
+      <input
+        @change="seekTo(this.progress)"
+        type="range"
+        min="0"
+        :max="this.sliderDuration"
+        step="1"
+        v-model="this.progress"
+        id="seekbar"
+      />
+      <p id="progress-text">{{ this.duration }}</p>
     </div>
   </div>
-    <div id="sliderProgressBar" class="progress-slider">
-      <p>{{this.formatMMSS(this.progress)}}</p>
-        <input
-          @change="seekTo(this.progress)"
-          type="range"
-          min="0"
-          :max="this.sliderDuration"
-          step="1"
-          v-model="this.progress"
-          id="seekbar"
-        />
-      <p>{{this.duration}}</p>
-    </div>
-</div>
 </template>
 
 <script>
@@ -164,23 +176,26 @@ export default {
       });
       i = 0;
     },
-    UpdateCurrentTime(){
-    this.interval = setInterval(() => this.progress = Math.round(window.player.getCurrentTime()), 1000);
+    UpdateCurrentTime() {
+      this.interval = setInterval(
+        () => (this.progress = Math.round(window.player.getCurrentTime())),
+        1000
+      );
     },
-    formatMMSS(time){
+    formatMMSS(time) {
       let newTime;
       let minutes = Math.floor(time / 60);
       let seconds = time % 60;
-      if(seconds < 10){
-        newTime = minutes.toString() +':0'+ seconds.toString();
-      }else{
-        newTime = minutes.toString() +':'+ seconds.toString();
+      if (seconds < 10) {
+        newTime = minutes.toString() + ":0" + seconds.toString();
+      } else {
+        newTime = minutes.toString() + ":" + seconds.toString();
       }
       return newTime;
     },
-    formatSeconds(time){ 
-      let a = time.split(':'); 
-      let seconds = (+a[0]) * 60 + (+a[1]); 
+    formatSeconds(time) {
+      let a = time.split(":");
+      let seconds = +a[0] * 60 + +a[1];
       return seconds;
     },
     calculateDuration(duration) {
@@ -206,13 +221,14 @@ export default {
     },
     playPrevious() {
       this.testId = this.testId - 1;
-      window.player.onPrevious(
+      window.player.onLoaded(
         this.initPlaylist(this.playlistVideoIds[this.testId])
       );
-      window.player.previous()
+      window.player.previous();
     },
     volumeMute() {
       window.player.mute();
+      console.log(this.playlistVideoIds[this.testId]);
     },
     volumeUnMute() {
       window.player.unMute();
@@ -220,15 +236,15 @@ export default {
     setVolume(volume) {
       window.player.setVolume(volume);
     },
-    seekTo(sec){
+    seekTo(sec) {
       window.player.seekTo(sec);
     },
-    getDuration(){
+    getDuration() {
       window.player.getDuration();
     },
-    currentTime(){
+    currentTime() {
       window.player.getCurrentTime();
-    }
+    },
   },
 };
 </script>
@@ -267,9 +283,18 @@ export default {
 .play-pause-button-container {
   height: 50px;
   width: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
 
   border-radius: 50%;
   background-color: #c4c4c4;
+}
+.song-controls {
+  display: flex;
+  color: white;
+  height: 70px;
+  width: 150px;
 }
 .previous-button {
   margin-top: 20px;
@@ -342,15 +367,21 @@ export default {
     height: 10px;
     width: 150px;
   }
-  .progress-slider{
+  #progress-text {
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: -5px;
+  }
+  .progress-slider {
+    margin-right: 90px;
     justify-content: center;
     display: flex;
   }
-  #seekbar{
+  #seekbar {
     width: 50vh;
     height: 10px;
   }
-  
+
   input[id="seekbar"] {
     overflow: hidden;
     width: 50vh;
