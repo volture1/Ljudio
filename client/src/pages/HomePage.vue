@@ -3,7 +3,7 @@
     <div class="section">
       <h3 class="section-title">My media</h3>
       <div class="info-more-p">
-        <p class="details">{{playlists.length}} Playlist • {{userAllSongs()}} Song</p>
+        <p class="details">{{playlists.length}} Playlist • {{userAllSongs()}} Song • {{durationAllSongs()}}</p>
         <p class="more">More</p>
       </div>
       <div class="content-preview">
@@ -87,13 +87,9 @@ export default ({
       await this.$store.dispatch('createPlaylist', testdata);
     },
     getDuration(ms) {
+      console.log("ms", ms);
       let minutes = Math.floor(ms/60000);
-      minutes = String(minutes).split('');
-      if(minutes.length == 1) {
-        minutes = minutes;
-      } else {
-        minutes = minutes[0];
-      }
+      console.log('minutes', minutes);
       let seconds = ((ms % 60000) / 1000).toFixed(0);
       return (
         seconds == 60 ? 
@@ -115,14 +111,36 @@ export default ({
       }
 
       for(let i = 0; i < fixedSongList.length; i++) {
-        sum += fixedSongList[i].duration;
+        sum += parseInt(fixedSongList[i].duration);
       }
 
       sum = this.getDuration(sum);
       return sum;
     },
     durationAllSongs() {
+      let sum = 0;
+      let fixedSongList = [];
+      let songs = this.getSongs;
 
+      for(let i = 0; i < this.playlists.length; i++) {
+        for(let j = 0; j < this.playlists[i].songList.length; j++) {
+          for(let k = 0; k < songs.length; k++) {
+            if(this.playlists[i].songList[j] === songs[k]._id) {
+              fixedSongList.push(songs[k]);
+            }
+          }
+        }
+      }
+
+      /* console.log(fixedSongList); */
+
+      for(let i = 0; i < fixedSongList.length; i++) {
+        sum += parseInt(fixedSongList[i].duration);
+      }
+
+      sum = this.getDuration(sum);
+      /* console.log(sum); */
+      return sum;
     },
     userAllSongs() {
       let amount = 0;
