@@ -7,15 +7,18 @@ import SideBar from "./components/Sidebar.vue";
 
 <template>
   <div>
-    <div class="container">
       <div class="sidebar" v-if="renderCondition">
         <SideBar />
       </div>
-      <div class="music-player" v-if="renderCondition">
+    <div class="container">
+       <footer class="music-player" v-if="renderCondition">
         <MusicPlayer />
-      </div>
-    </div>
+      </footer>
+      <!-- <div class="music-player" v-if="renderCondition">
+        <MusicPlayer />
+      </div> -->
     <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -50,9 +53,11 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
 .container {
-  display: flex;
-  justify-content: space-between;
-  margin-left: 20%;
+ 
+  min-height: 400px;
+   margin-bottom: 100px;
+ 
+  
   
 }
 .sidebar {
@@ -66,8 +71,9 @@ export default {
   background-color: #242526;
   width: 80%;
   height: 10vh;
-  position: fixed;
-  bottom: 0;
+  margin-left: 20%;
+   position: fixed;
+  bottom:0;
 }
 
 * {
