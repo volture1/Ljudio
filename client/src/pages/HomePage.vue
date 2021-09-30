@@ -148,13 +148,16 @@ export default ({
   }
 
   .content-preview {
-    display: flex;
+    /* display: flex;
     flex-wrap: row wrap;
-    gap: 2em;
+    gap: 2em; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 2em;
   }
 
   .content-card {
-    width: 50%;
+    width: 100%;
     background-color: rgba(196, 196, 196, 0.1);
     border-radius: 5px;
     cursor: pointer;
