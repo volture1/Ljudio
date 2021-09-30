@@ -5,7 +5,7 @@ import App from './App.vue'
 import router from './router/index.js'
 import Vuex from 'vuex'
 
-const app = createApp({}); 
+const app = createApp({App});
 
 app.use(Vue3Mq, {
     breakpoints: { 
