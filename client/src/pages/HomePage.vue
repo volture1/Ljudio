@@ -28,11 +28,13 @@
               </div>
             </div>
             <p class="playlist-content">{{playlist.songList.length}} songs</p>
+            <!-- <p class="duration">{{getDuration(playlist.songList[0].duration)}}</p> -->
           </div>
         </div>
       </div>
       <p @click="createNewPlaylist">+Create new playlist</p>
     </div>
+    {{getSongs}}
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -65,10 +67,13 @@ export default ({
     },
     playlists() {
       return this.$store.state.playlist;
+    },
+    getSongs() {
+      return this.$store.state.allSongs;
     }
   },
   async mounted() {
-    await this.$store.dispatch('getPlaylists', this.currentUser._id);
+    await this.$store.dispatch('getPlaylists', this.currentUser._id) && await this.$store.dispatch('getSongs');
   },
   methods: {
     async createNewPlaylist() {
@@ -79,6 +84,21 @@ export default ({
         createdDate: new Date()
       }
       await this.$store.dispatch('createPlaylist', testdata);
+    },
+    getDuration(ms) {
+      let minutes = Math.floor(ms/60000);
+      let seconds = ((ms % 60000) / 1000).toFixed(0);
+      return (
+        seconds == 60 ? 
+        (minutes+1) + '00' :
+        minutes + ':' + (seconds < 10 ? '0' : '') + seconds
+      );
+    },
+    async getAllSongs(){
+      let songID = '61545c82936c2c6e0f3adfd2';
+      let data = await fetch('rest/songs');
+      let res = await data.json();
+      return res;
     }
   }
 })
@@ -129,6 +149,7 @@ export default ({
 
   .content-preview {
     display: flex;
+    flex-wrap: row wrap;
     gap: 2em;
   }
 
@@ -139,6 +160,7 @@ export default ({
     cursor: pointer;
     margin-top: 0.5em;
     display: flex;
+    
   }
 
   .content-card:hover {

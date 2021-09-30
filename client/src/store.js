@@ -7,6 +7,7 @@ const state = {
   loggedIn:false,
   playlist: [],
   duplicateEmail:'',
+  allSongs: []
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -24,6 +25,9 @@ const mutations = {
   setDuplicateEmail(state,duplicateEmail){
     state.duplicateEmail = duplicateEmail
   },
+  setSongs(state, songs) {
+    state.allSongs = songs;
+  }
 }
 const actions = {
   //Register
@@ -67,6 +71,11 @@ const actions = {
     playlists = await playlists.json();
     console.log(playlists);
     store.commit('setPlaylist', playlists);
+  },
+  async getSongs(store) {
+    let songs = await fetch('/rest/songs');
+    songs = await songs.json();
+    store.commit('setSongs', songs);
   },
   async createPlaylist(store, playlist) {
     let playlists = await fetch('/rest/playlists', {
