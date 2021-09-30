@@ -15,7 +15,7 @@
       </div>
       <div class="previous-button">
         <img
-          @click="playNext()"
+          @click="playPrevious()"
           class="previous-button-img"
           src="https://i.imgur.com/ETVl9xB.png"
           height="20"
@@ -220,16 +220,11 @@ export default {
     },
     playNext() {
       this.testId = this.testId + 1;
-      window.player.onNext(
-        this.initPlaylist(this.playlistVideoIds[this.testId])
-      );
+      this.initPlaylist(this.playlistVideoIds[this.testId]);
     },
     playPrevious() {
       this.testId = this.testId - 1;
-      window.player.onPrevious(
-        this.initPlaylist(this.playlistVideoIds[this.testId])
-      );
-      window.player.previous();
+      this.initPlaylist(this.playlistVideoIds[this.testId]);
     },
     volumeMute() {
       window.player.mute();
