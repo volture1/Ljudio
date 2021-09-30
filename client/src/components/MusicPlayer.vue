@@ -9,51 +9,65 @@
           </div>
           <div>
             <p class="result-name">{{ result.name }}</p>
-            <p class="result-artist-name">{{ result.artist.name }}</p>
+            <div v-if="result.artist.name"> 
+              <p class="result-artist-name">{{ result.artist.name }}</p>
+            </div>
+            <div v-else v-for="artist in result.artist" :key="artist">
+            <p class="result-artist-name">{{ artist.name }}</p>
+            </div>
           </div>
         </div>
       </div>
-      <div class="previous-button">
-        <img
-          @click="playPrevious()"
-          class="previous-button-img"
-          src="https://i.imgur.com/ETVl9xB.png"
-          height="20"
-          width="20"
-        />
-      </div>
+      <div class="song-controls">
+        <div class="previous-button">
+          <img
+            @click="playPrevious()"
+            class="previous-button-img"
+            src="https://i.imgur.com/ETVl9xB.png"
+            height="20"
+            width="20"
+          />
+        </div>
 
-      <div
-        class="play-pause-button-container"
-        @click="
-          () => {
-            if (!showButton) {
-              playVid(), (showButton = true);
-            } else {
-              pause(), (showButton = false);
+        <div
+          class="play-pause-button-container"
+          @click="
+            () => {
+              if (!showButton) {
+                playVid(), (showButton = true);
+              } else {
+                pause(), (showButton = false);
+              }
             }
-          }
-        "
-      >
-        <div class="play-pause-button">
-          <div v-if="!showButton">
-            <img src="https://i.imgur.com/dbNIEwh.png" height="20" width="20" />
-          </div>
-          <div v-if="showButton">
-            <img src="https://i.imgur.com/5Jf6Api.png" height="20" width="20" />
+          "
+        >
+          <div class="play-pause-button">
+            <div v-if="!showButton">
+              <img
+                src="https://i.imgur.com/dbNIEwh.png"
+                height="20"
+                width="20"
+              />
+            </div>
+            <div v-if="showButton">
+              <img
+                src="https://i.imgur.com/5Jf6Api.png"
+                height="20"
+                width="20"
+              />
+            </div>
           </div>
         </div>
+        <div class="next-button">
+          <img
+            @click="playNext()"
+            class="next-button-img"
+            src="https://i.imgur.com/8Z5NSCt.png"
+            height="20"
+            width="20"
+          />
+        </div>
       </div>
-      <div class="next-button">
-        <img
-          @click="playNext()"
-          class="next-button-img"
-          src="https://i.imgur.com/8Z5NSCt.png"
-          height="20"
-          width="20"
-        />
-      </div>
-
       <div class="volume-divs">
         <div class="mute-unMute-button">
           <div v-if="!show">
@@ -89,7 +103,7 @@
       </div>
     </div>
     <div id="sliderProgressBar" class="progress-slider">
-      <p>{{ this.formatMMSS(this.progress) }}</p>
+      <p id="progress-text">{{ this.formatMMSS(this.progress) }}</p>
       <input
         @change="seekTo(this.progress)"
         type="range"
@@ -99,7 +113,7 @@
         v-model="this.progress"
         id="seekbar"
       />
-      <p>{{ this.duration }}</p>
+      <p id="progress-text">{{ this.duration }}</p>
     </div>
   </div>
 </template>
@@ -251,27 +265,35 @@ export default {
 <style scoped>
 .music-player-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
   height: 80%;
+  
 }
 .result {
   display: flex;
 }
+
 .result-name {
   color: white;
+  
 }
 .result-artist-name {
   font-size: 12px;
 }
 .result-song-image {
-  height: 35px;
-  width: 35x;
+  height: 50px;
+  width: 50x;
   margin-right: 10px;
 }
 .song-content-container {
   margin-top: 10px;
+  width: 150px;
+  height: 55px;
   color: darkgray;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
 }
 .play-pause-button {
   margin-top: 15px;
@@ -282,7 +304,9 @@ export default {
 .play-pause-button-container {
   height: 50px;
   width: 50px;
-
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
   border-radius: 50%;
   background-color: #c4c4c4;
 }
@@ -316,7 +340,7 @@ export default {
 }
 .volume-divs {
   display: flex;
-  padding-right: 40px;
+  padding-right: 10px;
 }
 .volume-slider {
   padding-top: 30px;
@@ -353,17 +377,35 @@ export default {
     border-radius: 50%;
     background: #c4c4c4;
   }
+  .song-controls {
+    display: flex;
+    color: white;
+    height: 70px;
+    width: 150px;
+  }
+  #progress-text {
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: -5px;
+  }
   #volumebar {
     height: 10px;
     width: 150px;
   }
   .progress-slider {
+    margin-right: 90px;
     justify-content: center;
     display: flex;
   }
   #seekbar {
     width: 50vh;
     height: 10px;
+  }
+  .song-controls {
+    display: flex;
+    color: white;
+    height: 70px;
+    width: 150px;
   }
 
   input[id="seekbar"] {
