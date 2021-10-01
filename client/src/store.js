@@ -3,7 +3,7 @@ import { createStore } from 'vuex';
 const state = {
   currentSong: '',
   currentSongList: [],
-  currentUser: {},
+  currentUser: null,
   loggedIn:false,
   playlist: [],
   duplicateEmail:'',
@@ -45,12 +45,17 @@ const actions = {
         store.commit('setDuplicateEmail','Email already in use')  
         store.commit('setLoggedIn',false);        
         console.log('duplicateEmail',this.state.duplicateEmail)
-        return
+        return;
       }
       store.commit('setDuplicateEmail','')  
       console.log('success');     
       store.commit('setCurrentUser', user); 
-      store.commit('setLoggedIn',true);
+      store.commit('setLoggedIn', true);
+      sessionStorage.setItem('currentUser', JSON.stringify(this.state.currentUser));
+      sessionStorage.setItem('loggedIn', JSON.stringify(this.state.loggedIn));
+      console.log(sessionStorage.getItem('currentUser'));
+      console.log(sessionStorage.getItem('loggedIn'));
+      console.log(this.state.loggedIn);
   },
   //Login
   async login(store,credentials){
@@ -62,9 +67,9 @@ const actions = {
     })
     console.log("user0",res)
     let user = await res.json()
-    console.log("user1",user)
-    store.commit('setCurrentUser',user)
-    store.commit('setLoggedIn',true);
+    console.log("user1", user)
+    store.commit('setCurrentUser', user)
+    store.commit('setLoggedIn', true);
   },
   async getPlaylists(store, userId) {
     let playlists = await fetch('/rest/playlists/user/' + userId);
@@ -87,6 +92,13 @@ const actions = {
     })
     playlists = await playlists.json();
     store.commit('setPlaylist', playlist);
+  },
+  async logout(store) {
+    let res = await fetch('/api/logout', {
+      method: "DELETE"
+    });
+    res = await res.json();
+    store.commit('setCurrentUser', null);
   }
 }
 export default createStore({ state, mutations, actions })

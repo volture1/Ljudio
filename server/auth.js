@@ -48,6 +48,7 @@ module.exports = (app, models, dbCloudUrl) => {
 
   app.post('/api/login', async (req, res) => {
     // note: req.session is unique per user/browser
+    console.log(req.session.user);
     if (req.session.user){
       delete req.session.user
     }

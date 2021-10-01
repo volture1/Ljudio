@@ -34,7 +34,8 @@
       </div>
       <!-- <p @click="createNewPlaylist">+Create new playlist</p> -->
     </div>
-    {{getSongs}}
+    <!-- {{getSongs}} -->
+    {{currentUser}}
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -63,13 +64,16 @@ export default ({
   },
   computed: {
     currentUser() {
-      return this.$store.state.currentUser[0];
+      return this.$store.state.currentUser;
     },
     playlists() {
       return this.$store.state.playlist;
     },
     getSongs() {
       return this.$store.state.allSongs;
+    },
+    sessionUser() {
+      return sessionStorage.getItem('currentUser');
     }
   },
   async mounted() {

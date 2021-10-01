@@ -11,7 +11,7 @@
     <div class="user-section">
       <div class="avatar-name">
         <Usericon class="avatar"/>
-        <h4 class="username">{{currentUser.firstname}}</h4>
+        <h4 class="username">{{currentUser.firstname}} {{currentUser.lastname}}</h4>
       </div>
       <div class="optionbtns-section">
         <buttons class="optionbtn"></buttons>

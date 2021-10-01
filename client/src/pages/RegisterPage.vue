@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <div class="top">
-      <router-link to="/Home">
+      <router-link to="/">
         <p class="goback-route">Home</p>
       </router-link>
       <h1 class="pagetitle">Registration</h1>
@@ -12,15 +12,19 @@
     </div>
     <hr class="break" />
     <div class="fields">
-      <input class="input" type="text" placeholder="Full name" name="fullname" v-model="user.name">
-      <input class="input" type="text" placeholder="Email" name="email" v-model="user.email">
-      <p class="errorEmail" v-if="isDuplicatedEmail">Email already in use</p>
+      <div class="namefields">
+        <input class="input" type="text" placeholder="Firstname" name="firstname" v-model="user.firstname" required>
+        <input class="input" type="text" placeholder="Lastname" name="lastname" v-model="user.lastname" required>
+      </div>
+      <input class="input" type="text" placeholder="Email" name="email" v-model="user.email" required>
+      <p v-if="isDuplicatedEmail" class="emailtaken">Email already in use</p>
       <input class="input" type="text" placeholder="Username (optional)" name="username">
-      <input class="input" type="password" placeholder="Password" name="password" v-model="user.password">
+      <input class="input" type="password" placeholder="Password" name="password" v-model="user.password" required minlength="3">
+      <input class="input repeat-password-field" type="password" placeholder="Repeat Password" name="repeat-password" v-model="repeatedPassword" required>
       <div class="birthinput-wrap">
-        <input class="input" type="text" placeholder="Day" name="day" v-model="user.birthday">
-        <input class="input" type="text" placeholder="Month" name="month" v-model="user.birthmonth">
-        <input class="input input-year" type="text" placeholder="Year" name="year" v-model="user.birthyear">
+        <input class="input" type="text" placeholder="Day" name="day" v-model="user.birthday" required>
+        <input class="input" type="text" placeholder="Month" name="month" v-model="user.birthmonth" required>
+        <input class="input input-year" type="text" placeholder="Year" name="year" v-model="user.birthyear" required>
       </div>
       <div class="gender-selection">
         <div class="gender-options">
@@ -46,17 +50,20 @@ export default {
   data() {
     return {
       user: {
-        name: '',
+        firstname: '',
+        lastname: '',
         email: '',
         password: '',
         birthday: '',
         birthmonth: '',
         birthyear: '',
         gender: '',
-        isDuplicatedEmail:false,
-        isLoggedIn:false,
       },
-      genderSelected: {male: false, female: false}
+      genderSelected: {male: false, female: false},
+      repeatedPassword: '',
+      noPasswordMatch: false,
+      loggedIn: false,
+      isDuplicatedEmail: false
     }
   },
   computed:{
@@ -66,7 +73,7 @@ export default {
     },
     isDuplicatedEmail(){
        if (this.$store.state.duplicateEmail == 'Email already in use'){      
-        return true
+        return true;
       }
     },
   },
@@ -84,26 +91,35 @@ export default {
       }
     },
     async register() {
-      let credentials = {
-        firstname: this.user.name.split(' ')[0],
-        lastname: this.user.name.split(' ')[1],
+      if(this.user.password === this.repeatedPassword) {
+        let credentials = {
+        firstname: this.user.firstname,
+        lastname: this.user.lastname,
         email: this.user.email,
         password: this.user.password,
         birthday: this.user.birthday + '-' + this.user.birthmonth + '-' + this.user.birthyear,
         gender: this.user.gender,
         playlist: null,
         liked: null
+        }
+        await this.$store.dispatch('register', credentials);
+        console.log("isLoggedIn", this.isLoggedIn);
+        if(this.isLoggedIn) {
+          this.$router.push('/Home');
+        }
+      } else {
+        let input = document.getElementsByName('repeat-password')[0];
+        input.style.border = '3px solid rgba(182, 19, 19, 0.671)';
+        this.noPasswordMatch = true;
       }
-      
-      await this.$store.dispatch('register', credentials);
      /*  if (this.$store.state.duplicateEmail == 'Email already in use'){        
         this.isDuplicateEmail = true
         console.log('this.duplicateEmail in register metod',this.isDuplicateEmail)
       } */
-      if (this.isLoggedIn){
+      /* if (this.isLoggedIn){
          console.log('this.isLoggedIn before push to home',this.isLoggedIn)
         this.$router.push('/Home');
-      }
+      } */
       
       /* for(let attr in this.user) {
         attr = '';
@@ -142,10 +158,33 @@ export default {
   .errorEmail {
     color:red
   }
+
+  .emailtaken {
+    font-size: 12px;
+    font-weight: 900;
+    color: white;
+  }
+
+  .errormsgPswd {
+    font-size: 12px;
+    font-weight: 900;
+    color: rgba(255, 0, 0, 0.541);
+  }
+
+  .errorborder {
+    border: 3px solid rgba(182, 19, 19, 0.671);
+  }
+
   /* .top {
     width: 75%;
     margin: 0 auto;
   } */
+
+  .namefields {
+    width: 100%;
+    display: flex;
+    gap: 1em;
+  }
 
   .goback-route {
     font-size: 12px;
@@ -171,6 +210,7 @@ export default {
   }
 
   .input {
+    width: 100%;
     padding: 12px 6px;
     outline: none;
     border: none;
@@ -196,7 +236,7 @@ export default {
   .fields {
     display: flex;
     flex-direction: column;
-    gap: 2em;
+    gap: 1.5em;
     width: 75%;
     margin: 0 auto;
   }

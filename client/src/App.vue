@@ -3,19 +3,21 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
 import SideBar from "./components/Sidebar.vue";
+import LandingPage from './pages/LandingPage.vue'
 </script>
 
 <template>
   <div>
-    <div class="container">
-      <div class="sidebar" v-if="renderCondition">
+    <div v-if="currentUser" class="container">
+      <div class="sidebar">
         <SideBar />
       </div>
       <router-view></router-view>
-      <div class="music-player" v-if="renderCondition">
+      <div class="music-player">
         <MusicPlayer />
       </div>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -40,9 +42,18 @@ export default {
     };
     // save the store data to the sessionStorage before page refresh
     window.addEventListener('beforeunload', () => {
-      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
+      sessionStorage.setItem('currentUser', JSON.stringify(this.$store.state.currentUser));
+      sessionStorage.setItem('loggedIn', JSON.stringify(this.$store.state.loggedIn));
     });
     console.log('sessionStorage store', sessionStorage.store);
+    
+    sessionStorage.setItem('currentUser', JSON.stringify(this.$store.state.currentUser));
+    sessionStorage.setItem('loggedIn', JSON.stringify(this.$store.state.loggedIn));
+    console.log(sessionStorage.getItem('currentUser'));
+    console.log(sessionStorage.getItem('loggedIn'));
+
+    /* console.log(sessionStorage.getItem('store')); */
+
     /* console.log('sessionStorage currentUser', sessionStorage.store.currentUser); */
   },
   methods: {
