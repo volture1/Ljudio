@@ -159,9 +159,21 @@ export default {
   },
   methods: {
     initPlaylist(id) {
-      this.playlist = [...this.playlistFetched];
-      this.playlistVideoIds = this.playlist.map((a) => a.videoId);
-
+      console.log(this.playlistFetched.length)
+      if(this.playlistFetched.length == 1){
+        this.playlist = this.playlistFetched;
+        console.log(this.playlistFetched)
+        if (element.videoId == id) {
+          this.testId = i;
+          this.currentSongArray[0] = element;
+          window.player.loadPlaylist(this.playlistVideoIds, i, 0);
+          this.duration = this.calculateDuration(element.duration);
+          this.UpdateCurrentTime();
+          this.sliderDuration = this.formatSeconds(this.duration);
+        }
+      }else{
+        this.playlist = [...this.playlistFetched];
+        this.playlistVideoIds = this.playlist.map((a) => a.videoId);
       let i = 0;
       this.playlist.forEach((element) => {
         if (element.videoId == id) {
@@ -175,6 +187,7 @@ export default {
         i++;
       });
       i = 0;
+      }
     },
     UpdateCurrentTime() {
       this.interval = setInterval(
@@ -228,7 +241,6 @@ export default {
     },
     volumeMute() {
       window.player.mute();
-      console.log(this.playlistVideoIds[this.testId]);
     },
     volumeUnMute() {
       window.player.unMute();

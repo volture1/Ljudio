@@ -6,14 +6,13 @@
 export default {
   data() {
     return {
-      videoId: null,
+      videoId: [],
+      playlist: [{}],
+      url: 'https://yt-music-api.herokuapp.com/api/yt/song/',
     };
   },
   created() { 
-    document.getElementById("yt-player").style.display = "inline";
-    //document.getElementById("yt-player").style.margin = "10% 0 0 40%";
-    //document.getElementById("yt-player").videoId = getVideoId();
-    //window.player.loadVideoById(getVideoId());
+    this.test2();
   },
    
   computed: {
@@ -22,8 +21,19 @@ export default {
     },
   },
   methods: {
-    test() {
-      console.log(this.getVideoId());
+    async test() {
+      let res = await fetch(this.url + this.$route.params.id);
+      let data = await res.json();
+      this.videoId = data;
+      console.log(data, 'data')
+      console.log(this.videoId, 'videoid')
+    },
+    test2() {
+    this.test();
+    document.getElementById("yt-player").style.display = "inline";
+    this.$store.commit("setSongId", this.$route.params.id)
+    this.$store.commit("setPlaylist", this.videoId)
+    console.log(this.videoId)
     },
   },
 };

@@ -5,9 +5,10 @@
 </template>
 <script>
 
-
 export default ({
-  
+  created(){
+    document.getElementById("yt-player").style.display = "none";
+  }  
 })
 
 </script>
