@@ -2,15 +2,16 @@
 function onYouTubeIframeAPIReady() {
   // using global variable
   window.player = new YT.Player('yt-player', {
-    height: '390',
-    width: '640',
-    playerVars: { 
-      'autoplay': 0,
-      'controls': 0, 
-      'rel' : 0,
-      'fs' : 0,
-    },
     
+    //height: '760',
+
+    playerVars: {
+      'autoplay': 0,
+      'controls': 0,
+      'rel': 0,
+      'fs': 0,
+    },
+
     events: {
       'onReady': onPlayerReady,
       'onStateChange': onPlayerStateChange
@@ -18,42 +19,7 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
-// function setPlayer(boolean) {
-//   if (boolean) {
-//     function onYouTubeIframeAPIReady1() {
-//       // using global variable
-//       window.player = new YT.Player('yt-player', {
-//         height: '390',
-//         width: '640',
-//         height: '0',
-//         width: '0',
-//         //height: '0',
-//         //width: '0',
-//         events: {
-//           'onReady': onPlayerReady,
-//           'onStateChange': onPlayerStateChange
-//         }
-//       });
-//     }
-//   } else {
-//     function onYouTubeIframeAPIReady2() {
-//       // using global variable
-//       window.player = new YT.Player('yt-player', {
-//         //height: '390',
-//         //width: '640',
-//         height: '0',
-//         width: '0',
-//         //height: '0',
-//         //width: '0',
-//         events: {
-//           'onReady': onPlayerReady,
-//           'onStateChange': onPlayerStateChange
-//         }
-//       });
-//     }
-//   }
-// }
-//public function setPlayer(boolean)
+
 // this function triggers when we change song in player
 // can be used to update things, like counters
 function onPlayerStateChange(event) {

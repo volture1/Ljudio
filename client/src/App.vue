@@ -3,11 +3,13 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
 import SideBar from "./components/Sidebar.vue";
+
 </script>
 
 <template>
   <div>
     <div class="container">
+      
       <div class="sidebar" v-if="renderCondition">
         <SideBar />
       </div>
@@ -29,10 +31,9 @@ export default {
   created() {
     this.interval = setInterval(() => this.conditionalRender(), 1);
   },
-  components: { MusicPlayer, SideBar },
+  components: { MusicPlayer, SideBar},
   methods: {
     conditionalRender() {
-      
       if (
         this.$route.path == "/Register" ||
         this.$route.path == "/" ||

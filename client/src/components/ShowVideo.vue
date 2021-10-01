@@ -1,7 +1,5 @@
 <template>
-  <div class="video-container">
-   
-  </div>
+  <div class="video-container"></div>
 </template>
 
 <script>
@@ -11,12 +9,13 @@ export default {
       videoId: null,
     };
   },
-  created() {
+  created() { 
     document.getElementById("yt-player").style.display = "inline";
-    document.getElementById("yt-player").style.margin = "10% 0 0 40%";
-    document.getElementById("yt-player").videoId = getVideoId();
-    window.player.loadVideoById(getVideoId());
+    //document.getElementById("yt-player").style.margin = "10% 0 0 40%";
+    //document.getElementById("yt-player").videoId = getVideoId();
+    //window.player.loadVideoById(getVideoId());
   },
+   
   computed: {
     getVideoId() {
       return this.$route.params.id;
