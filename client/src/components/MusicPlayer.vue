@@ -33,23 +33,23 @@
           class="play-pause-button-container"
           @click="
             () => {
-              if (!showButton) {
-                playVid(), (showButton = true);
+              if (!showPlayPauseButton) {
+                playVid(), (showPlayPauseButton = true);
               } else {
-                pause(), (showButton = false);
+                pause(), (showPlayPauseButton = false);
               }
             }
           "
         >
           <div class="play-pause-button">
-            <div v-if="!showButton">
+            <div v-if="!showPlayPauseButton">
               <img
                 src="https://i.imgur.com/dbNIEwh.png"
                 height="20"
                 width="20"
               />
             </div>
-            <div v-if="showButton">
+            <div v-if="showPlayPauseButton">
               <img
                 src="https://i.imgur.com/5Jf6Api.png"
                 height="20"
@@ -70,31 +70,31 @@
       </div>
       <div class="volume-divs">
         <div class="mute-unMute-button">
-          <div v-if="!show">
+          <div v-if="!showMuteButton">
             <img
               src="https://i.imgur.com/YfMCNW6.png"
               height="20"
               width="20"
-              @click="volumeUnMute(), (show = true)"
+              @click="volumeUnMute(), (showMuteButton = true)"
             />
           </div>
-          <div v-if="show">
+          <div v-if="showMuteButton">
             <img
               src="https://i.imgur.com/PeMJYZ9.png"
               height="20"
               width="20"
-              @click="volumeMute(), (show = false)"
+              @click="volumeMute(), (showMuteButton = false)"
             />
           </div>
         </div>
         <div id="slider" class="volume-slider">
           <input
-            @change="setVolume(value)"
+            @change="setVolume(volume)"
             type="range"
             min="0"
             max="100"
             step="1"
-            v-model="value"
+            v-model="volume"
             id="volumebar"
           />
         </div>
@@ -120,19 +120,15 @@
 export default {
   data() {
     return {
-      show: true,
-      showButton: false,
+      showMuteButton: true,
+      showPlayPauseButton: false,
       currentSongArray: [],
       playListVideoIds: [],
       playlist: [],
-      playlistSong: {},
-      testId: 0,
-      increment: 0,
+      playlistIndex: 0,
       duration: 0,
       sliderDuration: 0,
-      song: null,
-      value: 20,
-      progressValue: 0,
+      volume: 20,
       progress: 0,
       api_key: "AIzaSyDDCSvtOP78gVYp6K2EQXbWYYBe66qm6fk",
       url: "www.googleapis.com/youtube/v3/videos",
@@ -154,33 +150,32 @@ export default {
   },
   watch: {
     songId(newId, oldId) {
-
       this.initPlaylist(newId);
-      this.showButton = true;
-
+      this.showPlayPauseButton = true;
     },
     check(newTime) {
+
       if (newTime >= this.sliderDuration) {
-        this.testId += 1;
-        this.initPlaylist(this.playlistVideoIds[this.testId]);
+
+        this.playlistIndex += 1;
+        this.initPlaylist(this.playlistVideoIds[this.playlistIndex]);
       }
-      if (this.testId == 20 && newTime == this.sliderDuration) {
-        console.log("array is over");
-        this.showButton = false;
-       
+      if (this.playlistIndex == 20 && newTime == this.sliderDuration) {
+
+        this.showPlayPauseButton = false;
       }
     },
   },
   methods: {
     initPlaylist(id) {
-      this.$store.commit("setSongId", this.playListVideoIds[this.testId]);
+      this.$store.commit("setSongId", this.playListVideoIds[this.playlistIndex]);
       this.playlist = [...this.playlistFetched];
       this.playlistVideoIds = this.playlist.map((a) => a.videoId);
 
       let i = 0;
       this.playlist.forEach((element) => {
         if (element.videoId == id) {
-          this.testId = i;
+          this.playlistIndex = i;
           this.currentSongArray[0] = element;
           window.player.loadPlaylist(this.playlistVideoIds, i, 0);
           this.duration = this.calculateDuration(element.duration);
@@ -230,12 +225,12 @@ export default {
       window.player.playVideo();
     },
     playNext() {
-      this.testId = this.testId + 1;
-      this.initPlaylist(this.playlistVideoIds[this.testId]);
+      this.playlistIndex = this.playlistIndex + 1;
+      this.initPlaylist(this.playlistVideoIds[this.playlistIndex]);
     },
     playPrevious() {
-      this.testId = this.testId - 1;
-      this.initPlaylist(this.playlistVideoIds[this.testId]);
+      this.playlistIndex = this.playlistIndex - 1;
+      this.initPlaylist(this.playlistVideoIds[this.playlistIndex]);
     },
     volumeMute() {
       window.player.mute();
@@ -249,23 +244,17 @@ export default {
     seekTo(sec) {
       window.player.seekTo(sec);
     },
-    getDuration() {
-      window.player.getDuration();
-    },
-    currentTime() {
-      window.player.getCurrentTime();
-    },
   },
 };
 </script>
 
 <style scoped>
-.music-player-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 80%;
-}
+  .music-player-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 80%;
+  }
 .result {
   display: flex;
 }
@@ -311,6 +300,7 @@ export default {
   margin-top: 20px;
   height: 35px;
   width: 35px;
+  margin-right: 5%;
   background-color: #c4c4c4;
   border-radius: 50%;
 }
@@ -325,6 +315,7 @@ export default {
   margin-top: 20px;
   height: 35px;
   width: 35px;
+  margin-left: 5%;
   background-color: #c4c4c4;
   border-radius: 50%;
 }
