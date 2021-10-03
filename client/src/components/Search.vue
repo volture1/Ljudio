@@ -60,14 +60,18 @@
 
           <p id="result-text">{{ result.name }}</p>
           <p id="result-text">{{ result.album.name }}</p>
-          <div  v-if="result.artist.name">
+          <div v-if="result.artist.name">
             <p id="result-text">{{ result.artist.name }}</p>
           </div>
           <div class="result-multiple-artists" v-else>
             <div class="result-single-artist">
-            <p  v-for="artist in result.artist" :key="artist"  id="result-text-artist">
-              {{ artist.name }}
-            </p>
+              <p
+                v-for="artist in result.artist"
+                :key="artist"
+                id="result-text-artist"
+              >
+                {{ artist.name }}
+              </p>
             </div>
           </div>
           <p id="result-text">
@@ -90,6 +94,7 @@
           v-for="result in this.listArtists"
           :key="result"
           class="result-artist"
+          @click="$router.push('/artist/' + result.browseId)"
         >
           <img :src="result.thumbnails[1].url" class="artist-image" />
           <p class="artist-name">{{ result.name }}</p>
@@ -323,17 +328,16 @@ p {
   display: inline;
 }
 
-.result-multiple-artists{
+.result-multiple-artists {
   /* position: relative; */
   width: 20%;
   margin-top: 10px;
   float: left;
   display: inline;
-  
 }
 .result-single-artist {
- flex-basis: 10%;
-  display:flex;
+  flex-basis: 10%;
+  display: flex;
   flex-direction: column;
   flex-grow: 0;
 }
@@ -342,7 +346,7 @@ p {
     rgba(104, 104, 219, 0.301),
     rgb(199, 207, 247, 0.301)
   );
-  z-index: 99;
+  
   box-shadow: 5px 5px 5px teal;
   cursor: pointer;
 }

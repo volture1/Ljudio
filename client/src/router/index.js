@@ -3,7 +3,8 @@ import LandingPage from '../pages/LandingPage.vue';
 import HomePage from '../pages/HomePage.vue';
 import RegisterPage from '../pages/RegisterPage.vue';
 import LoginPage from '../pages/LoginPage.vue';
-import SearchPage from '../pages/SearchPage.vue'
+import SearchPage from '../pages/SearchPage.vue';
+import ArtistPage from '../pages/ArtistPage.vue';
 
 const routes = [
   {
@@ -12,26 +13,31 @@ const routes = [
     component: LandingPage
   },
   {
-    path: '/Home',
+    path: '/home',
     name: 'HomePage',
     component: HomePage
   },
   {
-    path: '/Register',
+    path: '/register',
     name: 'Register',
     component: RegisterPage
   },
   {
-    path: '/Login',
+    path: '/login',
     name: 'LoginPage',
     component: LoginPage
   },
   {
     
-    name: 'SearchPage',
     path: '/search',
+    name: 'SearchPage',
     component: SearchPage
-  }
+  },
+  {
+    path: '/artist/:id',
+    name: 'ArtistPage',
+    component: ArtistPage
+  },
 ];
 
 const router = createRouter({
