@@ -1,5 +1,5 @@
 <template>
-  <div class="landingpage">
+  <div class="landingpage">{{ mq.current }}
     
     <div class="nav">
       <div class="leftnav-side">
@@ -38,9 +38,10 @@
 </template>
 
 <script>
-export default {
+import { useMq } from "../";
 
-}
+const mq = useMq();
+
 </script>
 
 <style scoped>
