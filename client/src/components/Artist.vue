@@ -11,12 +11,12 @@
     <h1>Top 5 songs</h1>
     <div class="top-songs">
       <div
-        v-for="result in this.artistId.products.songs.content"
+        v-for="result in this.topFive"
         :key="result"
         class="result"
         @click="sendVideoId(result.videoId)"
       >
-        <!-- <p>{{result.songs}}</p> -->
+        <p>{{ result.songs }}</p>
         <p id="result-text">{{ result.name }}</p>
       </div>
     </div>
@@ -47,12 +47,10 @@ export default {
   data() {
     return {
       url: "https://yt-music-api.herokuapp.com/api/yt/artist/",
-      songUrl: "https://yt-music-api.herokuapp.com/api/yt/song/",
+      urlSongs: "https://yt-music-api.herokuapp.com/api/yt/songs/",
+      topFive: [],
       artistId: null,
       showPage: false,
-      playlist: [],
-      tempPlaylist: [],
-      playlistVideoIds: [],
     };
   },
   computed: {
@@ -62,41 +60,32 @@ export default {
   },
 
   async created() {
-    console.log("it created it");
     await this.getArtist();
+    await this.getSongs();
   },
   mounted() {},
   methods: {
     sendVideoId(id) {
-      this.$store.commit("setPlaylist", this.playlist);
       this.$store.commit("setSongId", id);
     },
-
     numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    async getSongs() {
+      let res = await fetch(this.urlSongs + this.artistId.name);
+      let data = await res.json();
+
+      this.topFive = [...data.content];
+      this.topFive.splice(5, 15);
+
+      
+      this.$store.commit("setPlaylist", this.topFive);
     },
     async getArtist() {
       let res = await fetch(this.url + this.$route.params.id);
       let data = await res.json();
+
       this.artistId = data;
-      console.log(this.artistId, "SUCCESSSSSSS");
-      this.tempPlaylist = [...this.artistId.products.songs.content];
-      this.playlistVideoIds = this.tempPlaylist.map((a) => a.videoId);
-      this.playlistVideoIds.forEach(async (element) => {
-        let res = await fetch(this.songUrl + element);
-        let data = await res.json();
-        
-        this.playlist.push(data)
-      });
-      console.log(this.playlist, " pog");
-      // for (let i = 0; i < this.playlistVideoIds.length; i++) {
-      //   ///api/yt/song/videoId
-      //   let res = await fetch(this.songUrl + this.playlistVideoIds[i]);
-      //   let data = await res.json();
-      //   console.log(data)
-      //   //this.playlist = [...data];
-      // }
-      //console.log(this.playlist);
       this.showPage = true;
     },
   },
@@ -126,11 +115,6 @@ p {
   width: 100vh;
   background-color: rgb(49, 46, 46);
   border-radius: 4px;
-  /* height:400px; */
-  /* margin-left: 20%;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 0, 0, 1), rgba(0, 0, 0, 0))   
-        */
 }
 .top-songs {
   display: flex;
@@ -161,12 +145,6 @@ p {
   margin-top: 10px;
 }
 .result {
-  /*   display: flex;
- justify-content: space-between;
-  
-
-   align-content: center;
-   flex-direction: row; */
   margin-right: 5px;
   height: 50px;
   border-radius: 5px;
