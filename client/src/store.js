@@ -9,6 +9,9 @@ const state = {
   duplicateEmail:'',
   allSongs: [],
   recentlyPlayed:[],
+  recentSongs:[],
+  liked:[],
+  likedSongs:[]
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -23,7 +26,15 @@ const mutations = {
   setRecentlyPlayed(state,recentlyPlayed){
     state.recentlyPlayed = recentlyPlayed
   },
-
+  setRecentSongs(state,songs){
+    state.recentSongs = songs
+  },
+  setLiked(state,liked){
+    state.liked = liked
+  },
+  setLikedSongs(state,songs){
+    state.likedSongs = songs
+  },
   setLoggedIn(state,loggedIn){
     state.loggedIn = loggedIn
   },
@@ -32,7 +43,8 @@ const mutations = {
   },
   setSongs(state, songs) {
     state.allSongs = songs;
-  }
+  },
+  
 }
 const actions = {
   //Register
@@ -84,7 +96,15 @@ const actions = {
     let recentlyPlayeds = await fetch('/rest/recentlyPlayeds/user/' + userId);
     recentlyPlayeds = await recentlyPlayeds.json();
     store.commit('setRecentlyPlayed',recentlyPlayeds)
+    store.commit('setRecentSongs',this.state.recentlyPlayed[0].songList)
+  },
 
+  async getLikeds(store,userId) {
+    let likeds = await fetch('/rest/Likeds/user/' + userId);
+    likeds = await likeds.json();
+    store.commit('setLiked',likeds)
+    console.log('likeds',likeds)
+    store.commit('setLikedSongs',this.state.liked[0].songList)
   },
 
   async getSongs(store) {

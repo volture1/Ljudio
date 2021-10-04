@@ -38,20 +38,30 @@
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
-        <p class="details" v-if="recentlyPlayed!=='undefined'">{{recentlyPlayed}}</p>
+        <p class="details" v-if="recentlyPlayed!=='undefined'">{{recentlyPlayeds.length}}</p>
         <p class="more"></p>
       </div>
       <div class="content-preview"></div>
-        <div class="content-card" v-for="recent in recentlyPlayed" :key="recent.id">
+        <div class="content-card" v-for="recent in recentlyPlayeds" :key="recent.id">
+          <div class="titile">{{recent.title}}</div>
+          <div class="artist">{{recent.artist}}</div>
+          <div class="dateAdded">{{recent.dateAdded}}</div>
+          <div class="duration">{{recent.duration}}</div>
         </div>
     </div>
     <div class="section">
       <h3 class="section-title">Liked</h3>
       <div class="info-more-p">
-        <p class="details"></p>
+        <p class="details" v-if ="liked !== 'undefined'">{{likeds.length}}</p>
         <p class="more"></p>
       </div>
       <div class="content-preview"></div>
+       <div class="content-card" v-for="liked in likeds" :key="liked.id">
+          <div class="titile">{{liked.title}}</div>
+          <div class="artist">{{liked.artist}}</div>
+          <div class="dateAdded">{{liked.dateAdded}}</div>
+          <div class="duration">{{liked.duration}}</div>
+        </div>
     </div>
   </div>
 </template>
@@ -70,19 +80,25 @@ export default ({
     playlists() {
       return this.$store.state.playlist;
     },
-    recentlyPlayed() {
-      console.log('recentlyPlayed',this.$store.state.recentlyPlayed[0])
-      return this.$store.state.recentlyPlayed[0].songList;
+    recentlyPlayeds() {     
+      return this.$store.state.recentSongs;
     },
+
+    likeds() {
+      return this.$store.state.likedSongs;
+    },
+   
     getSongs() {
       return this.$store.state.allSongs;
     }
   },
   async mounted() {
-    console.log(this.currentUser);
-    await this.$store.dispatch('getRecentlyPlayeds',this.currentUser._id);
+  
     await this.$store.dispatch('getPlaylists', this.currentUser._id);  
     await this.$store.dispatch('getSongs');
+    await this.$store.dispatch('getRecentlyPlayeds',this.currentUser._id);
+    await this.$store.dispatch('getLikeds',this.currentUser._id);
+    
   },
   methods: {
     async createNewPlaylist() {
@@ -93,6 +109,11 @@ export default ({
         createdDate: new Date()
       }
       await this.$store.dispatch('createPlaylist', testdata);
+    },
+
+    async dispatch() {
+      console.log(this.currentUser);
+     
     },
     getDuration(ms) {
       let minutes = Math.floor(ms/60000);
