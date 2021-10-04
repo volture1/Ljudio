@@ -17,7 +17,7 @@ import LandingPage from './pages/LandingPage.vue'
         <MusicPlayer />
       </div>
     </div>
-    <router-view></router-view>
+    <router-view v-else></router-view>
   </div>
 </template>
 
@@ -35,26 +35,8 @@ export default {
     }
   },
   created() {
-    this.interval = setInterval(() => this.conditionalRender(), 1);
-    // access sessionStorage when the page is loading
-    if(sessionStorage.getItem('store')){
-      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem('store'))))
-    };
-    // save the store data to the sessionStorage before page refresh
-    window.addEventListener('beforeunload', () => {
-      sessionStorage.setItem('currentUser', JSON.stringify(this.$store.state.currentUser));
-      sessionStorage.setItem('loggedIn', JSON.stringify(this.$store.state.loggedIn));
-    });
-    console.log('sessionStorage store', sessionStorage.store);
     
-    sessionStorage.setItem('currentUser', JSON.stringify(this.$store.state.currentUser));
-    sessionStorage.setItem('loggedIn', JSON.stringify(this.$store.state.loggedIn));
-    console.log(sessionStorage.getItem('currentUser'));
-    console.log(sessionStorage.getItem('loggedIn'));
 
-    /* console.log(sessionStorage.getItem('store')); */
-
-    /* console.log('sessionStorage currentUser', sessionStorage.store.currentUser); */
   },
   methods: {
     conditionalRender() {

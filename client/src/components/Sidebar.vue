@@ -75,7 +75,7 @@
         <Targeticon />
         <p class="musicplayer-option-name">Target</p>
       </div>
-      <div class="musicplayer-option">
+      <div @click="logout" class="musicplayer-option">
         <Logouticon />
         <p class="musicplayer-option-name">Log out</p>
       </div>
@@ -112,13 +112,20 @@ export default {
     Usericon, Homeicon, Exploreicon, Popularicon, Genresicon, Playlistsicon, Searchicon, Likedicon, Socialicon, Addicon, NewPlaylisticon, LikeSongicon, Shareicon, Targeticon, Logouticon},
   computed: {
     currentUser() {
-      return this.$store.state.currentUser[0];
+      return this.$store.state.currentUser;
     },
     loggedIn(){
       console.log("loggedIn i SideBar",this.$store.state.loggedIn)
       return this.$store.state.loggedIn;
     },
-
+  },
+  methods: {
+    logout() {
+      if(this.currentUser) {
+        this.$store.dispatch('logout');
+        this.$router.push('/');
+      }
+    }
   }
 };
 </script>

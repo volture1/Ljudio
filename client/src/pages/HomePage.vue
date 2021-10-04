@@ -36,6 +36,7 @@
     </div>
     <!-- {{getSongs}} -->
     {{currentUser}}
+    <button @click="getUser()"></button>
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -71,9 +72,6 @@ export default ({
     },
     getSongs() {
       return this.$store.state.allSongs;
-    },
-    sessionUser() {
-      return sessionStorage.getItem('currentUser');
     }
   },
   async mounted() {
@@ -81,6 +79,10 @@ export default ({
     await this.$store.dispatch('getSongs');
   },
   methods: {
+    async getUser() {
+      let test = await this.$store.dispatch('getLoggedIn');
+      console.log(test);
+    },
     async createNewPlaylist() {
       let testdata = {
         name: "Test Playlist",
@@ -91,9 +93,7 @@ export default ({
       await this.$store.dispatch('createPlaylist', testdata);
     },
     getDuration(ms) {
-      console.log("ms", ms);
       let minutes = Math.floor(ms/60000);
-      console.log('minutes', minutes);
       let seconds = ((ms % 60000) / 1000).toFixed(0);
       return (
         seconds == 60 ? 
@@ -136,14 +136,11 @@ export default ({
         }
       }
 
-      /* console.log(fixedSongList); */
-
       for(let i = 0; i < fixedSongList.length; i++) {
         sum += parseInt(fixedSongList[i].duration);
       }
 
       sum = this.getDuration(sum);
-      /* console.log(sum); */
       return sum;
     },
     userAllSongs() {

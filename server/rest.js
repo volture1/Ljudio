@@ -5,6 +5,7 @@ module.exports = (app,models) => {
  // Get users playlist by userId
   app.get('/rest/playlists/user/:id', async (req, res) => {
     let model = models['playlists']
+    console.log(req.params.id);
     let docs = await model.find({ userId: req.params.id }).populate(['userId']).exec()
     res.json(docs)
   })
