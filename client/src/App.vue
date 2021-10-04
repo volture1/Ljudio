@@ -35,7 +35,11 @@ export default {
     }
   },
   created() {
-    
+    if(this.$store.state.currentUser) {
+      return;
+    } else {
+      this.$store.dispatch('getLoggedIn');
+    }
 
   },
   methods: {

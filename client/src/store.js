@@ -51,10 +51,6 @@ const actions = {
       console.log('success');     
       store.commit('setCurrentUser', user); 
       store.commit('setLoggedIn', true);
-      sessionStorage.setItem('currentUser', JSON.stringify(this.state.currentUser));
-      sessionStorage.setItem('loggedIn', JSON.stringify(this.state.loggedIn));
-      console.log(sessionStorage.getItem('currentUser'));
-      console.log(sessionStorage.getItem('loggedIn'));
       console.log(this.state.loggedIn);
   },
   //Login
@@ -100,7 +96,6 @@ const actions = {
     });
     res = await res.json();
     store.commit('setCurrentUser', null);
-    localStorage.removeItem('currentUser');
   },
   async getLoggedIn(store) {
     let res = await fetch('/api/login', {
@@ -108,6 +103,7 @@ const actions = {
       headers: {'Content-Type': 'application/json'}
     });
     res = await res.json();
+    store.commit('setCurrentUser', res);
   }
 }
 export default createStore({ state, mutations, actions})

@@ -69,6 +69,8 @@ module.exports = (app, models, dbCloudUrl) => {
     if(user) {
       req.session.user = user;
       console.log("Logged in!");
+      console.log("session", session);
+      console.log("req.session.user", req.session.user);
       res.json(user);
     } else {
       res.json({error: 'No match found'});
@@ -97,17 +99,11 @@ module.exports = (app, models, dbCloudUrl) => {
   
   // Check if logged in
   app.get('/api/login', (req, res) => {
-
-    if (req.session.user !== undefined && req.session.user.length > 0 ) {
-      let user = { ...req.session.user };
-
-      delete user[0].password; // remove password in answer
-      res.json(user);
-    }
-    else {
+    if (req.session.user !== undefined) {
+      
+      res.json(req.session.user);
+    } else {
       res.json({ error: 'Not logged in' });
     }
   });
-
-
 }

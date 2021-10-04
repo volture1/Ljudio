@@ -36,7 +36,6 @@
     </div>
     <!-- {{getSongs}} -->
     {{currentUser}}
-    <button @click="getUser()"></button>
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -75,14 +74,12 @@ export default ({
     }
   },
   async mounted() {
+    console.log(this.currentUser);
+
     await this.$store.dispatch('getPlaylists', this.currentUser._id);
     await this.$store.dispatch('getSongs');
   },
   methods: {
-    async getUser() {
-      let test = await this.$store.dispatch('getLoggedIn');
-      console.log(test);
-    },
     async createNewPlaylist() {
       let testdata = {
         name: "Test Playlist",
