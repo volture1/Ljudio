@@ -14,7 +14,7 @@
     </div>
     <div v-if="showSongs" class="album-songs">
       <div
-        v-for="result in this.songs"
+        v-for="result in this.tempSongs"
         :key="result"
         class="result"
         @click="sendVideoId(result.videoId)"
@@ -36,15 +36,17 @@ export default {
       tempSongs: [],
       songs: [],
       showPage: false,
-      showSongs: false,
+      showSongs: true,
     }
   },
-  async created(){
-    await this.getAlbum();
+   async created(){
+   this.getAlbum();
   },
   methods:{
     sendVideoId(id) {
-      this.$store.commit("setSongId", id);
+     
+           this.$store.commit("setSongId", id);
+       this.$store.commit('setPlaylist', this.songs);
     },
     async getAlbum(){
       let res = await fetch(this.url + this.$route.params.id);
@@ -57,19 +59,35 @@ export default {
       let res = await fetch(this.url + this.$route.params.id);
       let data = await res.json();
       this.tempSongs = [...data.tracks];
-      this.songVideoIds = this.tempSongs.map((a) => a.videoId);
-      for(let i = 0; i < this.songVideoIds.length; i++){
-        let res = await fetch(this.urlSongs + this.songVideoIds[i]);
-        let data = await res.json();
-        if(data != null){
-          this.songs.push(data)
-        }
-        else{
-          return;
-        }
-      }
-      this.$store.commit('setPlaylist', this.songs);
+      console.log(this.tempSongs)
+      // this.songVideoIds = this.tempSongs.map((a) => a.videoId);
+      // for(let i = 0; i < this.songVideoIds.length; i++){
+      //   let res = await fetch(this.urlSongs + this.songVideoIds[i]);
+      //   let data = await res.json();
+      //   if(data != null){
+      //     this.songs.push(data)
+      //   }
+      //   else{
+      //     return;
+      //   }
+      // }
+      // this.$store.commit('setPlaylist', this.songs);
+      
       this.showSongs = true;
+      this.sendSongs();
+    },
+    async sendSongs(){
+       this.songVideoIds = this.tempSongs.map((a) => a.videoId);
+       for(let i = 0; i < this.songVideoIds.length; i++){
+         let res = await fetch(this.urlSongs + this.songVideoIds[i]);
+        let data = await res.json();
+         if(data != null){
+           this.songs.push(data)
+        }
+         else{
+           return;
+         }
+       }
     },
    calculateDuration(duration) {
       let time = new Date(duration);
