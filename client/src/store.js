@@ -3,7 +3,7 @@ import { createStore } from 'vuex';
 const state = {
   currentSong: '',
   currentSongList: [],
-  currentUser: {},
+  currentUser: null,
   loggedIn:false,
   playlist: [],
   duplicateEmail:'',
@@ -45,28 +45,30 @@ const actions = {
         store.commit('setDuplicateEmail','Email already in use')  
         store.commit('setLoggedIn',false);        
         console.log('duplicateEmail',this.state.duplicateEmail)
-        return
+        return;
       }
       store.commit('setDuplicateEmail','')  
       console.log('success');     
       store.commit('setCurrentUser', user); 
-      store.commit('setLoggedIn',true);
+      store.commit('setLoggedIn', true);
+      console.log(this.state.loggedIn);
   },
   //Login
   async login(store,credentials){
     console.log("credentials is ",credentials);
     let res = await fetch('/api/login',{
-      method:'post',
+      method:'POST',
       headers: { 'Content-Type': 'application/json' },
       body:JSON.stringify(credentials)
     })
-    console.log("user0",res)
-    let user = await res.json()
-    console.log("user1",user)
-    store.commit('setCurrentUser',user)
-    store.commit('setLoggedIn',true);
+    console.log("user0",res);
+    let user = await res.json();
+    console.log("user1", user);
+    store.commit('setCurrentUser', user);
+    store.commit('setLoggedIn', true);
   },
   async getPlaylists(store, userId) {
+    console.log(userId);
     let playlists = await fetch('/rest/playlists/user/' + userId);
     playlists = await playlists.json();
     console.log(playlists);
@@ -87,6 +89,21 @@ const actions = {
     })
     playlists = await playlists.json();
     store.commit('setPlaylist', playlist);
+  },
+  async logout(store) {
+    let res = await fetch('/api/login', {
+      method: "DELETE"
+    });
+    res = await res.json();
+    store.commit('setCurrentUser', null);
+  },
+  async getLoggedIn(store) {
+    let res = await fetch('/api/login', {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'}
+    });
+    res = await res.json();
+    store.commit('setCurrentUser', res);
   }
 }
-export default createStore({ state, mutations, actions })
+export default createStore({ state, mutations, actions})

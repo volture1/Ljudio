@@ -3,7 +3,7 @@
     <div class="section">
       <h3 class="section-title">My media</h3>
       <div class="info-more-p">
-        <p class="details">{{playlists.length}} Playlist • {{playlists[0].songList.length}} Song</p>
+        <p class="details">{{playlists.length}} Playlist • {{userAllSongs()}} Song • {{durationAllSongs()}}</p>
         <p class="more">More</p>
       </div>
       <div class="content-preview">
@@ -27,14 +27,15 @@
                 <div class="optionbtn"></div>
               </div>
             </div>
-            <p class="playlist-content">{{playlist.songList.length}} songs</p>
+            <p class="playlist-content">{{playlist.songList.length}} songs • <!-- {{allSongsDurationPL(playlist)}} --> {{durationPL(playlist)}}</p>
             <!-- <p class="duration">{{getDuration(playlist.songList[0].duration)}}</p> -->
           </div>
         </div>
       </div>
-      <p @click="createNewPlaylist">+Create new playlist</p>
+      <!-- <p @click="createNewPlaylist">+Create new playlist</p> -->
     </div>
-    {{getSongs}}
+    <!-- {{getSongs}} -->
+    {{currentUser}}
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -63,7 +64,7 @@ export default ({
   },
   computed: {
     currentUser() {
-      return this.$store.state.currentUser[0];
+      return this.$store.state.currentUser;
     },
     playlists() {
       return this.$store.state.playlist;
@@ -73,7 +74,10 @@ export default ({
     }
   },
   async mounted() {
-    await this.$store.dispatch('getPlaylists', this.currentUser._id) && await this.$store.dispatch('getSongs');
+    console.log(this.currentUser);
+
+    await this.$store.dispatch('getPlaylists', this.currentUser._id);
+    await this.$store.dispatch('getSongs');
   },
   methods: {
     async createNewPlaylist() {
@@ -94,9 +98,62 @@ export default ({
         minutes + ':' + (seconds < 10 ? '0' : '') + seconds
       );
     },
+    durationPL(playlist) {
+      let sum = 0;
+      let fixedSongList = [];
+      let songs = this.getSongs;
+      
+      for(let i = 0; i < playlist.songList.length; i++) {
+        for(let j = 0; j < songs.length; j++) {
+          if(playlist.songList[i] === songs[j]._id) {
+            fixedSongList.push(songs[j]);
+          }
+        }
+      }
+
+      for(let i = 0; i < fixedSongList.length; i++) {
+        sum += parseInt(fixedSongList[i].duration);
+      }
+
+      sum = this.getDuration(sum);
+      return sum;
+    },
+    durationAllSongs() {
+      let sum = 0;
+      let fixedSongList = [];
+      let songs = this.getSongs;
+
+      for(let i = 0; i < this.playlists.length; i++) {
+        for(let j = 0; j < this.playlists[i].songList.length; j++) {
+          for(let k = 0; k < songs.length; k++) {
+            if(this.playlists[i].songList[j] === songs[k]._id) {
+              fixedSongList.push(songs[k]);
+            }
+          }
+        }
+      }
+
+      for(let i = 0; i < fixedSongList.length; i++) {
+        sum += parseInt(fixedSongList[i].duration);
+      }
+
+      sum = this.getDuration(sum);
+      return sum;
+    },
+    userAllSongs() {
+      let amount = 0;
+
+      for(let i = 0; i < this.playlists.length; i++) {
+        for(let j = 0; j < this.playlists[i].songList.length; j++) {
+          amount++;
+        }
+      }
+
+      return amount;
+    },
     async getAllSongs(){
       let songID = '61545c82936c2c6e0f3adfd2';
-      let data = await fetch('rest/songs');
+      let data = await fetch('/rest/songs');
       let res = await data.json();
       return res;
     }
@@ -148,13 +205,13 @@ export default ({
   }
 
   .content-preview {
-    display: flex;
-    flex-wrap: row wrap;
-    gap: 2em;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 2em;
   }
 
   .content-card {
-    width: 50%;
+    width: 100%;
     background-color: rgba(196, 196, 196, 0.1);
     border-radius: 5px;
     cursor: pointer;

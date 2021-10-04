@@ -48,8 +48,10 @@ module.exports = (app, models, dbCloudUrl) => {
 
   app.post('/api/login', async (req, res) => {
     // note: req.session is unique per user/browser
-    if (req.session.user){
-      delete req.session.user
+    if(req.session.user) {
+      delete req.session.user;
+      res.json({error: 'Someone is already logged in'});
+      return;
     }
     
     // Encrypt password
@@ -61,23 +63,27 @@ module.exports = (app, models, dbCloudUrl) => {
     const hash = crypto.createHmac('sha256', salt)
     .update(req.body.password).digest('hex');
     // Search for user
-    let user = await User.find({ $and: [{ email: req.body.email }, { password: hash }] })
-    if (user.length > 0) {
-      // succesful login, save the user to the session object
+    /* let user = await User.find({ $and: [{ email: req.body.email }, { password: hash }] }) */
+    let user = await User.findOne({email: req.body.email, password: hash})
+    console.log(user);
+    if(user) {
       req.session.user = user;
-      res.json(req.session.user);
+      console.log("Logged in!");
+      console.log("session", session);
+      console.log("req.session.user", req.session.user);
+      res.json(user);
+    } else {
+      res.json({error: 'No match found'});
     }
-    else {
-      res.json({ error: 'No match.' });
-    }
-
   });
 
   // Logout
   app.delete('/api/login', (req, res) => {
+    console.log("session", req.session.user);
     if (req.session.user) {
       delete req.session.user;
       res.json({ success: 'Logged out' });
+      console.log("Logged out");
     }
     else {
       res.json({ error: 'Was not logged in' });
@@ -86,24 +92,18 @@ module.exports = (app, models, dbCloudUrl) => {
 
 
   //get users
-  app.get('/api/users',async (req,res) =>{
+  /* app.get('/api/users',async (req,res) =>{
     let docs = await users.find()
     res.json(docs)
-  })
+  }) */
   
   // Check if logged in
   app.get('/api/login', (req, res) => {
-
-    if (req.session.user !== undefined && req.session.user.length > 0 ) {
-      let user = { ...req.session.user };
-
-      delete user[0].password; // remove password in answer
-      res.json(user);
-    }
-    else {
+    if (req.session.user !== undefined) {
+      
+      res.json(req.session.user);
+    } else {
       res.json({ error: 'Not logged in' });
     }
   });
-
-
 }

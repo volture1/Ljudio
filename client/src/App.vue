@@ -3,19 +3,21 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
 import SideBar from "./components/Sidebar.vue";
+import LandingPage from './pages/LandingPage.vue'
 </script>
 
 <template>
   <div>
-    <div class="container">
-      <div class="sidebar" v-if="renderCondition">
+    <div v-if="currentUser" class="container">
+      <div class="sidebar">
         <SideBar />
       </div>
       <router-view></router-view>
-      <div class="music-player" v-if="renderCondition">
+      <div class="music-player">
         <MusicPlayer />
       </div>
     </div>
+    <router-view v-else></router-view>
   </div>
 </template>
 
@@ -33,17 +35,12 @@ export default {
     }
   },
   created() {
-    this.interval = setInterval(() => this.conditionalRender(), 1);
-    // access sessionStorage when the page is loading
-    if(sessionStorage.getItem('store')){
-      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem('store'))))
-    };
-    // save the store data to the sessionStorage before page refresh
-    window.addEventListener('beforeunload', () => {
-      sessionStorage.setItem('store', JSON.stringify(this.$store.state))
-    });
-    console.log('sessionStorage store', sessionStorage.store);
-    /* console.log('sessionStorage currentUser', sessionStorage.store.currentUser); */
+    if(this.$store.state.currentUser) {
+      return;
+    } else {
+      this.$store.dispatch('getLoggedIn');
+    }
+
   },
   methods: {
     conditionalRender() {
