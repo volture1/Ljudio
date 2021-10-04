@@ -45,23 +45,27 @@ module.exports = (app,models) => {
     let firstSong = docs[0].songList[0]._id.toString()
     console.log('firstSong',firstSong)
     for(let song of req.body.songList) {
-      console.log('song',song)  
+      console.log('song0',song)  
       if( docs[0].songList.length !=0 && firstSong === song ) {
         res.json('This song has been added just now');
         console.log('This song has been added just now')
         return
       } else {
         docs[0].songList.splice(0,0,song)
+        console.log('songlist',docs[0].songList[0])
         await docs[0].save();
         res.json(docs[0]);
+        console.log('success save to recentlyPlayed')
       }     
     }
   })
 
   //Get recentlyPlayed by userId
   app.get('/rest/recentlyplayeds/user/:id',async(req,res) =>{
+     console.log('Get recentlyPlayed by userId', req.params.id)
     let model = models['recentlyplayeds']
     let docs = await model.find({userId:req.params.id}).populate(['userId','songList']).exec()
+    console.log('Get recentlyPlayed by userId',docs)
     res.json(docs)
   })
 

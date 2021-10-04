@@ -7,7 +7,8 @@ const state = {
   loggedIn:false,
   playlist: [],
   duplicateEmail:'',
-  allSongs: []
+  allSongs: [],
+  recentlyPlayed:[],
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -19,6 +20,10 @@ const mutations = {
   setPlaylist(state, playlist) {
     state.playlist = playlist
   },
+  setRecentlyPlayed(state,recentlyPlayed){
+    state.recentlyPlayed = recentlyPlayed
+  },
+
   setLoggedIn(state,loggedIn){
     state.loggedIn = loggedIn
   },
@@ -74,6 +79,14 @@ const actions = {
     console.log(playlists);
     store.commit('setPlaylist', playlists);
   },
+
+  async getRecentlyPlayeds(store,userId) {
+    let recentlyPlayeds = await fetch('/rest/recentlyPlayeds/user/' + userId);
+    recentlyPlayeds = await recentlyPlayeds.json();
+    store.commit('setRecentlyPlayed',recentlyPlayeds)
+
+  },
+
   async getSongs(store) {
     let songs = await fetch('/rest/songs');
     songs = await songs.json();

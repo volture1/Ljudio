@@ -57,8 +57,6 @@ module.exports = (app, models, dbCloudUrl) => {
     // Encrypt password
 
     let password = req.body.password
-    console.log('password before hash',password)
-    console.log('req.body',req.body);
     
     const hash = crypto.createHmac('sha256', salt)
     .update(req.body.password).digest('hex');
@@ -68,9 +66,6 @@ module.exports = (app, models, dbCloudUrl) => {
     console.log(user);
     if(user) {
       req.session.user = user;
-      console.log("Logged in!");
-      console.log("session", session);
-      console.log("req.session.user", req.session.user);
       res.json(user);
     } else {
       res.json({error: 'No match found'});

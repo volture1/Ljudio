@@ -35,14 +35,15 @@
       <!-- <p @click="createNewPlaylist">+Create new playlist</p> -->
     </div>
     <!-- {{getSongs}} -->
-    {{currentUser}}
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
-        <p class="details"></p>
+        <p class="details" v-if="recentlyPlayed!=='undefined'">{{recentlyPlayed}}</p>
         <p class="more"></p>
       </div>
       <div class="content-preview"></div>
+        <div class="content-card" v-for="recent in recentlyPlayed" :key="recent.id">
+        </div>
     </div>
     <div class="section">
       <h3 class="section-title">Liked</h3>
@@ -69,14 +70,18 @@ export default ({
     playlists() {
       return this.$store.state.playlist;
     },
+    recentlyPlayed() {
+      console.log('recentlyPlayed',this.$store.state.recentlyPlayed[0])
+      return this.$store.state.recentlyPlayed[0].songList;
+    },
     getSongs() {
       return this.$store.state.allSongs;
     }
   },
   async mounted() {
     console.log(this.currentUser);
-
-    await this.$store.dispatch('getPlaylists', this.currentUser._id);
+    await this.$store.dispatch('getRecentlyPlayeds',this.currentUser._id);
+    await this.$store.dispatch('getPlaylists', this.currentUser._id);  
     await this.$store.dispatch('getSongs');
   },
   methods: {
