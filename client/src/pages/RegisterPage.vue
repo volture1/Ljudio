@@ -12,36 +12,120 @@
     </div>
     <hr class="break" />
     <div class="fields">
-      <input class="input" type="text" placeholder="Full name" >
-      <input class="input" type="text" placeholder="Email">
-      <input class="input" type="text" placeholder="Username (optional)">
-      <input class="input" type="text" placeholder="Password">
+      <div class="namefields">
+        <input class="input" type="text" placeholder="Firstname" name="firstname" v-model="user.firstname" required>
+        <input class="input" type="text" placeholder="Lastname" name="lastname" v-model="user.lastname" required>
+      </div>
+      <input class="input" type="text" placeholder="Email" name="email" v-model="user.email" required>
+      <p v-if="isDuplicatedEmail" class="emailtaken">Email already in use</p>
+      <input class="input" type="text" placeholder="Username (optional)" name="username">
+      <input class="input" type="password" placeholder="Password" name="password" v-model="user.password" required minlength="3">
+      <input class="input repeat-password-field" type="password" placeholder="Repeat Password" name="repeat-password" v-model="repeatedPassword" required>
       <div class="birthinput-wrap">
-        <input class="input" type="text" placeholder="Day">
-        <input class="input" type="text" placeholder="Month">
-        <input class="input input-year" type="text" placeholder="Year">
+        <input class="input" type="text" placeholder="Day" name="day" v-model="user.birthday" required>
+        <input class="input" type="text" placeholder="Month" name="month" v-model="user.birthmonth" required>
+        <input class="input input-year" type="text" placeholder="Year" name="year" v-model="user.birthyear" required>
       </div>
       <div class="gender-selection">
         <div class="gender-options">
-          <input class="input-gender" type="checkbox">
+          <input @click="setGender($event)" class="input-gender" type="checkbox" name="male" :disabled="this.genderSelected.male">
           <label class="genderlabel" for="">Male</label>
         </div>
         <div class="gender-options">
-          <input class="input-gender" type="checkbox">
+          <input @click="setGender($event)" class="input-gender" type="checkbox" name="female" :disabled="this.genderSelected.female">
           <label class="genderlabel" for="">Female</label>
         </div>
       </div>
     </div>
     <hr class="break" />
     <div class="submit-wrap">
-      <button class="submit">Sign up</button>
+      <button @click="register()" class="submit">Sign up</button>      
     </div>
   </div>
 </template>
 
 <script>
-export default {
 
+export default {
+  data() {
+    return {
+      user: {
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: '',
+        birthday: '',
+        birthmonth: '',
+        birthyear: '',
+        gender: '',
+      },
+      genderSelected: {male: false, female: false},
+      repeatedPassword: '',
+      noPasswordMatch: false,
+      loggedIn: false,
+      isDuplicatedEmail: false
+    }
+  },
+  computed:{
+    isLoggedIn(){
+      console.log('isLoggedIn',this.$store.state.loggedIn)
+      return this.$store.state.loggedIn;
+    },
+    isDuplicatedEmail(){
+       if (this.$store.state.duplicateEmail == 'Email already in use'){      
+        return true;
+      }
+    },
+  },
+  methods: {
+    setGender(event) {
+      switch(event.target.name) {
+        case 'male':
+          this.genderSelected.female = !this.genderSelected.female;
+          this.user.gender = event.target.name;
+          break;
+        case 'female':
+          this.genderSelected.male = !this.genderSelected.male;
+          this.user.gender = event.target.name;
+          break;
+      }
+    },
+    async register() {
+      if(this.user.password === this.repeatedPassword) {
+        let credentials = {
+        firstname: this.user.firstname,
+        lastname: this.user.lastname,
+        email: this.user.email,
+        password: this.user.password,
+        birthday: this.user.birthday + '-' + this.user.birthmonth + '-' + this.user.birthyear,
+        gender: this.user.gender,
+        playlist: null,
+        liked: null
+        }
+        await this.$store.dispatch('register', credentials);
+        console.log("isLoggedIn", this.isLoggedIn);
+        if(this.isLoggedIn) {
+          this.$router.push('/Home');
+        }
+      } else {
+        let input = document.getElementsByName('repeat-password')[0];
+        input.style.border = '3px solid rgba(182, 19, 19, 0.671)';
+        this.noPasswordMatch = true;
+      }
+     /*  if (this.$store.state.duplicateEmail == 'Email already in use'){        
+        this.isDuplicateEmail = true
+        console.log('this.duplicateEmail in register metod',this.isDuplicateEmail)
+      } */
+      /* if (this.isLoggedIn){
+         console.log('this.isLoggedIn before push to home',this.isLoggedIn)
+        this.$router.push('/Home');
+      } */
+      
+      /* for(let attr in this.user) {
+        attr = '';
+      } */
+    }
+  }
 }
 </script>
 
@@ -58,7 +142,7 @@ export default {
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  input[type=text] {
+  input[type=text], input[type=password] {
     color: white;
     font-size: 14px;
     font-weight: 900;
@@ -68,10 +152,39 @@ export default {
     border: 3px solid rgb(22, 96, 165);
   }
 
+  input[type=password]:focus {
+    border: 3px solid rgb(22, 96, 165);
+  }
+  .errorEmail {
+    color:red
+  }
+
+  .emailtaken {
+    font-size: 12px;
+    font-weight: 900;
+    color: white;
+  }
+
+  .errormsgPswd {
+    font-size: 12px;
+    font-weight: 900;
+    color: rgba(255, 0, 0, 0.541);
+  }
+
+  .errorborder {
+    border: 3px solid rgba(182, 19, 19, 0.671);
+  }
+
   /* .top {
     width: 75%;
     margin: 0 auto;
   } */
+
+  .namefields {
+    width: 100%;
+    display: flex;
+    gap: 1em;
+  }
 
   .goback-route {
     font-size: 12px;
@@ -97,6 +210,7 @@ export default {
   }
 
   .input {
+    width: 100%;
     padding: 12px 6px;
     outline: none;
     border: none;
@@ -122,7 +236,7 @@ export default {
   .fields {
     display: flex;
     flex-direction: column;
-    gap: 2em;
+    gap: 1.5em;
     width: 75%;
     margin: 0 auto;
   }

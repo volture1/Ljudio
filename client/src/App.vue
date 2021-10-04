@@ -3,22 +3,22 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
 import SideBar from "./components/Sidebar.vue";
+import LandingPage from "./pages/LandingPage.vue";
 </script>
 
 <template>
   <div>
+    <div v-if="currentUser" class="container">
+      
       <div class="sidebar" v-if="renderCondition">
         <SideBar />
       </div>
-    <div class="container">
-       <footer class="music-player" v-if="renderCondition">
+       <div class="music-player" v-if="renderCondition">
         <MusicPlayer />
-      </footer>
-      <!-- <div class="music-player" v-if="renderCondition">
-        <MusicPlayer />
-      </div> -->
-    <router-view></router-view>
-    </div>
+      </div>
+      
+    <router-view v-else></router-view>
+  </div>
   </div>
 </template>
 
@@ -29,10 +29,19 @@ export default {
       renderCondition: true,
     };
   },
-  created() {
-    this.interval = setInterval(() => this.conditionalRender(), 1);
-  },
   components: { MusicPlayer, SideBar },
+  computed: {
+    currentUser() {
+      return this.$store.state.currentUser;
+    },
+  },
+  created() {
+    if (this.$store.state.currentUser) {
+      return;
+    } else {
+      this.$store.dispatch("getLoggedIn");
+    }
+  },
   methods: {
     conditionalRender() {
       if (
@@ -53,15 +62,17 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
 .container {
- 
+  display: flex;
+  justify-content: space-between;
+  /* margin-left: 20%; 
+  
   min-height: 400px;
    margin-bottom: 100px;
  
-  
-  
-}
-.sidebar {
-  background-color: #242526;
+  */
+  }
+.sidebar{
+  background-color: rgba(36, 37, 38, 0.5);
   width: 20%;
   height: 100vh;
   position: fixed;
@@ -71,9 +82,13 @@ export default {
   background-color: #242526;
   width: 80%;
   height: 10vh;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  /* 
   margin-left: 20%;
    position: fixed;
-  bottom:0;
+  bottom:0;*/
 }
 
 * {
