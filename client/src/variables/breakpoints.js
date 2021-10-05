@@ -1,8 +1,7 @@
 const breakpoints = {
-  450: 450,
-  720: 720,
-  1250: 1250,
-  9999: Infinity
+  mobile: 450,
+  tablet: 720,
+  desktop: Infinity
 };
   
   export default breakpoints;

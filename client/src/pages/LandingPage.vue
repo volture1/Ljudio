@@ -1,5 +1,5 @@
 <template>
-  <div class="landingpage">{{ mq.current }}
+  <div class="landingpage">
     
     <div class="nav">
       <div class="leftnav-side">
@@ -21,7 +21,8 @@
       <div class="left">
         <div class="texthold">
           <h1 class="title">Discover, listen & share</h1>
-          <h3 class="description">Browse among the latest songs, videos and artists and share your music experience with others</h3>
+          
+           <h3 class="description">Browse among the oldest songs, videos and artists and share your music experience with others</h3>
         </div>
         <div class="imghold">
           <img src="../assets/SoundwaveBtn.png" alt="" class="soundwave-img">
@@ -38,9 +39,7 @@
 </template>
 
 <script>
-import { useMq } from "../";
 
-const mq = useMq();
 
 </script>
 
