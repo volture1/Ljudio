@@ -62,10 +62,8 @@ module.exports = (app,models) => {
 
   //Get recentlyPlayed by userId
   app.get('/rest/recentlyplayeds/user/:id',async(req,res) =>{
-     console.log('Get recentlyPlayed by userId', req.params.id)
     let model = models['recentlyplayeds']
     let docs = await model.find({userId:req.params.id}).populate(['userId','songList']).exec()
-    console.log('Get recentlyPlayed by userId',docs)
     res.json(docs)
   })
 
@@ -97,7 +95,6 @@ module.exports = (app,models) => {
   //Add a new song to liked
   app.put('/rest/likeds/user/:id',async(req,res)=>{
     let model = models['likeds'];
-    console.log('model liked',model)
     let docs =  await model.find({userId:req.params.id}).populate(['userId','songList']).exec() 
     console.log('liked docs',docs)
     docs[0].songList.splice(0,0,song)

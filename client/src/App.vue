@@ -8,12 +8,12 @@ import LandingPage from './pages/LandingPage.vue'
 
 <template>
   <div>
-    <div v-if="currentUser" class="container">
+    <div v-if="currentUser.error !=='Not logged in'" class="container">
       <div class="sidebar">
         <SideBar />
       </div>
       <router-view></router-view>
-      <div class="music-player">
+      <div class="music-player"  v-if="currentUser.error !=='Not logged in'">
         <MusicPlayer />
       </div>
     </div>
@@ -31,12 +31,14 @@ export default {
   components: { MusicPlayer, SideBar },
   computed: {
     currentUser() {
+      console.log('currentUser in App.vue',this.$store.state.currentUser)
       return this.$store.state.currentUser;
     }
   },
   created() {
     if(this.$store.state.currentUser) {
-      return;
+      this.$store.dispatch(logout)
+      /* return; */
     } else {
       this.$store.dispatch('getLoggedIn');
     }

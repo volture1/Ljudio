@@ -30,7 +30,6 @@ module.exports = (app, models, dbCloudUrl) => {
 
     const hash = crypto.createHmac('sha256', salt)
       .update(req.body.password).digest('hex');
-    console.log("hash",hash)
     // Create new user
     let user = new models['users']({ ...req.body, password: hash });
     await user.save();
@@ -63,7 +62,6 @@ module.exports = (app, models, dbCloudUrl) => {
     // Search for user
     /* let user = await User.find({ $and: [{ email: req.body.email }, { password: hash }] }) */
     let user = await User.findOne({email: req.body.email, password: hash})
-    console.log(user);
     if(user) {
       req.session.user = user;
       res.json(user);
@@ -74,7 +72,6 @@ module.exports = (app, models, dbCloudUrl) => {
 
   // Logout
   app.delete('/api/login', (req, res) => {
-    console.log("session", req.session.user);
     if (req.session.user) {
       delete req.session.user;
       res.json({ success: 'Logged out' });
@@ -85,17 +82,11 @@ module.exports = (app, models, dbCloudUrl) => {
     }
   });
 
-
-  //get users
-  /* app.get('/api/users',async (req,res) =>{
-    let docs = await users.find()
-    res.json(docs)
-  }) */
   
   // Check if logged in
   app.get('/api/login', (req, res) => {
-    if (req.session.user !== undefined) {
-      
+    if (req.session.user !== undefined) {    
+      delete req.session.user.password; // remove password in answer
       res.json(req.session.user);
     } else {
       res.json({ error: 'Not logged in' });
