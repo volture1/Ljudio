@@ -126,6 +126,13 @@ export default {
 </script>
 
 <style scoped>
+  .break {
+    border-color: rgba(255, 255, 255, 0.05);
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 5em;
+  }
+
   span {
     font-weight: 100;
   }
@@ -246,7 +253,9 @@ export default {
 
   .suggestion-title {
     font-size: 36px;
-    margin-top: 6em;
+    margin-top: 4em;
+    margin-left: 1em;
+    margin-bottom: 1em;
   }
 
   span {
@@ -258,9 +267,11 @@ export default {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     flex-direction: column;
-    gap: 0.5em;
+    gap: 2em;
     justify-content: center;
     align-content: center;
+    width: 75%;
+    margin: 1.5em auto 0 auto;
   }
 
   .suggestion-thumbnail {

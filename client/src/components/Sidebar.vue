@@ -20,10 +20,12 @@
       </div>
     </div>
     <div class="routes-section">
-      <div class="route-container">
-        <Homeicon />
-        <p class="route">Home</p>
-      </div>
+      <router-link to='/Home' class="router-link">
+        <div class="route-container">
+          <Homeicon />
+          <p class="route">Home</p>
+        </div>
+      </router-link>  
       <div class="route-container">
         <Exploreicon />
         <p class="route">Explore</p>

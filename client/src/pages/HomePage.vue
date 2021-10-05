@@ -8,47 +8,45 @@
       </div>
       <div class="content-preview">
         <div class="content-card" v-for="playlist in playlists" :key="playlist.id">
-          <div v-if="playlist.songList.length < 4">
-            <div class="single-thumbnail">
-              <img class="thumbnail-100x100" :src="getThumbnail(playlist.songList[0])" alt="">
-            </div>
-          </div>
-          <div v-else class="thumbnails">
-            <div class="thumbnail-pair">
-              <div class="thumbnail">
-                <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[0])" alt="">
-              </div>
-              <div class="thumbnail">
-                <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[1])" alt="">
+          <router-link :to="'/playlists/' + playlist._id" class="router">
+            <div v-if="playlist.songList.length < 4">
+              <div class="single-thumbnail">
+                <img class="thumbnail-100x100" :src="getThumbnail(playlist.songList[0])" alt="">
               </div>
             </div>
-            <div class="thumbnail-pair">
-              <div class="thumbnail">
-                <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[2])" alt="">
+            <div v-else class="thumbnails">
+              <div class="thumbnail-pair">
+                <div class="thumbnail">
+                  <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[0])" alt="">
+                </div>
+                <div class="thumbnail">
+                  <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[1])" alt="">
+                </div>
               </div>
-              <div class="thumbnail">
-                <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[3])" alt="">
+              <div class="thumbnail-pair">
+                <div class="thumbnail">
+                  <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[2])" alt="">
+                </div>
+                <div class="thumbnail">
+                  <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[3])" alt="">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="playlist-details">
-            <div class="upper-playlist-part">
-              <p class="playlistTitle">{{playlist.name}}</p>
-              <div class="options-btn-wrap">
-                <div class="optionbtn"></div>
-                <div class="optionbtn"></div>
-                <div class="optionbtn"></div>
+            <div class="playlist-details">
+              <div class="upper-playlist-part">
+                <p class="playlistTitle">{{playlist.name}}</p>
+                <div class="options-btn-wrap">
+                  <div class="optionbtn"></div>
+                  <div class="optionbtn"></div>
+                  <div class="optionbtn"></div>
+                </div>
               </div>
+              <p class="playlist-content">{{playlist.songList.length}} songs • <!-- {{allSongsDurationPL(playlist)}} --> {{durationPL(playlist)}}</p>
             </div>
-            <p class="playlist-content">{{playlist.songList.length}} songs • <!-- {{allSongsDurationPL(playlist)}} --> {{durationPL(playlist)}}</p>
-            <!-- <p class="duration">{{getDuration(playlist.songList[0].duration)}}</p> -->
-          </div>
+          </router-link>
         </div>
       </div>
-      <!-- <p @click="createNewPlaylist">+Create new playlist</p> -->
     </div>
-    <!-- {{getSongs}} -->
-    <!-- {{playlists}} -->
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -300,5 +298,14 @@ export default ({
     opacity: 0.5;
     font-weight: 900;
     font-size: 12px;
+  }
+
+  .router {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
   }
 </style>
