@@ -43,7 +43,16 @@ export default {
   computed:{
     isLoggedIn(){     
       return this.$store.state.loggedIn;
-    }
+    },
+    currentUser(){      
+      return this.$store.state.currentUser;
+    },
+    checkEmail(){
+      if (this.email == this.currentUser.email){
+        this.tempError = "email or password can not be null"
+        return 
+      }
+    },
   },
   methods:{
     register(){
@@ -54,7 +63,15 @@ export default {
         email:this.email,
         password:this.password
       }
-      console.log("credentials0",credentials)
+      
+      if(credentials.email =='' || credentials.password =='' ){
+         this.tempError = "Email or password can not be null"
+        return
+      }
+      if(credentials.email === this.currentUser.email){
+          this.tempError = "You have already login"          
+          return
+      }
       await this.$store.dispatch('login',credentials)   
       if(!this.isLoggedIn){
         this.tempError = "wrong email or password"
