@@ -89,7 +89,6 @@ export default ({
   async mounted() {
     await this.$store.dispatch('getPlaylists', this.currentUser._id);
     await this.$store.dispatch('getSongs');
-    this.getThumbnail('615385d59ad09c7506d08e8e');
   },
   methods: {
     async createNewPlaylist() {

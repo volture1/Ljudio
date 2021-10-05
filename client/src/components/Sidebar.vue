@@ -36,10 +36,12 @@
         <Genresicon />
         <p class="route">Genres</p>
       </div>
-      <div class="route-container">
-        <Playlistsicon />
-        <p class="route">Playlists</p>
-      </div>
+      <router-link :to="'/Playlists'" class="router-link">
+        <div class="route-container">
+          <Playlistsicon />
+          <p class="route">Playlists</p>
+        </div>
+      </router-link>
       <div class="route-container">
         <Searchicon />
         <p class="route">Search</p>
@@ -207,6 +209,11 @@ export default {
   align-items: center;
   gap: 0.5em;
   cursor: pointer;
+}
+
+.router-link {
+  text-decoration: none;
+  color: white;
 }
 
 .route-container:hover {
