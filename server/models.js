@@ -58,6 +58,9 @@ const Song = mongoose.model('Song',{
     onlySound:{
         type:Boolean,
         require:true
+    },
+    thumbnail: {
+        type: String
     }
 
 })

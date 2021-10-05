@@ -8,14 +8,27 @@
       </div>
       <div class="content-preview">
         <div class="content-card" v-for="playlist in playlists" :key="playlist.id">
-          <div class="thumbnails">
+          <div v-if="playlist.songList.length < 4">
+            <div class="single-thumbnail">
+              <img class="thumbnail-100x100" :src="getThumbnail(playlist.songList[0])" alt="">
+            </div>
+          </div>
+          <div v-else class="thumbnails">
             <div class="thumbnail-pair">
-              <div class="thumbnail"></div>
-              <div class="thumbnail"></div>
+              <div class="thumbnail">
+                <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[0])" alt="">
+              </div>
+              <div class="thumbnail">
+                <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[1])" alt="">
+              </div>
             </div>
             <div class="thumbnail-pair">
-              <div class="thumbnail"></div>
-              <div class="thumbnail"></div>
+              <div class="thumbnail">
+                <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[2])" alt="">
+              </div>
+              <div class="thumbnail">
+                <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[3])" alt="">
+              </div>
             </div>
           </div>
           <div class="playlist-details">
@@ -35,7 +48,7 @@
       <!-- <p @click="createNewPlaylist">+Create new playlist</p> -->
     </div>
     <!-- {{getSongs}} -->
-    {{currentUser}}
+    <!-- {{playlists}} -->
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -74,10 +87,9 @@ export default ({
     }
   },
   async mounted() {
-    console.log(this.currentUser);
-
     await this.$store.dispatch('getPlaylists', this.currentUser._id);
     await this.$store.dispatch('getSongs');
+    this.getThumbnail('615385d59ad09c7506d08e8e');
   },
   methods: {
     async createNewPlaylist() {
@@ -151,11 +163,13 @@ export default ({
 
       return amount;
     },
-    async getAllSongs(){
-      let songID = '61545c82936c2c6e0f3adfd2';
-      let data = await fetch('/rest/songs');
-      let res = await data.json();
-      return res;
+    getThumbnail(id){
+      let data = this.getSongs;
+      for(let i = 0; i < data.length; i++) {
+        if(id == data[i]._id) {
+          return data[i].thumbnail;
+        }
+      }
     }
   }
 })
@@ -261,6 +275,21 @@ export default ({
     width: 50px;
     height: 50px;
     background-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .thumbnail-50x50 {
+    width: 50px; 
+    height: 50px;
+  }
+
+  .thumbnail-100x100 {
+    width: 100px; 
+    height: 100px;
+  }
+
+  .single-thumbnail {
+    width: 100px;
+    height: 100px;
   }
 
   .thumbnail-pair {
