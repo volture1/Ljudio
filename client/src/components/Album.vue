@@ -1,16 +1,25 @@
 <template>
   <div v-if="showPage" class="album-container">
-     <div class="padding"></div>
+    <div class="padding"></div>
     <div class="album-info">
-         <img
-            v-if="this.albumList.thumbnails.url"
-            class="album-image"
-            :src="this.albumList.thumbnails.url"
-          />
-          <img v-else class="album-image" :src="this.albumList.thumbnails[0].url" /> 
+      <img
+        v-if="this.albumList.thumbnails.url"
+        class="album-image"
+        :src="this.albumList.thumbnails.url"
+      />
+      <img v-else class="album-image" :src="this.albumList.thumbnails[0].url" />
 
-        <h1>{{ this.albumList.title }}</h1>
-        <p>{{ this.albumList.year }} - {{ this.calculateDuration(this.albumList.duration)}}</p>
+      <h1>{{ this.albumList.title }}</h1>
+      <p>
+        {{ this.albumList.year }} -
+        {{ this.calculateDuration(this.albumList.duration) }}
+      </p>
+    </div>
+    <div v-if="!showSongs" class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
     <div v-if="showSongs" class="album-songs">
       <div
@@ -22,13 +31,13 @@
         <p id="result-text">{{ result.name }}</p>
       </div>
     </div>
-   </div>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
-    return{
+    return {
       url: "https://yt-music-api.herokuapp.com/api/yt/album/",
       urlSongs: "https://yt-music-api.herokuapp.com/api/yt/song/",
       albumList: [],
@@ -36,60 +45,43 @@ export default {
       tempSongs: [],
       songs: [],
       showPage: false,
-      showSongs: true,
-    }
+      showSongs: false,
+    };
   },
-   async created(){
-   this.getAlbum();
+  async created() {
+    this.getAlbum();
   },
-  methods:{
+  methods: {
     sendVideoId(id) {
-     
-           this.$store.commit("setSongId", id);
-       this.$store.commit('setPlaylist', this.songs);
+      this.$store.commit("setSongId", id);
+      this.$store.commit("setPlaylist", this.songs);
     },
-    async getAlbum(){
+    async getAlbum() {
       let res = await fetch(this.url + this.$route.params.id);
       let data = await res.json();
       this.albumList = data;
       this.showPage = true;
-      await this.getSongs();
+      this.getSongs();
     },
-    async getSongs(){
+    async getSongs() {
       let res = await fetch(this.url + this.$route.params.id);
       let data = await res.json();
       this.tempSongs = [...data.tracks];
-      console.log(this.tempSongs)
-      // this.songVideoIds = this.tempSongs.map((a) => a.videoId);
-      // for(let i = 0; i < this.songVideoIds.length; i++){
-      //   let res = await fetch(this.urlSongs + this.songVideoIds[i]);
-      //   let data = await res.json();
-      //   if(data != null){
-      //     this.songs.push(data)
-      //   }
-      //   else{
-      //     return;
-      //   }
-      // }
-      // this.$store.commit('setPlaylist', this.songs);
-      
-      this.showSongs = true;
       this.sendSongs();
     },
-    async sendSongs(){
-       this.songVideoIds = this.tempSongs.map((a) => a.videoId);
-       for(let i = 0; i < this.songVideoIds.length; i++){
-         let res = await fetch(this.urlSongs + this.songVideoIds[i]);
+    async sendSongs() {
+      this.songVideoIds = this.tempSongs.map((a) => a.videoId);
+      for (let i = 0; i < this.songVideoIds.length; i++) {
+        let res = await fetch(this.urlSongs + this.songVideoIds[i]);
         let data = await res.json();
-         if(data != null){
-           this.songs.push(data)
+        if (data != null) {
+          this.songs.push(data);
+        } else {
         }
-         else{
-           return;
-         }
-       }
+      }
+      this.showSongs = true;
     },
-   calculateDuration(duration) {
+    calculateDuration(duration) {
       let time = new Date(duration);
       let newTime = time.toLocaleTimeString(navigator.language, {
         minute: "2-digit",
@@ -98,13 +90,13 @@ export default {
       return newTime;
     },
   },
-}
+};
 </script>
 <style scoped>
-  .album-container{
-    margin-left: 20%;
-  }
-  .result {
+.album-container {
+  margin-left: 20%;
+}
+.result {
   margin-right: 5px;
   height: 50px;
   border-radius: 5px;
@@ -121,4 +113,41 @@ export default {
 .padding {
   height: 50px;
 }
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-left: 100px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 </style>
