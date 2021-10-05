@@ -4,11 +4,17 @@
       <h1 @click="$router.push('/')">Ljudio</h1>
       <router-link to="/search">Search </router-link>
     </nav>
+    <Share/>
   </div>
 </template>
 
 <script>
-export default {};
+import Share from './Share.vue'
+export default {
+  components:{
+    Share,
+  }
+};
 </script>
 
 <style scoped>
