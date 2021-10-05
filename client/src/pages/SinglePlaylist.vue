@@ -8,6 +8,7 @@
     </div>
     <div class="songlist">
       <div class="song" v-for="song in songs" :key="song._id">
+        <router-link :to="'/song/' + song._id" class="router">
           <img :src="song.thumbnail" alt="" class="thumbnail">
           <p class="songtitle">{{song.title}}</p>
           <p class="artist">{{song.artist}}</p>
@@ -17,6 +18,7 @@
             <div class="option-btn"></div>
             <div class="option-btn"></div>
           </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -82,6 +84,16 @@ export default {
 </script>
 
 <style scoped>
+  .router {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .singleplaylist {
     width: 100vw;
     height: 90vh;
@@ -103,7 +115,8 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 1em;
-    padding: 2em;
+    padding: 2em 10em;
+    margin-top: 1em;
   }
 
   .song {

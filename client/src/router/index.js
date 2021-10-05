@@ -6,6 +6,7 @@ import LoginPage from '../pages/LoginPage.vue';
 import SearchPage from '../pages/SearchPage.vue';
 import Playlists from '../pages/Playlists.vue';
 import SinglePlaylist from '../pages/SinglePlaylist.vue'
+import Song from '../pages/Song.vue'
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: '/playlists/:id',
     name: 'SinglePlaylist',
     component: SinglePlaylist
+  },
+  {
+    path: '/song/:id',
+    name: "Song",
+    component: Song
   }
 ];
 
