@@ -78,9 +78,7 @@ const actions = {
       headers: { 'Content-Type': 'application/json' },
       body:JSON.stringify(credentials)
     })
-    console.log("user0",res);
     let user = await res.json();
-    console.log("user1", user);
     store.commit('setCurrentUser', user);
     store.commit('setLoggedIn', true);
   },
@@ -93,18 +91,24 @@ const actions = {
   },
 
   async getRecentlyPlayeds(store,userId) {
+    console.log(userId);
     let recentlyPlayeds = await fetch('/rest/recentlyPlayeds/user/' + userId);
     recentlyPlayeds = await recentlyPlayeds.json();
-    store.commit('setRecentlyPlayed',recentlyPlayeds)
-    store.commit('setRecentSongs',this.state.recentlyPlayed[0].songList)
+    console.log('recentlyPlayeds',recentlyPlayeds)    
+    store.commit('setRecentlyPlayed',recentlyPlayeds) 
+    if (recentlyPlayeds.length > 0){    
+      store.commit('setRecentSongs',this.state.recentlyPlayed[0].songList)
+    }   
   },
 
   async getLikeds(store,userId) {
     let likeds = await fetch('/rest/Likeds/user/' + userId);
-    likeds = await likeds.json();
+    likeds = await likeds.json();    
     store.commit('setLiked',likeds)
     console.log('likeds',likeds)
-    store.commit('setLikedSongs',this.state.liked[0].songList)
+    if (likeds.length > 0) {  
+      store.commit('setLikedSongs',this.state.liked[0].songList)
+    }    
   },
 
   async getSongs(store) {
@@ -129,6 +133,8 @@ const actions = {
     });
     res = await res.json();
     store.commit('setCurrentUser', null);
+    store.commit('setLoggedIn', false);
+    console.log('loggedIn after logout',this.state.loggedIn)
   },
   async getLoggedIn(store) {
     let res = await fetch('/api/login', {

@@ -38,29 +38,30 @@
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
-        <p class="details" v-if="recentlyPlayed!=='undefined'">{{recentlyPlayeds.length}}</p>
-        <p class="more"></p>
+        <p class="details" >{{recentlyPlayeds.length}} Song</p>
+        <p class="more">More</p>
       </div>
-      <div class="content-preview"></div>
-        <div class="content-card" v-for="recent in recentlyPlayeds" :key="recent.id">
+      <div class="content-preview" ></div>
+        <div class="content-card" v-for="(recent,i) in recentlyPlayeds" :key="i" >
           <div class="titile">{{recent.title}}</div>
           <div class="artist">{{recent.artist}}</div>
           <div class="dateAdded">{{recent.dateAdded}}</div>
-          <div class="duration">{{recent.duration}}</div>
+          <div class="duration">{{getDuration( parseInt(recent.duration))}}</div>
         </div>
+      <div class="p"></div>
     </div>
     <div class="section">
       <h3 class="section-title">Liked</h3>
       <div class="info-more-p">
-        <p class="details" v-if ="liked !== 'undefined'">{{likeds.length}}</p>
-        <p class="more"></p>
+        <p class="details" >{{likeds.length}} Song</p>
+        <p class="more">More</p>
       </div>
-      <div class="content-preview"></div>
+      <div class="content-preview" ></div>
        <div class="content-card" v-for="liked in likeds" :key="liked.id">
           <div class="titile">{{liked.title}}</div>
           <div class="artist">{{liked.artist}}</div>
           <div class="dateAdded">{{liked.dateAdded}}</div>
-          <div class="duration">{{liked.duration}}</div>
+          <div class="duration">{{getDuration(parseInt(liked.duration))}}</div>
         </div>
     </div>
   </div>
@@ -78,13 +79,16 @@ export default ({
       return this.$store.state.currentUser;
     },
     playlists() {
+      console.log('this.$store.state.playlist',this.$store.state.playlist) 
       return this.$store.state.playlist;
     },
-    recentlyPlayeds() {     
+    recentlyPlayeds() { 
+      console.log('this.$store.state.recentSongs',this.$store.state.recentSongs)    
       return this.$store.state.recentSongs;
     },
 
     likeds() {
+      console.log('this.$store.state.likedSongs',this.$store.state.likedSongs) 
       return this.$store.state.likedSongs;
     },
    
@@ -95,9 +99,9 @@ export default ({
   async mounted() {
   
     await this.$store.dispatch('getPlaylists', this.currentUser._id);  
-    await this.$store.dispatch('getSongs');
+    await this.$store.dispatch('getSongs');  
     await this.$store.dispatch('getRecentlyPlayeds',this.currentUser._id);
-    await this.$store.dispatch('getLikeds',this.currentUser._id);
+    await this.$store.dispatch('getLikeds',this.currentUser._id); 
     
   },
   methods: {
@@ -110,11 +114,7 @@ export default ({
       }
       await this.$store.dispatch('createPlaylist', testdata);
     },
-
-    async dispatch() {
-      console.log(this.currentUser);
-     
-    },
+   
     getDuration(ms) {
       let minutes = Math.floor(ms/60000);
       let seconds = ((ms % 60000) / 1000).toFixed(0);

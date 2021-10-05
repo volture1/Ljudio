@@ -68,15 +68,21 @@ export default {
          this.tempError = "Email or password can not be null"
         return
       }
-      if(credentials.email === this.currentUser.email){
+
+      if (this.isLoggedIn && credentials.email === this.currentUser.email){
           this.tempError = "You have already login"          
+          return
+      }
+      if (this.isLoggedIn && credentials.email !== this.currentUser.email){
+          console.log('this.isLoggedIn',this.isLoggedIn)
+          this.tempError = "You must logout first"          
           return
       }
       await this.$store.dispatch('login',credentials)   
       if(!this.isLoggedIn){
         this.tempError = "wrong email or password"
-      }
-      this.$router.push('/Home')
+      } else{    
+      this.$router.push('/Home')}
     }
   }
 }
