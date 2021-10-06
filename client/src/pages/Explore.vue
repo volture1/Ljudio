@@ -218,6 +218,12 @@ export default {
     margin-left: 20vw;
     padding: 2em;
   }
+  @media screen and (max-width: 950px) {
+  .explore{
+    margin-left: 2%;
+    width: 95%;
+  }
+} 
 
   .pagetitle {
     font-size: 28px;

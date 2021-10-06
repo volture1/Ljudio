@@ -96,8 +96,14 @@ export default {
 .album-container {
   margin-left: 20%;
 }
+@media screen and (max-width: 950px) {
+  .album-container{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 .result {
-  margin-right: 5px;
+  
   height: 50px;
   border-radius: 5px;
   background-color: #c4c4c421;

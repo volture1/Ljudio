@@ -109,6 +109,12 @@ p {
 .artist-container {
   margin-left: 20%;
 }
+@media screen and (max-width: 950px) {
+  .artist-container{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 .artist-profile {
   margin-left: 20%;
   height: 65vh;
@@ -116,6 +122,13 @@ p {
   background-color: rgb(49, 46, 46);
   border-radius: 4px;
 }
+@media screen and (max-width: 950px) {
+  .artist-profile{
+    margin-left: 10%;
+    width: 75%;
+    height: 60%
+  }
+} 
 .top-songs {
   display: flex;
   gap: 1em;
@@ -173,6 +186,13 @@ p {
   width: 100vh;
   border-radius: 4px;
 }
+@media screen and (max-width: 950px) {
+  .artist-image{
+    
+    width: 100%;
+    height: 60%
+  }
+} 
 .artist-title {
   margin-left: 10vh;
 }

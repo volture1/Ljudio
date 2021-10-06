@@ -181,6 +181,12 @@ export default ({
     justify-content: space-between;
     margin-left: 20vw;
   }
+  @media screen and (max-width: 950px) {
+  .homepage{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 
   .section {
     display: flex;

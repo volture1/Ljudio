@@ -240,6 +240,7 @@ p {
   font-size: 14px;
 }
 
+
 .container {
   width: 75%;
   display: flex;
@@ -247,6 +248,12 @@ p {
   margin-left: 20vw;
   padding: 1em;
 }
+ @media screen and (max-width: 950px) {
+  .container{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 
 .input {
   padding: 1em;
@@ -310,17 +317,22 @@ p {
 
    align-content: center;
    flex-direction: row; */
-  margin-right: 5px;
+  
   height: 50px;
   border-radius: 5px;
   background-color: #c4c4c421;
 }
 #result-text {
-  width: 20%;
+  width: 15%;
   margin-top: 15px;
   float: left;
   display: inline;
 }
+@media screen and (max-width: 950px) {
+  #result-text{
+    
+  }
+} 
 #result-image {
   margin-right: 12%;
   margin-left: 2%;
