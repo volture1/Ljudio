@@ -381,7 +381,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 22vw;
+    /* width: 22vw; */
     padding-left: 0.5em;
     padding-right: 0.5em;
     padding-top: 0.5em;
@@ -389,7 +389,8 @@ export default {
 
   .source-wrap {
     display: flex;
-    align-self: flex-start;
+    align-self: end;
+    margin-left: 1em;
   }
 
   .channel-card {
@@ -427,5 +428,6 @@ export default {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 2em;
+    margin-bottom: 2em;
   }
 </style>

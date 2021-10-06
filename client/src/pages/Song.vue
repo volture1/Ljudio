@@ -47,7 +47,7 @@
       </div>
     </div>
     <h3 class="suggestion-title"><span>More from</span> {{song.artist}}</h3>
-    <!-- <div class="suggestion-section" v-if="this.suggested">
+    <div class="suggestion-section" v-if="this.suggested">
       <div class="suggestions" v-for="suggestion in this.suggested.content" :key="suggestion">
         <div class="suggestion">
           <img :src="suggestion.thumbnails[0].url" alt="" class="suggestion-thumbnail">
@@ -61,7 +61,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -80,9 +80,9 @@ export default {
       suggested: []
     }
   },
- /* async mounted() {
+ async mounted() {
     await this.suggestions();
-  }, */
+  },
   computed: {
     song() {
       let songs = this.$store.state.allSongs;
@@ -94,11 +94,11 @@ export default {
     }
   },
   methods: {
-    /* async suggestions() {
+    async suggestions() {
       let data = await fetch("https://yt-music-api.herokuapp.com/api/yt/songs/" + this.song.artist);
       data = await data.json();
       this.suggested = data;
-    }, */
+    },
     getDuration(ms) {
       let minutes = Math.floor(ms/60000);
       let seconds = ((ms % 60000) / 1000).toFixed(0);
