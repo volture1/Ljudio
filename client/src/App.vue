@@ -13,9 +13,9 @@ import LandingPage from './pages/LandingPage.vue'
         <SideBar />
       </div>
       <router-view></router-view>
-      <div class="music-player">
+      <!-- <div class="music-player">
         <MusicPlayer />
-      </div>
+      </div> -->
     </div>
     <router-view v-else></router-view>
   </div>

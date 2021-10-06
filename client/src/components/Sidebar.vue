@@ -26,10 +26,12 @@
           <p class="route">Home</p>
         </div>
       </router-link>  
-      <div class="route-container">
-        <Exploreicon />
-        <p class="route">Explore</p>
-      </div>
+      <router-link to='/explore' class="router-link">
+        <div class="route-container">
+          <Exploreicon />
+          <p class="route">Explore</p>
+        </div>
+      </router-link>
       <div class="route-container">
         <Popularicon />
         <p class="route">Popular</p>

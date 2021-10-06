@@ -7,6 +7,7 @@ import SearchPage from '../pages/SearchPage.vue';
 import Playlists from '../pages/Playlists.vue';
 import SinglePlaylist from '../pages/SinglePlaylist.vue'
 import Song from '../pages/Song.vue'
+import Explore from '../pages/Explore.vue'
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: '/song/:id',
     name: "Song",
     component: Song
+  },
+  {
+    path: '/explore',
+    name: "Explore",
+    component: Explore
   }
 ];
 
