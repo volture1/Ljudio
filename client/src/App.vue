@@ -29,19 +29,20 @@ export default {
     }
   }, 
   components: { MusicPlayer, SideBar },
-  computed: {  
+  computed: {
     currentUser() {
       return this.$store.state.currentUser;
-    },
+    }
   },
   created() {
-    if(this.$store.state.currentUser) {      
+    if(this.$store.state.currentUser) {
       return;
     } else {
       this.$store.dispatch('getLoggedIn');
     }
 
   },
+  components: { MusicPlayer, SideBar},
   methods: {
     conditionalRender() {
       if (
