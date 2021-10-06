@@ -71,7 +71,7 @@ module.exports = (app,models) => {
   // Get users likeds by userId
   app.get('/rest/likeds/user/:id', async (req, res) => {
     let model = models['likeds']
-    let docs = await model.find({ userId: req.params.id }).populate(['userId']).exec()
+    let docs = await model.find({ userId: req.params.id }).populate(['userId','songList']).exec()
     res.json(docs)
   })
 

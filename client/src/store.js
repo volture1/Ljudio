@@ -85,7 +85,6 @@ const actions = {
     console.log(userId);
     let playlists = await fetch('/rest/playlists/user/' + userId);
     playlists = await playlists.json();
-    console.log(playlists);
     store.commit('setPlaylist', playlists);
   },
   async getSongs(store) {
@@ -108,8 +107,7 @@ const actions = {
   async getRecentlyPlayeds(store,userId) {
     console.log(userId);
     let recentlyPlayeds = await fetch('/rest/recentlyPlayeds/user/' + userId);
-    recentlyPlayeds = await recentlyPlayeds.json();
-    console.log('recentlyPlayeds',recentlyPlayeds)    
+    recentlyPlayeds = await recentlyPlayeds.json(); 
     store.commit('setRecentlyPlayed',recentlyPlayeds) 
     if (recentlyPlayeds.length > 0){    
       store.commit('setRecentSongs',this.state.recentlyPlayed[0].songList)
@@ -122,7 +120,6 @@ const actions = {
     let likeds = await fetch('/rest/Likeds/user/' + userId);
     likeds = await likeds.json();    
     store.commit('setLiked',likeds)
-    console.log('likeds',likeds)
     if (likeds.length > 0) {  
       store.commit('setLikedSongs',this.state.liked[0].songList)
     } else {
