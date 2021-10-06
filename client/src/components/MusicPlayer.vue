@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="music-player-container">
-      <div class="song-content-container">
+      <div
+        @click="$router.push('/video/' + this.playlistVideoIds[this.testId])"
+        class="song-content-container"
+      >
         <p style="text-decoration: underline">Currently Playing</p>
         <div v-for="result in this.list" :key="result" class="result">
           <div>
@@ -172,6 +175,21 @@ export default {
       this.playlist = [...this.playlistFetched];
       this.playlistVideoIds = this.playlist.map((a) => a.videoId);
 
+      console.log(this.playlistFetched.length)
+      if(this.playlistFetched.length == 1){
+        this.playlist = this.playlistFetched;
+        console.log(this.playlistFetched)
+        if (element.videoId == id) {
+          this.testId = i;
+          this.currentSongArray[0] = element;
+          window.player.loadPlaylist(this.playlistVideoIds, i, 0);
+          this.duration = this.calculateDuration(element.duration);
+          this.UpdateCurrentTime();
+          this.sliderDuration = this.formatSeconds(this.duration);
+        }
+      }else{
+        this.playlist = [...this.playlistFetched];
+        this.playlistVideoIds = this.playlist.map((a) => a.videoId);
       let i = 0;
       this.playlist.forEach((element) => {
         if (element.videoId == id) {
@@ -185,6 +203,7 @@ export default {
         i++;
       });
       i = 0;
+      }
     },
     UpdateCurrentTime() {
       this.interval = setInterval(
@@ -192,7 +211,6 @@ export default {
         1000
       );
     },
-
     formatMMSS(time) {
       let newTime;
       let minutes = Math.floor(time / 60);
@@ -296,6 +314,12 @@ export default {
   border-radius: 50%;
   background-color: #c4c4c4;
 }
+.song-controls {
+  display: flex;
+  color: white;
+  height: 70px;
+  width: 150px;
+}
 .previous-button {
   margin-top: 20px;
   height: 35px;
@@ -385,6 +409,11 @@ export default {
   #volumebar {
     height: 10px;
     width: 150px;
+  }
+  #progress-text {
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: -5px;
   }
   .progress-slider {
     margin-right: 90px;

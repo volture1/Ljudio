@@ -6,6 +6,7 @@ import LoginPage from '../pages/LoginPage.vue';
 import SearchPage from '../pages/SearchPage.vue';
 import ArtistPage from '../pages/ArtistPage.vue';
 import AlbumPage from '../pages/AlbumPage.vue';
+import VideoPage from '../pages/VideoPage.vue'
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
     name: 'AlbumPage',
     component: AlbumPage
   },
+  {
+    path: '/video/:id',
+    name: 'VideoPage',
+    component: VideoPage
+  }
 ];
 
 const router = createRouter({

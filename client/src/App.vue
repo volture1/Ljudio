@@ -3,6 +3,7 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
 import SideBar from "./components/Sidebar.vue";
+
 </script>
 
 <template>
@@ -32,7 +33,7 @@ export default {
   created() {
     this.interval = setInterval(() => this.conditionalRender(), 1);
   },
-  components: { MusicPlayer, SideBar },
+  components: { MusicPlayer, SideBar},
   methods: {
     conditionalRender() {
       if (
