@@ -8,12 +8,13 @@ import LandingPage from './pages/LandingPage.vue'
 
 <template>
   <div>
-    <div v-if="currentUser" class="container">
-      <div class="sidebar" v-if="conditionalRender">
+    
+    <div v-if="this.$store.state.currentUser" class="container">
+      <div class="sidebar">
         <SideBar />
       </div>
       <router-view></router-view>
-      <div class="music-player" v-if="conditionalRender">
+      <div class="music-player"  v-if="IsLoggedIn">
         <MusicPlayer />
       </div>
     </div>
@@ -29,10 +30,11 @@ export default {
     }
   }, 
   components: { MusicPlayer, SideBar },
-  computed: {  
-    currentUser() {
-      return this.$store.state.currentUser;
-    },
+  computed: {
+  
+    IsLoggedIn() {
+      return this.$store.state.loggedIn;
+    }
   },
   created() {
     if(this.$store.state.currentUser) {      
@@ -44,6 +46,7 @@ export default {
   },
   methods: {
     conditionalRender() {
+      
       if (
         this.$route.path == "/Register" ||
         this.$route.path == "/" ||

@@ -60,10 +60,6 @@ const Song = mongoose.model('Song',{
         require:true
     },
     dateAddedToRecent:Date,
-    thumbnail: {
-        type: String
-    }
-
 })
 const User = mongoose.model('User',{
     email:{

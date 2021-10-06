@@ -20,18 +20,14 @@
       </div>
     </div>
     <div class="routes-section">
-      <router-link to='/Home' class="router-link">
-        <div class="route-container">
-          <Homeicon />
-          <p class="route">Home</p>
-        </div>
-      </router-link>  
-      <router-link to='/explore' class="router-link">
-        <div class="route-container">
-          <Exploreicon />
-          <p class="route">Explore</p>
-        </div>
-      </router-link>
+      <div class="route-container">
+        <Homeicon />
+        <p class="route">Home</p>
+      </div>
+      <div class="route-container">
+        <Exploreicon />
+        <p class="route">Explore</p>
+      </div>
       <div class="route-container">
         <Popularicon />
         <p class="route">Popular</p>
@@ -40,18 +36,14 @@
         <Genresicon />
         <p class="route">Genres</p>
       </div>
-      <router-link :to="'/Playlists'" class="router-link">
-        <div class="route-container">
-          <Playlistsicon />
-          <p class="route">Playlists</p>
-        </div>
-      </router-link>
-      <router-link to='/search' class='router-link'>
-        <div class="route-container">
-          <Searchicon />
-          <p class="route">Search</p>
-        </div>
-      </router-link>
+      <div class="route-container">
+        <Playlistsicon />
+        <p class="route">Playlists</p>
+      </div>
+      <div class="route-container">
+        <Searchicon />
+        <p class="route">Search</p>
+      </div>
       <div class="route-container">
         <Likedicon />
         <p class="route">Liked</p>
@@ -215,11 +207,6 @@ export default {
   align-items: center;
   gap: 0.5em;
   cursor: pointer;
-}
-
-.router-link {
-  text-decoration: none;
-  color: white;
 }
 
 .route-container:hover {
