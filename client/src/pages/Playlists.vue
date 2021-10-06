@@ -86,6 +86,7 @@ export default {
 
       return amount;
     },
+    
     getDuration(ms) {
       let minutes = Math.floor(ms/60000);
       let seconds = ((ms % 60000) / 1000).toFixed(0);

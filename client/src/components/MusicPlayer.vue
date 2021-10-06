@@ -2,8 +2,8 @@
   <div>
     <div class="music-player-container">
       <div
-        @click="$router.push('/video/' + this.playlistVideoIds[this.testId])"
-        class="song-content-container"
+        @click="$router.push('/video/' + this.playlistVideoIds[this.playlistIndex])"
+                class="song-content-container"
       >
         <p style="text-decoration: underline">Currently Playing</p>
         <div v-for="result in this.list" :key="result" class="result">
@@ -171,12 +171,13 @@ export default {
   },
   methods: {
     initPlaylist(id) {
-      this.$store.commit("setSongId", this.playListVideoIds[this.playlistIndex]);
-      this.playlist = [...this.playlistFetched];
-      this.playlistVideoIds = this.playlist.map((a) => a.videoId);
+      // this.$store.commit("setSongId", this.playListVideoIds[this.playlistIndex]);
+      // this.playlist = [...this.playlistFetched];
 
-      console.log(this.playlistFetched.length)
-      if(this.playlistFetched.length == 1){
+      //console.log(this.playlistFetched.length)
+      if(this.playlistFetched){
+        this.playlistVideoIds = this.playlist.map((a) => a.videoId);
+        console.log('this is with 1 object')
         this.playlist = this.playlistFetched;
         console.log(this.playlistFetched)
         if (element.videoId == id) {
@@ -191,6 +192,7 @@ export default {
         this.playlist = [...this.playlistFetched];
         this.playlistVideoIds = this.playlist.map((a) => a.videoId);
       let i = 0;
+        console.log(this.playlistVideoIds, 'this is the video ids')
       this.playlist.forEach((element) => {
         if (element.videoId == id) {
           this.playlistIndex = i;
