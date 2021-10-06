@@ -8,33 +8,45 @@
       </div>
       <div class="content-preview">
         <div class="content-card" v-for="playlist in playlists" :key="playlist.id">
-          <div class="thumbnails">
-            <div class="thumbnail-pair">
-              <div class="thumbnail"></div>
-              <div class="thumbnail"></div>
-            </div>
-            <div class="thumbnail-pair">
-              <div class="thumbnail"></div>
-              <div class="thumbnail"></div>
-            </div>
-          </div>
-          <div class="playlist-details">
-            <div class="upper-playlist-part">
-              <p class="playlistTitle">{{playlist.name}}</p>
-              <div class="options-btn-wrap">
-                <div class="optionbtn"></div>
-                <div class="optionbtn"></div>
-                <div class="optionbtn"></div>
+          <router-link :to="'/playlists/' + playlist._id" class="router">
+            <div v-if="playlist.songList.length < 4">
+              <div class="single-thumbnail">
+                <img class="thumbnail-100x100" :src="getThumbnail(playlist.songList[0])" alt="">
               </div>
             </div>
-            <p class="playlist-content">{{playlist.songList.length}} songs • <!-- {{allSongsDurationPL(playlist)}} --> {{durationPL(playlist)}}</p>
-            <!-- <p class="duration">{{getDuration(playlist.songList[0].duration)}}</p> -->
-          </div>
+            <div v-else class="thumbnails">
+              <div class="thumbnail-pair">
+                <div class="thumbnail">
+                  <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[0])" alt="">
+                </div>
+                <div class="thumbnail">
+                  <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[1])" alt="">
+                </div>
+              </div>
+              <div class="thumbnail-pair">
+                <div class="thumbnail">
+                  <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[2])" alt="">
+                </div>
+                <div class="thumbnail">
+                  <img class="thumbnail-50x50" :src="getThumbnail(playlist.songList[3])" alt="">
+                </div>
+              </div>
+            </div>
+            <div class="playlist-details">
+              <div class="upper-playlist-part">
+                <p class="playlistTitle">{{playlist.name}}</p>
+                <div class="options-btn-wrap">
+                  <div class="optionbtn"></div>
+                  <div class="optionbtn"></div>
+                  <div class="optionbtn"></div>
+                </div>
+              </div>
+              <p class="playlist-content">{{playlist.songList.length}} songs • <!-- {{allSongsDurationPL(playlist)}} --> {{durationPL(playlist)}}</p>
+            </div>
+          </router-link>
         </div>
       </div>
-      <!-- <p @click="createNewPlaylist">+Create new playlist</p> -->
     </div>
-    <!-- {{getSongs}} -->
     <div class="section">
       <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
@@ -69,10 +81,8 @@
 
 <script>
 export default ({
-  data() {
-    return {
-      
-    }
+  created(){
+    document.getElementById("yt-player").style.display = "none";
   },
   computed: {
     currentUser() {
@@ -177,11 +187,13 @@ export default ({
 
       return amount;
     },
-    async getAllSongs(){
-      let songID = '61545c82936c2c6e0f3adfd2';
-      let data = await fetch('/rest/songs');
-      let res = await data.json();
-      return res;
+    getThumbnail(id){
+      let data = this.getSongs;
+      for(let i = 0; i < data.length; i++) {
+        if(id == data[i]._id) {
+          return data[i].thumbnail;
+        }
+      }
     }
   }
 })
@@ -289,6 +301,21 @@ export default ({
     background-color: rgba(255, 255, 255, 0.25);
   }
 
+  .thumbnail-50x50 {
+    width: 50px; 
+    height: 50px;
+  }
+
+  .thumbnail-100x100 {
+    width: 100px; 
+    height: 100px;
+  }
+
+  .single-thumbnail {
+    width: 100px;
+    height: 100px;
+  }
+
   .thumbnail-pair {
     display: flex;
     flex-direction: column;
@@ -298,5 +325,14 @@ export default ({
     opacity: 0.5;
     font-weight: 900;
     font-size: 12px;
+  }
+
+  .router {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
   }
 </style>
