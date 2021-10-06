@@ -40,7 +40,7 @@
         <Playlistsicon />
         <p class="route">Playlists</p>
       </div>
-      <div class="route-container">
+      <div  @click="search" class="route-container">
         <Searchicon />
         <p class="route">Search</p>
       </div>
@@ -59,9 +59,10 @@
         <Addicon />
         <p class="musicplayer-option-name">Add</p>
       </div>
-      <div class="musicplayer-option">
+      <div @click="createNewPlaylist" v-if="currentUser" class="musicplayer-option">
         <NewPlaylisticon />
-        <p class="musicplayer-option-name">New playlist</p>
+        <CreateNewPlayList v-if="IsCreateNewPlayList" />
+        <p  class="musicplayer-option-name">New playlist</p>
       </div>
       <div class="musicplayer-option">
         <LikeSongicon />
@@ -102,24 +103,38 @@ import Shareicon from '../assets/icons/Shareicon.vue'
 import Targeticon from '../assets/icons/Targeticon.vue'
 import Logouticon from '../assets/icons/Logouticon.vue'
 
+import CreateNewPlayList from './CreateNewPlayList.vue'
+
 export default {
   data() {
     return{
-      chosenRoute: false
+      chosenRoute: false,
+      IsCreateNewPlayList:false,
     }
   },
   components: {
-    Usericon, Homeicon, Exploreicon, Popularicon, Genresicon, Playlistsicon, Searchicon, Likedicon, Socialicon, Addicon, NewPlaylisticon, LikeSongicon, Shareicon, Targeticon, Logouticon},
+    Usericon, Homeicon, Exploreicon, Popularicon, Genresicon, Playlistsicon,
+    Searchicon, Likedicon, Socialicon, Addicon, NewPlaylisticon, LikeSongicon,
+    Shareicon, Targeticon, Logouticon,CreateNewPlayList},
   computed: {
     currentUser() {
       return this.$store.state.currentUser;
-    },
+    },   
     loggedIn(){
       console.log("loggedIn i SideBar",this.$store.state.loggedIn)
       return this.$store.state.loggedIn;
     },
+    playList() {
+      return this.$store.state.playlist;
+    }
   },
   methods: {
+    
+    search (){
+      if(this.currentUser) {
+        this.$router.push('/search')
+      }
+    },
     logout() {
       if(this.currentUser) {
         this.$store.dispatch('logout');
