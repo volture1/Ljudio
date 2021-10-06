@@ -7,7 +7,8 @@ const state = {
   loggedIn:false,
   playlist: [],
   duplicateEmail:'',
-  allSongs: []
+  allSongs: [],
+  toggleCreatePl: true
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -17,7 +18,10 @@ const mutations = {
     state.currentUser = user;
   },
   setPlaylist(state, playlist) {
-    state.playlist = playlist
+    state.playlist = playlist;
+  },
+  addPlaylist(state, playlist) {
+    state.playlist.push(playlist);
   },
   setLoggedIn(state,loggedIn){
     state.loggedIn = loggedIn
@@ -27,6 +31,9 @@ const mutations = {
   },
   setSongs(state, songs) {
     state.allSongs = songs;
+  },
+  setToggleCreatePl(state, show) {
+    state.toggleCreatePl = show;
   }
 }
 const actions = {
@@ -88,7 +95,7 @@ const actions = {
       }
     })
     playlists = await playlists.json();
-    store.commit('setPlaylist', playlist);
+    store.commit('addPlaylist', playlist);
   },
   async logout(store) {
     let res = await fetch('/api/login', {

@@ -67,10 +67,11 @@
         <Addicon />
         <p class="musicplayer-option-name">Add</p>
       </div>
-      <div class="musicplayer-option">
+      <div class="musicplayer-option" @click="show()">
         <NewPlaylisticon />
         <p class="musicplayer-option-name">New playlist</p>
       </div>
+      <CreatePlPopup v-if="toggle"/>
       <div class="musicplayer-option">
         <LikeSongicon />
         <p class="musicplayer-option-name">Like song</p>
@@ -110,14 +111,16 @@ import Shareicon from '../assets/icons/Shareicon.vue'
 import Targeticon from '../assets/icons/Targeticon.vue'
 import Logouticon from '../assets/icons/Logouticon.vue'
 
+import CreatePlPopup from './CreatePlaylistPopup.vue'
+
 export default {
   data() {
     return{
-      chosenRoute: false
+      chosenRoute: false,
     }
   },
   components: {
-    Usericon, Homeicon, Exploreicon, Popularicon, Genresicon, Playlistsicon, Searchicon, Likedicon, Socialicon, Addicon, NewPlaylisticon, LikeSongicon, Shareicon, Targeticon, Logouticon},
+    Usericon, Homeicon, Exploreicon, Popularicon, Genresicon, Playlistsicon, Searchicon, Likedicon, Socialicon, Addicon, NewPlaylisticon, LikeSongicon, Shareicon, Targeticon, Logouticon, CreatePlPopup},
   computed: {
     currentUser() {
       return this.$store.state.currentUser;
@@ -126,6 +129,9 @@ export default {
       console.log("loggedIn i SideBar",this.$store.state.loggedIn)
       return this.$store.state.loggedIn;
     },
+    toggle() {
+      return this.$store.state.toggleCreatePl;
+    }
   },
   methods: {
     logout() {
@@ -133,6 +139,9 @@ export default {
         this.$store.dispatch('logout');
         this.$router.push('/');
       }
+    },
+    show() {
+      this.$store.commit('setToggleCreatePl', true);
     }
   }
 };
