@@ -46,10 +46,12 @@
           <p class="route">Playlists</p>
         </div>
       </router-link>
-      <div class="route-container">
-        <Searchicon />
-        <p class="route">Search</p>
-      </div>
+      <router-link to='/search' class='router-link'>
+        <div class="route-container">
+          <Searchicon />
+          <p class="route">Search</p>
+        </div>
+      </router-link>
       <div class="route-container">
         <Likedicon />
         <p class="route">Liked</p>

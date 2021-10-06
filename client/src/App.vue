@@ -9,11 +9,11 @@ import LandingPage from './pages/LandingPage.vue'
 <template>
   <div>
     <div v-if="currentUser" class="container">
-      <div class="sidebar">
+      <div class="sidebar" v-if="conditionalRender">
         <SideBar />
       </div>
       <router-view></router-view>
-      <div class="music-player">
+      <div class="music-player" v-if="conditionalRender">
         <MusicPlayer />
       </div>
     </div>
@@ -42,10 +42,7 @@ export default {
     }
 
   },
-<<<<<<< HEAD
   components: { MusicPlayer, SideBar},
-=======
->>>>>>> feature-explore
   methods: {
     conditionalRender() {
       if (
@@ -66,18 +63,9 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
 .container {
-<<<<<<< HEAD
- 
-  min-height: 400px;
-   margin-bottom: 100px;
- 
-  
-  
-=======
   display: flex;
   justify-content: space-between;
   /* margin-left: 20%; */
->>>>>>> feature-explore
 }
 .sidebar{
   background-color: rgba(36, 37, 38, 0.5);
@@ -90,15 +78,9 @@ export default {
   background-color: #242526;
   width: 80%;
   height: 10vh;
-<<<<<<< HEAD
-  margin-left: 20%;
-   position: fixed;
-  bottom:0;
-=======
   position: fixed;
   bottom: 0;
   right: 0;
->>>>>>> feature-explore
 }
 
 * {

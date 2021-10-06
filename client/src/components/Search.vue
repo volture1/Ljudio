@@ -244,7 +244,8 @@ p {
   width: 75%;
   display: flex;
   flex-direction: column;
-  margin-left: 23%;
+  margin-left: 20vw;
+  padding: 1em;
 }
 
 .input {

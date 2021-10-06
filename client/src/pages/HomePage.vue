@@ -68,10 +68,8 @@
 
 <script>
 export default ({
-  data() {
-    return {
-      
-    }
+  created(){
+    document.getElementById("yt-player").style.display = "none";
   },
   computed: {
     currentUser() {
@@ -120,13 +118,6 @@ export default ({
         }
       }
 
-<<<<<<< HEAD
-export default ({
-  created(){
-    document.getElementById("yt-player").style.display = "none";
-  }  
-})
-=======
       for(let i = 0; i < fixedSongList.length; i++) {
         sum += parseInt(fixedSongList[i].duration);
       }
@@ -152,7 +143,6 @@ export default ({
       for(let i = 0; i < fixedSongList.length; i++) {
         sum += parseInt(fixedSongList[i].duration);
       }
->>>>>>> feature-explore
 
       sum = this.getDuration(sum);
       return sum;
