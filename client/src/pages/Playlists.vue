@@ -6,21 +6,31 @@
         <p class="playlist-info">{{playlists.length}} Playlists • {{userAllSongs()}} Songs • {{durationAllSongs()}}</p>
         <div class="option-icons">
           <RoundSearchicon class="option-icon"/>
-          <Gearicon class="option-icon"/>
+          <Gearicon @click="toggle()" class="option-icon"/>
         </div>
+        <PopupPl v-show="getTogglePopupPl"/>
       </div>
     </div>
     <div class="wrapper">
       <div class="playlist-content" v-for="playlist in playlists" :key="playlist.id">
-        <div v-if="playlist.songList.length < 4" class="playlist">
+        <div v-if="playlist.songList.length == 0" class="playlist-wrapper">
+          <div class="upper-emptyplaylist">
+            <p class="playlist-title">{{playlist.name}}</p>
+          </div>
+          <div class="emptyplaylist-img">
+            <p class="emptyplaylist">Empty playlist</p>
+          </div>
+        </div>
+        <div v-else-if="playlist.songList.length < 4" class="playlist">
           <div class="playlist-wrapper">
             <div class="upper-playlist-part">
               <p class="playlist-title">{{playlist.name}}</p>
-              <div class="options-btns">
+              <!-- <div class="options-btns">
                 <div class="option-btn"></div>
                 <div class="option-btn"></div>
                 <div class="option-btn"></div>
-              </div>
+              </div> -->
+              <p class="length-duration">{{playlist.songList.length}} songs • {{playlistDuration(playlist)}}</p>
             </div>
             <router-link :to="'/playlists/' + playlist._id">
               <div class="playlist-card">
@@ -32,11 +42,12 @@
         <div v-else class="playlist">
           <div class="upper-playlist-part">
             <p class="playlist-title">{{playlist.name}}</p>
-            <div class="options-btns">
+            <!-- <div class="options-btns">
               <div class="option-btn"></div>
               <div class="option-btn"></div>
               <div class="option-btn"></div>
-            </div>
+            </div> -->
+            <p class="length-duration">{{playlist.songList.length}} songs • {{playlistDuration(playlist)}}</p>
           </div>
           <router-link :to="'/playlists/' + playlist._id">
             <div class="playlist-card multiple-thumbnails">
@@ -63,18 +74,25 @@
 <script>
 import Gearicon from '../assets/icons/Gearicon.vue'
 import RoundSearchicon from '../assets/icons/RoundSearchicon.vue'
+import PopupPl from '../components/PopupPl.vue';
 
 export default {
-  components: {Gearicon, RoundSearchicon},
+  components: {Gearicon, RoundSearchicon, PopupPl},
   computed: {
     playlists() {
       return this.$store.state.playlist;
     },
     getSongs() {
       return this.$store.state.allSongs;
+    },
+    getTogglePopupPl() {
+      return this.$store.state.togglePopupPl;
     }
   },
   methods: {
+    toggle() {
+      this.$store.dispatch('togglePopupPl');
+    },
     userAllSongs() {
       let amount = 0;
 
@@ -94,6 +112,35 @@ export default {
         (minutes+1) + '00' :
         minutes + ':' + (seconds < 10 ? '0' : '') + seconds
       );
+    },
+    playlistDuration(playlist) {
+      let durations = [];
+      let allSongs = this.getSongs;
+
+      for(let i = 0; i < playlist.songList.length; i++) {
+        for(let j = 0; j < allSongs.length; j++) {
+          if(playlist.songList[i] == allSongs[j]._id) {
+            durations.push(allSongs[j].duration);
+          }
+        }
+      }
+
+      let sum = 0;
+      for(let i = 0; i < durations.length; i++) {
+        sum += this.getDuration(durations[i]);
+      }
+
+      if(sum == 0) {
+        return '00:00';
+      }
+
+      sum = sum.split('');
+      let format = '';
+      for(let i = 0; i <= 4; i++) {
+        format += sum[i];
+      }
+
+      return format;
     },
     durationAllSongs() {
       let sum = 0;
@@ -253,5 +300,33 @@ export default {
 
  .bottom-right {
    border-bottom-right-radius: 5px;
+ }
+
+ .emptyplaylist-img {
+   width: 200px;
+   height: 200px;
+   border-radius: 5px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-color: rgba(105, 104, 104, 0.1);
+   cursor: pointer;
+   border: 2px solid transparent;
+ }
+
+ .emptyplaylist-img:hover {
+   opacity: 0.75;
+ }
+
+ .emptyplaylist {
+   font-size: 12px;
+   font-weight: 900;
+   opacity: 0.5;
+ }
+
+ .length-duration {
+   font-size: 12px;
+    opacity: 0.5;
+    font-weight: 900;
  }
 </style>

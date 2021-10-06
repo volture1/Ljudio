@@ -72,6 +72,7 @@
 </template>
 
 <script>
+
 export default ({
   created(){
     document.getElementById("yt-player").style.display = "none";
@@ -92,15 +93,6 @@ export default ({
     await this.$store.dispatch('getSongs');
   },
   methods: {
-    async createNewPlaylist() {
-      let testdata = {
-        name: "Test Playlist",
-        userId: this.currentUser._id,
-        songList: [],
-        createdDate: new Date()
-      }
-      await this.$store.dispatch('createPlaylist', testdata);
-    },
     getDuration(ms) {
       let minutes = Math.floor(ms/60000);
       let seconds = ((ms % 60000) / 1000).toFixed(0);
@@ -248,6 +240,10 @@ export default ({
   .options-btn-wrap {
     display: flex;
     gap: 0.25em;
+  }
+
+  .options-btn-wrap:hover {
+    opacity: 0.25;
   }
 
   .optionbtn {

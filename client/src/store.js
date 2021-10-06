@@ -8,7 +8,8 @@ const state = {
   playlist: [],
   duplicateEmail:'',
   allSongs: [],
-  toggleCreatePl: true
+  toggleCreatePl: false,
+  togglePopupPl: true
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -34,6 +35,9 @@ const mutations = {
   },
   setToggleCreatePl(state, show) {
     state.toggleCreatePl = show;
+  },
+  setTogglePopupPl(state) {
+    state.togglePopupPl = !state.togglePopupPl;
   }
 }
 const actions = {
@@ -111,6 +115,9 @@ const actions = {
     });
     res = await res.json();
     store.commit('setCurrentUser', res);
+  },
+  togglePopupPl(store) {
+    store.commit('setTogglePopupPl');
   }
 }
 export default createStore({ state, mutations, actions})
