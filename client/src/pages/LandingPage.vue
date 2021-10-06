@@ -38,7 +38,11 @@
 
 <script>
 export default {
-
+  computed: {
+    currentUser() {
+      return this.$store.state.currentUser[0];
+    }
+  }
 }
 </script>
 
@@ -76,6 +80,7 @@ export default {
     align-items: center;
     padding: 1em 1em;
     padding-right: 4em;
+    width: 100vw;
   }
 
   .leftnav-side {

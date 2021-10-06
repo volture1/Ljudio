@@ -13,7 +13,10 @@ const Playlist = mongoose.model('Playlist',{
     songList:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Song'
-    }]
+    }],
+    createdDate: {
+        type: Date
+    }
 })
 
 const Liked = mongoose.model('Liked',{
@@ -50,12 +53,14 @@ const Song = mongoose.model('Song',{
         require:true
     },
     genre:{
-        type:String,
-        require:true   
+        type:String  
     },
     onlySound:{
         type:Boolean,
         require:true
+    },
+    thumbnail: {
+        type: String
     }
 
 })
@@ -69,8 +74,8 @@ const User = mongoose.model('User',{
         type:String,
         required:true
     },
-    firstName:String,
-    lastName:String,
+    firstname:String,
+    lastname:String,
     birthday:Date,
     gender:String,
     playList:[{

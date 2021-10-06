@@ -3,23 +3,21 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
 import SideBar from "./components/Sidebar.vue";
-
+import LandingPage from './pages/LandingPage.vue'
 </script>
 
 <template>
   <div>
-      <div class="sidebar" v-if="renderCondition">
+    <div v-if="currentUser" class="container">
+      <div class="sidebar">
         <SideBar />
       </div>
-    <div class="container">
-       <footer class="music-player" v-if="renderCondition">
+      <router-view></router-view>
+      <div class="music-player">
         <MusicPlayer />
-      </footer>
-      <!-- <div class="music-player" v-if="renderCondition">
-        <MusicPlayer />
-      </div> -->
-    <router-view></router-view>
+      </div>
     </div>
+    <router-view v-else></router-view>
   </div>
 </template>
 
@@ -27,13 +25,27 @@ import SideBar from "./components/Sidebar.vue";
 export default {
   data() {
     return {
-      renderCondition: true,
-    };
+      renderCondition: true
+    }
+  }, 
+  components: { MusicPlayer, SideBar },
+  computed: {
+    currentUser() {
+      return this.$store.state.currentUser;
+    }
   },
   created() {
-    this.interval = setInterval(() => this.conditionalRender(), 1);
+    if(this.$store.state.currentUser) {
+      return;
+    } else {
+      this.$store.dispatch('getLoggedIn');
+    }
+
   },
+<<<<<<< HEAD
   components: { MusicPlayer, SideBar},
+=======
+>>>>>>> feature-explore
   methods: {
     conditionalRender() {
       if (
@@ -45,24 +57,30 @@ export default {
       } else {
         this.renderCondition = true;
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
 .container {
+<<<<<<< HEAD
  
   min-height: 400px;
    margin-bottom: 100px;
  
   
   
+=======
+  display: flex;
+  justify-content: space-between;
+  /* margin-left: 20%; */
+>>>>>>> feature-explore
 }
-.sidebar {
-  background-color: #242526;
+.sidebar{
+  background-color: rgba(36, 37, 38, 0.5);
   width: 20%;
   height: 100vh;
   position: fixed;
@@ -72,9 +90,15 @@ export default {
   background-color: #242526;
   width: 80%;
   height: 10vh;
+<<<<<<< HEAD
   margin-left: 20%;
    position: fixed;
   bottom:0;
+=======
+  position: fixed;
+  bottom: 0;
+  right: 0;
+>>>>>>> feature-explore
 }
 
 * {
