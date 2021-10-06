@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="section">
         <h3 class="section-title">Recent</h3>
         <div class="info-more-p">
             <p class="details">{{recentSongs.length}} Song</p>
@@ -46,7 +46,10 @@ export default {
 </script>
 
 <style>
-
+ .section {
+    display: flex;
+    flex-direction: column;
+  }
 .section-title {
     font-size: 28px;
   }

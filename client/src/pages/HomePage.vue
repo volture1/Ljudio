@@ -185,6 +185,7 @@ export default ({
     gap: 2em;
     justify-content: space-between;
     margin-left: 20vw;
+    overflow-y:scroll;
   }
 
   .section {
