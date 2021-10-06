@@ -79,8 +79,9 @@ const actions = {
       body:JSON.stringify(credentials)
     })
     let user = await res.json();
-    store.commit('setCurrentUser', user);
-    store.commit('setLoggedIn', true);
+  /*   store.commit('setCurrentUser', user);    
+    store.commit('setLoggedIn', true); */
+    await this.dispatch('getLoggedIn');
   },
   async getPlaylists(store, userId) {
     console.log(userId);
@@ -98,7 +99,9 @@ const actions = {
     store.commit('setRecentlyPlayed',recentlyPlayeds) 
     if (recentlyPlayeds.length > 0){    
       store.commit('setRecentSongs',this.state.recentlyPlayed[0].songList)
-    }   
+    } else {
+      store.commit('setRecentSongs',[])
+    }  
   },
 
   async getLikeds(store,userId) {
@@ -108,7 +111,9 @@ const actions = {
     console.log('likeds',likeds)
     if (likeds.length > 0) {  
       store.commit('setLikedSongs',this.state.liked[0].songList)
-    }    
+    } else {
+      store.commit('setLikedSongs',[])
+    }     
   },
 
   async getSongs(store) {
@@ -143,6 +148,12 @@ const actions = {
     });
     res = await res.json();
     store.commit('setCurrentUser', res);
+    store.commit('setLoggedIn', res.email);
+    if(res.email){
+      console.log('res.email',res.email)
+      await this.dispatch('getRecentlyPlayeds',res._id)
+      await this.dispatch('getLikeds',res._id)
+    }
   }
 }
 export default createStore({ state, mutations, actions})
