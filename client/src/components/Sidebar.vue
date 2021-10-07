@@ -125,7 +125,6 @@ export default {
       return this.$store.state.currentUser;
     },
     loggedIn(){
-      console.log("loggedIn i SideBar",this.$store.state.loggedIn)
       return this.$store.state.loggedIn;
     },
   },

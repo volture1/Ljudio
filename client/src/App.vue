@@ -1,6 +1,4 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import MusicPlayer from "./components/MusicPlayer.vue";
 import SideBar from "./components/Sidebar.vue";
 import LandingPage from "./pages/LandingPage.vue";
@@ -123,17 +121,13 @@ export default {
 }
 
 body {
-  /* background: rgb(0, 0, 0, 0.8); */
   background: #18191a;
 }
 
 #app {
-  /* width: 100vw;
-  height: 100vh; */
   font-family: "PT Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background: rgb(0, 0, 0, 0.8); */
   color: white;
 }
 </style>

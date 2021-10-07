@@ -47,7 +47,7 @@
           @click="
             () => {
               printVideoId(result.videoId);
-              //testie(this.testId);
+              
             }
           "
         >
@@ -138,13 +138,11 @@ export default {
       url: "https://yt-music-api.herokuapp.com/api/yt/songs/",
       urlArtist: "https://yt-music-api.herokuapp.com/api/yt/artists/",
       urlPlaylist: "https://yt-music-api.herokuapp.com/api/yt/playlists/",
-      test: null,
       songArray: [],
       fiveSongs: [],
       artistArray: [],
       playlistArray: [],
       doneLoading: false,
-      playlist: [{ videoId: null, songs: [] }],
       showMore: false,
       showEmpty: true,
       showHeaders: false,
@@ -180,9 +178,6 @@ export default {
       });
       return newTime;
     },
-    testie(id) {
-      console.log(id);
-    },
     increment() {
       this.testId++;
     },
@@ -198,7 +193,7 @@ export default {
       this.fiveSongs = [...this.songArray];
 
       this.playlist.songs = [...this.songArray];
-      //this.$store.commit("setPlaylist", this.songArray);
+     
       this.showHeaders = true;
       this.fiveSongs.splice(5, 15);
     },
@@ -213,7 +208,7 @@ export default {
     async fetchPlaylists() {
       this.listPlaylistArray = [];
       let search = document.querySelector(".input").value;
-      //document.querySelector(".input").value = "";
+      
       let res = await fetch(this.urlPlaylist + search);
       let data = await res.json();
 
@@ -280,9 +275,7 @@ p {
   margin-right: auto;
   margin-top: auto;
   border-radius: 50%;
-  /*---to cut off the image in any way
-   -webkit-clip-path: polygon(0 0, 0 100px, 100px 80px, 100px 0);
-  clip-path: polygon(0 0, 0 100px, 150px 1px, 100px 0); */
+ 
 }
 .playlist-image {
   display: block;
@@ -311,13 +304,6 @@ p {
 }
 
 .result {
-  /*   display: flex;
- justify-content: space-between;
-  
-
-   align-content: center;
-   flex-direction: row; */
-  
   height: 50px;
   border-radius: 5px;
   background-color: #c4c4c421;
@@ -328,11 +314,7 @@ p {
   float: left;
   display: inline;
 }
-@media screen and (max-width: 950px) {
-  #result-text{
-    
-  }
-} 
+
 #result-image {
   margin-right: 12%;
   margin-left: 2%;
@@ -342,7 +324,6 @@ p {
 }
 
 .result-multiple-artists {
-  /* position: relative; */
   width: 20%;
   margin-top: 10px;
   float: left;
@@ -454,9 +435,4 @@ p {
     transform: rotate(360deg);
   }
 }
-
-/* #clip {
-  position: absolute;
-  clip: rect(0, 120px, 40px, 0);
-} */
 </style>

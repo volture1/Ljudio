@@ -45,9 +45,7 @@ export default {
         await this.formatSongs()
        
     },
-    async created() {
-       /*  await this.formatRecentSongs() */
-    },
+   
     methods: {  
        printVideoId(id) {
         this.$store.commit("setSongId", id);

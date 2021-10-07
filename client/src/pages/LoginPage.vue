@@ -149,7 +149,6 @@ export default {
     outline: none;
     border: none;
     border-radius: 5px;
-    /* background-color: #131212af; */
     background-color: rgba(196, 196, 196, 0.1);
     border: 3px solid transparent;
     box-sizing: border-box;
