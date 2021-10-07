@@ -1,5 +1,6 @@
 <template>
   <div v-if="showPage" class="artist-container">
+  <div>
     <div class="padding"></div>
     <div class="artist-profile">
       <img class="artist-image" :src="this.artistId.thumbnails[2].url" />
@@ -16,8 +17,33 @@
         class="result"
         @click="sendVideoId(result.videoId)"
       >
-        <p>{{ result.songs }}</p>
-        <p id="result-text">{{ result.name }}</p>
+       <img
+            id="result-image"
+            :src="result.thumbnails[1].url"
+            height="40"
+            width="40"
+          />
+
+          <p id="result-text">{{ result.name }}</p>
+          <p id="result-text">{{ result.album.name }}</p>
+          <div v-if="result.artist.name">
+            <p id="result-text">{{ result.artist.name }}</p>
+          </div>
+          <div class="result-multiple-artists" v-else>
+            <div class="result-single-artist">
+              <p
+                v-for="artist in result.artist"
+                :key="artist"
+                id="result-text-artist"
+              >
+                {{ artist.name }}
+              </p>
+            </div>
+          </div>
+         <p id="result-text">
+            {{ calculateDuration(result.duration) }}
+          </p>
+        </div>
       </div>
     </div>
     <h1>Albums</h1>
@@ -39,7 +65,7 @@
         </div>
       </div>
     </div>
-    <button @click="this.getArtist" style="margin-left: 20%">test</button>
+    
   </div>
 </template>
 <script>
@@ -87,6 +113,14 @@ export default {
 
       this.artistId = data;
       this.showPage = true;
+    },
+    calculateDuration(duration) {
+      let time = new Date(duration);
+      let newTime = time.toLocaleTimeString(navigator.language, {
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      return newTime;
     },
   },
 };
@@ -198,5 +232,32 @@ p {
 }
 .padding {
   height: 50px;
+}
+#result-text {
+  width: 15%;
+  margin-top: 15px;
+  float: left;
+  display: inline;
+}
+.result-multiple-artists {
+  /* position: relative; */
+  width: 20%;
+  margin-top: 10px;
+  float: left;
+  display: inline;
+}
+.result-single-artist {
+  flex-basis: 10%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+}
+.result-artist {
+  background-color: gray;
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  color: black;
 }
 </style>
