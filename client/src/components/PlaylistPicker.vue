@@ -57,9 +57,9 @@ export default {
         this.$store.dispatch('addSong', song);
         console.log(this.songs);
         this.close();
-        let lastSong = this.songs[this.songs.length - 1];
+        let id = this.songs[this.songs.length - 1]._id;
         
-        this.$store.dispatch('addSongToPL', playlist, lastSong._id);
+        this.$store.dispatch('addSongToPL', playlist, id);
       }
     }
   }
