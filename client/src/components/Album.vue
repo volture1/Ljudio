@@ -127,10 +127,10 @@ export default {
   }
 } 
 .result {
-  
+margin-right: 5px;
   height: 50px;
   border-radius: 5px;
-  background-color: #c4c4c421;
+  background-color: #c4c4c421
 }
 .album-songs {
   display: flex;
@@ -139,9 +139,17 @@ export default {
   margin-left: 5%;
   margin-right: 15%;
   margin-top: 5%;
+  
 }
 .padding {
   height: 50px;
+}
+#result-image {
+  margin-right: 12%;
+  margin-left: 2%;
+  margin-top: 5px;
+  float: left;
+  display: inline;
 }
 #result-text {
   width: 15%;
