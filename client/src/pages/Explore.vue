@@ -142,7 +142,6 @@ export default {
 
       let data2 = await fetch(this.url2 + '?key=' + this.api_key2 + '&part=snippet,statistics,contentDetails&id=' + ids + '&maxResults=' + 6)
       data2 = await data2.json();
-      console.log(data2);
       this.highViewContent = data2;
     },
     async fetchChannelsContent() {
@@ -155,8 +154,6 @@ export default {
       data = await data.json();
       data = data.items;
 
-      console.log(data);
-
       let ids = '';
       for(let i = 0; i < data.length; i++) {
         if(i == data.length-1) {
@@ -168,7 +165,6 @@ export default {
 
       let data2 = await fetch(this.url3 + '?key=' + this.api_key2 + '&part=snippet,statistics,contentDetails,contentOwnerDetails&id=' + ids + '&maxResults=' + 6)
       data2 = await data2.json();
-      console.log(data2.items);
       this.channelsContent = data2.items;
     },
     truncate(str, length) {
@@ -218,6 +214,12 @@ export default {
     margin-left: 20vw;
     padding: 2em;
   }
+  @media screen and (max-width: 950px) {
+  .explore{
+    margin-left: 2%;
+    width: 95%;
+  }
+} 
 
   .pagetitle {
     font-size: 28px;
@@ -274,8 +276,7 @@ export default {
   }
 
   .details-middle {
-    /* padding-top: 0.25em;
-    padding-left: 0.25em; */
+    
     padding: 0.25em
   }
 
@@ -339,7 +340,6 @@ export default {
   }
 
   .date {
-    /* margin-top: 4em; */
     margin-right: 1em;
     font-size: 12px;
     opacity: 0.5;
@@ -349,11 +349,9 @@ export default {
     margin-right: 1em;
     font-size: 12px;
     opacity: 0.5;
-    /* font-weight: 900; */
   }
 
   .playbtn {
-    /* margin-top: 2em; */
     margin-right: 0.5em;
     cursor: pointer;
   }
@@ -381,7 +379,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* width: 22vw; */
     padding-left: 0.5em;
     padding-right: 0.5em;
     padding-top: 0.5em;

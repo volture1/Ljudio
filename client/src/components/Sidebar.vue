@@ -52,10 +52,12 @@
           <p class="route">Search</p>
         </div>
       </router-link>
-      <div class="route-container">
+      <router-link :to="'/liked'" class="router-like" >
+        <div class="route-container">
         <Likedicon />
         <p class="route">Liked</p>
       </div>
+      </router-link>      
       <div class="route-container">
         <Socialicon />
         <p class="route">Social</p>
@@ -126,7 +128,6 @@ export default {
       return this.$store.state.currentUser;
     },
     loggedIn(){
-      console.log("loggedIn i SideBar",this.$store.state.loggedIn)
       return this.$store.state.loggedIn;
     },
     toggle() {
@@ -158,8 +159,8 @@ export default {
 }
 
 .sidebar {
-  background-color: rgba(36, 37, 38, 0.5);
-  width: 20vw;
+  background-color: rgb(36, 37, 38);
+  
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -170,6 +171,11 @@ export default {
 .productname {
   font-size: 40px;
 }
+@media screen and (max-width: 950px) {
+  .productname{
+    margin-left:20%;
+  }
+} 
 
 .top-section {
   display: flex;

@@ -61,8 +61,8 @@ const Song = mongoose.model('Song',{
     thumbnail: {
         type: String
     },
-    ytid:{
-        type: String
+    ytid: {
+        type:String
     }
 
 })
@@ -90,9 +90,21 @@ const User = mongoose.model('User',{
     }]
 })
 
+const RecentlyPlayed = mongoose.model('RecentlyPlayed',{
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    },
+    songList:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Song'
+    }] 
+})
+
 module.exports = {
     users:User,
     likeds:Liked,
     playlists:Playlist,
-    songs:Song
+    songs:Song,
+    recentlyplayeds:RecentlyPlayed
 }

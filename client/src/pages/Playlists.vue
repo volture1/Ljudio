@@ -227,7 +227,12 @@ export default {
    margin-left: 20vw;
    padding: 2em;
  }
-
+  @media screen and (max-width: 950px) {
+  .playlists{
+    margin-left: 5%;
+    width: 95%;
+    }
+  } 
  .playlists-details {
    display: flex;
    justify-content: space-between;

@@ -164,13 +164,11 @@ export default {
       url: "https://yt-music-api.herokuapp.com/api/yt/songs/",
       urlArtist: "https://yt-music-api.herokuapp.com/api/yt/artists/",
       urlPlaylist: "https://yt-music-api.herokuapp.com/api/yt/playlists/",
-      test: null,
       songArray: [],
       fiveSongs: [],
       artistArray: [],
       playlistArray: [],
       doneLoading: false,
-      playlist: [{ videoId: null, songs: [] }],
       showMore: false,
       showEmpty: true,
       showHeaders: false,
@@ -205,7 +203,7 @@ export default {
     },
     printVideoId(id) {
       this.$store.commit("setSongId", id);
-      this.$store.commit("setPlaylist", this.songArray);
+      this.$store.commit("setSongList", this.songArray);
     },
     calculateDuration(duration) {
       let time = new Date(duration);
@@ -214,9 +212,6 @@ export default {
         second: "2-digit",
       });
       return newTime;
-    },
-    testie(id) {
-      console.log(id);
     },
     increment() {
       this.testId++;
@@ -231,9 +226,7 @@ export default {
 
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
-
-      this.playlist.songs = [...this.songArray];
-      //this.$store.commit("setPlaylist", this.songArray);
+     
       this.showHeaders = true;
       this.fiveSongs.splice(5, 15);
     },
@@ -248,7 +241,7 @@ export default {
     async fetchPlaylists() {
       this.listPlaylistArray = [];
       let search = document.querySelector(".input").value;
-      //document.querySelector(".input").value = "";
+      
       let res = await fetch(this.urlPlaylist + search);
       let data = await res.json();
 
@@ -279,6 +272,7 @@ p {
   font-size: 14px;
 }
 
+
 .container {
   width: 80vw;
   display: flex;
@@ -294,6 +288,12 @@ p {
   gap: 0.5em;
   padding: 1em;
 }
+ @media screen and (max-width: 950px) {
+  .container{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 
 .input {
   /* padding: 1em;
@@ -331,9 +331,7 @@ p {
   margin-right: auto;
   margin-top: auto;
   border-radius: 50%;
-  /*---to cut off the image in any way
-   -webkit-clip-path: polygon(0 0, 0 100px, 100px 80px, 100px 0);
-  clip-path: polygon(0 0, 0 100px, 150px 1px, 100px 0); */
+ 
 }
 .playlist-image {
   display: block;
@@ -393,6 +391,7 @@ p {
   float: left;
   display: inline;
 }
+
 #result-image {
   /* margin-right: 12%;
   margin-left: 2%;
@@ -406,6 +405,8 @@ p {
   /* position: relative; */
   /* width: 20%;
   margin-top: 10px; */
+  width: 20%;
+  margin-top: 10px;
   float: left;
   display: inline;
 }

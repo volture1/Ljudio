@@ -53,27 +53,31 @@
       </div>
     </div>
     <div class="section">
-      <h3 class="section-title">Recent</h3>
+      <Recent />
+      <!-- <h3 class="section-title">Recent</h3>
       <div class="info-more-p">
         <p class="details"></p>
         <p class="more"></p>
       </div>
-      <div class="content-preview"></div>
+      <div class="content-preview"></div>  -->
     </div>
     <div class="section">
-      <h3 class="section-title">Liked</h3>
+      <Liked />
+     <!--  <h3 class="section-title">Liked</h3>
       <div class="info-more-p">
         <p class="details"></p>
         <p class="more"></p>
       </div>
-      <div class="content-preview"></div>
+      <div class="content-preview"></div> -->
     </div>
   </div>
 </template>
 
 <script>
-
+import Recent from "../components/Recent.vue"
+import Liked from "../components/Liked.vue"
 export default ({
+  components:{Recent,Liked},
   created(){
     document.getElementById("yt-player").style.display = "none";
   },
@@ -177,7 +181,14 @@ export default ({
     gap: 2em;
     justify-content: space-between;
     margin-left: 20vw;
+    overflow-y:scroll;
   }
+  @media screen and (max-width: 950px) {
+  .homepage{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 
   .section {
     display: flex;

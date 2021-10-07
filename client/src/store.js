@@ -15,8 +15,11 @@ const state = {
   chosenSong : null,
   selectedPL: null,
   action: '',
-  addToPLPopup: false
-  
+  addToPLPopup: false,
+  recentlyPlayed:[],
+  recentSongs:[],
+  liked:[],
+  likedSongs:[]
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -25,11 +28,26 @@ const mutations = {
   setCurrentUser(state, user) {
     state.currentUser = user;
   },
+  setSongList(state, currentSongList) {
+    state.currentSongList = currentSongList
+  },
   setPlaylist(state, playlist) {
     state.playlist = playlist;
   },
   addPlaylist(state, playlist) {
     state.playlist.push(playlist);
+  },
+  setRecentlyPlayed(state,recentlyPlayed){
+    state.recentlyPlayed = recentlyPlayed
+  },
+  setRecentSongs(state,songs){
+    state.recentSongs = songs
+  },
+  setLiked(state,liked){
+    state.liked = liked
+  },
+  setLikedSongs(state,songs){
+    state.likedSongs = songs
   },
   setLoggedIn(state,loggedIn){
     state.loggedIn = loggedIn
@@ -102,15 +120,11 @@ const actions = {
     })
     console.log("user0",res);
     let user = await res.json();
-    console.log("user1", user);
-    store.commit('setCurrentUser', user);
-    store.commit('setLoggedIn', true);
+    await this.dispatch('getLoggedIn');
   },
   async getPlaylists(store, userId) {
-    console.log(userId);
     let playlists = await fetch('/rest/playlists/user/' + userId);
     playlists = await playlists.json();
-    console.log(playlists);
     store.commit('setPlaylist', playlists);
   },
   async addSong(store, song) {
@@ -154,12 +168,36 @@ const actions = {
     console.log(res);
     store.commit('setPlaylist', res);
   },
+
+  async getRecentlyPlayeds(store,userId) {
+    let recentlyPlayeds = await fetch('/rest/recentlyPlayeds/user/' + userId);
+    recentlyPlayeds = await recentlyPlayeds.json(); 
+    store.commit('setRecentlyPlayed',recentlyPlayeds) 
+    if (recentlyPlayeds.length > 0){    
+      store.commit('setRecentSongs',this.state.recentlyPlayed[0].songList)
+    } else {
+      store.commit('setRecentSongs',[])
+    }  
+  },
+
+  async getLikeds(store,userId) {
+    let likeds = await fetch('/rest/Likeds/user/' + userId);
+    likeds = await likeds.json();    
+    store.commit('setLiked',likeds)
+    if (likeds.length > 0) {  
+      store.commit('setLikedSongs',this.state.liked[0].songList)
+    } else {
+      store.commit('setLikedSongs',[])
+    }     
+  },
+
   async logout(store) {
     let res = await fetch('/api/login', {
       method: "DELETE"
     });
     res = await res.json();
     store.commit('setCurrentUser', null);
+    store.commit('setLoggedIn', res.email);
   },
   async getLoggedIn(store) {
     let res = await fetch('/api/login', {
@@ -196,8 +234,13 @@ const actions = {
   chooseAction(store, choice) {
     store.commit('setAction', choice);
   },
-  toggleAddToPlPopup(store) {
+  async toggleAddToPlPopup(store) {
     store.commit('setAddToPlPopup');
+    store.commit('setLoggedIn', res.email);
+    if(res.email){
+      await this.dispatch('getRecentlyPlayeds',res._id)
+      await this.dispatch('getLikeds',res._id)
+    }
   }
 }
 export default createStore({ state, mutations, actions})

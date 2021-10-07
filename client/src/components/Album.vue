@@ -23,12 +23,36 @@
     </div>
     <div v-if="showSongs" class="album-songs">
       <div
-        v-for="result in this.tempSongs"
+        v-for="result in this.songs"
         :key="result"
         class="result"
         @click="sendVideoId(result.videoId)"
       >
-        <p id="result-text">{{ result.name }}</p>
+        <img
+            id="result-image"
+            :src="result.thumbnails[1].url"
+            height="40"
+            width="40"
+          />
+          <p id="result-text">{{ result.name }}</p>
+          <p id="result-text">{{ result.album.name }}</p>
+          <div v-if="result.artist.name">
+            <p id="result-text">{{ result.artist.name }}</p>
+          </div>
+          <div class="result-multiple-artists" v-else>
+            <div class="result-single-artist">
+              <p
+                v-for="artist in result.artist"
+                :key="artist"
+                id="result-text-artist"
+              >
+                {{ artist.name }}
+              </p>
+            </div>
+          </div>
+         <p id="result-text">
+            {{ calculateDuration(result.duration) }}
+          </p>
       </div>
     </div>
   </div>
@@ -54,7 +78,7 @@ export default {
   methods: {
     sendVideoId(id) {
       this.$store.commit("setSongId", id);
-      this.$store.commit("setPlaylist", this.songs);
+      this.$store.commit("setSongList", this.songs);
     },
     async getAlbum() {
       let res = await fetch(this.url + this.$route.params.id);
@@ -96,11 +120,17 @@ export default {
 .album-container {
   margin-left: 20%;
 }
+@media screen and (max-width: 950px) {
+  .album-container{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 .result {
-  margin-right: 5px;
+margin-right: 5px;
   height: 50px;
   border-radius: 5px;
-  background-color: #c4c4c421;
+  background-color: #c4c4c421
 }
 .album-songs {
   display: flex;
@@ -109,9 +139,44 @@ export default {
   margin-left: 5%;
   margin-right: 15%;
   margin-top: 5%;
+  
 }
 .padding {
   height: 50px;
+}
+#result-image {
+  margin-right: 12%;
+  margin-left: 2%;
+  margin-top: 5px;
+  float: left;
+  display: inline;
+}
+#result-text {
+  width: 15%;
+  margin-top: 15px;
+  float: left;
+  display: inline;
+}
+.result-multiple-artists {
+  
+  width: 20%;
+  margin-top: 10px;
+  float: left;
+  display: inline;
+}
+.result-single-artist {
+  flex-basis: 10%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+}
+.result-artist {
+  background-color: gray;
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  color: black;
 }
 .lds-ring {
   display: inline-block;

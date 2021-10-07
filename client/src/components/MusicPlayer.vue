@@ -139,7 +139,7 @@ export default {
   },
   computed: {
     playlistFetched() {
-      return this.$store.state.playlist;
+      return this.$store.state.currentSongList;
     },
     songId() {
       return this.$store.state.currentSong;
@@ -173,12 +173,13 @@ export default {
     initPlaylist(id) {
       this.$store.commit("setSongId", this.playListVideoIds[this.playlistIndex]);
       this.playlist = [...this.playlistFetched];
+      
       this.playlistVideoIds = this.playlist.map((a) => a.videoId);
 
-      console.log(this.playlistFetched.length)
+      
       if(this.playlistFetched.length == 1){
         this.playlist = this.playlistFetched;
-        console.log(this.playlistFetched)
+       
         if (element.videoId == id) {
           this.testId = i;
           this.currentSongArray[0] = element;
