@@ -158,7 +158,7 @@ margin-right: 5px;
   display: inline;
 }
 .result-multiple-artists {
-  /* position: relative; */
+  
   width: 20%;
   margin-top: 10px;
   float: left;

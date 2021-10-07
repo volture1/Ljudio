@@ -286,7 +286,6 @@ export default {
     display: flex;
     border-radius: 5px;
     background-color: rgba(196, 196, 196, 0.1);
-    /* justify-content: space-between; */
     align-content: center;
   }
 
@@ -311,7 +310,6 @@ export default {
   .suggestion-duration {
     font-size: 12px;
     font-weight: 900;
-    /* margin-top: 1em; */
   }
 
   .playbtn-wrap {

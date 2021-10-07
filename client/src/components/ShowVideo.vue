@@ -7,7 +7,6 @@ export default {
   data() {
     return {
       videoId: [],
-      playlist: [{}],
       url: 'https://yt-music-api.herokuapp.com/api/yt/song/',
     };
   },
@@ -25,15 +24,12 @@ export default {
       let res = await fetch(this.url + this.$route.params.id);
       let data = await res.json();
       this.videoId = data;
-      console.log(data, 'data')
-      console.log(this.videoId, 'videoid')
     },
     commitSong() {
     this.fetchSong();
     document.getElementById("yt-player").style.display = "inline";
     this.$store.commit("setSongId", this.$route.params.id)
     this.$store.commit("setSongList", this.videoId)
-    console.log(this.videoId)
     },
   },
 };

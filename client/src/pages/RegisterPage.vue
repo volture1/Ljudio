@@ -68,7 +68,6 @@ export default {
   },
   computed:{
     isLoggedIn(){
-      console.log('isLoggedIn',this.$store.state.loggedIn)
       return this.$store.state.loggedIn;
     },
     isDuplicatedEmail(){
@@ -103,7 +102,6 @@ export default {
         liked: null
         }
         await this.$store.dispatch('register', credentials);
-        console.log("isLoggedIn", this.isLoggedIn);
         if(this.isLoggedIn) {
           this.$router.push('/Home');
         }
@@ -175,11 +173,6 @@ export default {
     border: 3px solid rgba(182, 19, 19, 0.671);
   }
 
-  /* .top {
-    width: 75%;
-    margin: 0 auto;
-  } */
-
   .namefields {
     width: 100%;
     display: flex;
@@ -215,7 +208,6 @@ export default {
     outline: none;
     border: none;
     border-radius: 5px;
-    /* background-color: #131212af; */
     background-color: rgba(196, 196, 196, 0.1);
     border: 3px solid transparent;
     box-sizing: border-box;

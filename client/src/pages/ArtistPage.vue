@@ -1,7 +1,7 @@
 <template>
   <div>
     <Artist />
-    <p>text</p>
+   
   </div>
 </template>
 <script>
