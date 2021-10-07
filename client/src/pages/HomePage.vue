@@ -9,7 +9,12 @@
       <div class="content-preview">
         <div class="content-card" v-for="playlist in playlists" :key="playlist.id">
           <router-link :to="'/playlists/' + playlist._id" class="router">
-            <div v-if="playlist.songList.length < 4">
+            <div v-if="playlist.songList.length == 0" class="playlist-empty">
+              <div class="emptyplaylist-img">
+                <p class="emptyplaylist">Empty playlist</p>
+              </div>
+            </div>
+            <div v-else-if="playlist.songList.length < 4">
               <div class="single-thumbnail">
                 <img class="thumbnail-100x100" :src="getThumbnail(playlist.songList[0])" alt="">
               </div>
@@ -92,15 +97,6 @@ export default ({
     await this.$store.dispatch('getSongs');
   },
   methods: {
-    async createNewPlaylist() {
-      let testdata = {
-        name: "Test Playlist",
-        userId: this.currentUser._id,
-        songList: [],
-        createdDate: new Date()
-      }
-      await this.$store.dispatch('createPlaylist', testdata);
-    },
     getDuration(ms) {
       let minutes = Math.floor(ms/60000);
       let seconds = ((ms % 60000) / 1000).toFixed(0);
@@ -257,6 +253,10 @@ export default ({
     gap: 0.25em;
   }
 
+  .options-btn-wrap:hover {
+    opacity: 0.25;
+  }
+
   .optionbtn {
     width: 0.5em;
     height: 0.5em;
@@ -271,6 +271,23 @@ export default ({
   .playlist-details {
     padding: 0.5em;
     width: 100%;
+  }
+
+  .emptyplaylist-img {
+    width: 100px;
+    height: 100px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(105, 104, 104, 0.1);
+  }
+
+  .emptyplaylist {
+    font-size: 12px;
+    font-weight: 900;
+    opacity: 0.5;
   }
 
   .thumbnails {

@@ -11,7 +11,16 @@ const state = {
   recentlyPlayed:[],
   recentSongs:[],
   liked:[],
-  likedSongs:[]
+  likedSongs:[],
+  toggleCreatePl: false,
+  togglePopupPl: false,
+  editModePL: false,
+  removeModePL: false,
+  chosenSong : null,
+  selectedPL: null,
+  action: '',
+  addToPLPopup: false
+  
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -24,7 +33,10 @@ const mutations = {
     state.currentSongList = currentSongList
   },
   setPlaylist(state, playlist) {
-    state.playlist = playlist
+    state.playlist = playlist;
+  },
+  addPlaylist(state, playlist) {
+    state.playlist.push(playlist);
   },
   setRecentlyPlayed(state,recentlyPlayed){
     state.recentlyPlayed = recentlyPlayed
@@ -46,6 +58,33 @@ const mutations = {
   },
   setSongs(state, songs) {
     state.allSongs = songs;
+  },
+  addSong(state, song) {
+    state.allSongs.push(song);
+  },
+  setToggleCreatePl(state, show) {
+    state.toggleCreatePl = show;
+  },
+  setTogglePopupPl(state) {
+    state.togglePopupPl = !state.togglePopupPl;
+  },
+  setEditPL(state) {
+    state.editModePL = !state.editModePL;
+  },
+  setRemovePL(state) {
+    state.removeModePL = !state.removeModePL;
+  },
+  setChosenSong(state, choice) {
+    state.chosenSong = choice;
+  },
+  setSelectedPL(state, playlist) {
+    state.selectedPL = playlist;
+  },
+  setAction(state, choice) {
+    state.action = choice;
+  },
+  setAddToPlPopup(state) {
+    state.addToPLPopup = !state.addToPLPopup;
   }
 }
 const actions = {
@@ -89,6 +128,18 @@ const actions = {
     playlists = await playlists.json();
     store.commit('setPlaylist', playlists);
   },
+  async addSong(store, song) {
+    let res = await fetch('/rest/songs', {
+      method: 'POST',
+      body: JSON.stringify(song),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    res = await res.json();
+    store.commit('addSong', res);
+    console.log("all songs ", this.state.allSongs);
+  },
   async getSongs(store) {
     let songs = await fetch('/rest/songs');
     songs = await songs.json();
@@ -103,7 +154,20 @@ const actions = {
       }
     })
     playlists = await playlists.json();
-    store.commit('setPlaylist', playlist);
+    console.log(playlists._id);
+    store.commit('addPlaylist', playlists);
+  },
+  async addSongToPL(store, playlist, songid) {
+    let res = await fetch(('/rest/playlists/' + playlist._id + '/' + songid), {
+      method: 'PUT',
+      body: JSON.stringify(playlist),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    res = await res.json();
+    console.log(res);
+    store.commit('setPlaylist', res);
   },
 
   async getRecentlyPlayeds(store,userId) {
