@@ -191,8 +191,6 @@ export default {
 
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
-
-      this.playlist.songs = [...this.songArray];
      
       this.showHeaders = true;
       this.fiveSongs.splice(5, 15);
