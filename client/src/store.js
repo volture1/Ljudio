@@ -126,7 +126,13 @@ const actions = {
   async getPlaylists(store, userId) {
     let playlists = await fetch('/rest/playlists/user/' + userId);
     playlists = await playlists.json();
-    store.commit('setPlaylist', playlists);
+    console.log(playlists);
+    if (playlists.length > 0) {
+      store.commit('setPlaylist', playlists);
+    } else {
+      store.commit('setPlaylist', []);
+    }
+   
   },
   async addSong(store, song) {
     let res = await fetch('/rest/songs', {
@@ -157,10 +163,11 @@ const actions = {
     console.log(playlists._id);
     store.commit('addPlaylist', playlists);
   },
-  async addSongToPL(store, playlist, songid) {
-    let res = await fetch(('/rest/playlists/' + playlist._id + '/' + songid), {
+  async addSongToPL(store, data) {
+    console.log('data',data)
+    let res = await fetch(('/rest/playlists/' + data.id + '/' + data.songid), {
       method: 'PUT',
-      body: JSON.stringify(playlist),
+      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -168,6 +175,8 @@ const actions = {
     res = await res.json();
     console.log(res);
     store.commit('setPlaylist', res);
+    await this.dispatch('getPlaylists',data.id)
+
   },
 
   async getRecentlyPlayeds(store,userId) {
@@ -212,6 +221,37 @@ const actions = {
       await this.dispatch('getRecentlyPlayeds',res._id)
       await this.dispatch('getLikeds',res._id)
     }
+    
+  },
+  async deletePlaylist(store) {
+    let res = await fetch(('/rest/playlists/' + this.state.selectedPL._id), {
+      method: 'DELETE'
+    });
+    res = await res.json();
+    store.dispatch('getPlaylists', this.state.currentUser._id);
+    store.commit('setSelectedPL', null);
+    store.commit('setAction', '');
+  },
+  togglePopupPl(store) {
+    store.commit('setTogglePopupPl');
+  },
+  editmode(store) {
+    store.commit('setEditPL');
+  },
+  removemode(store) {
+    store.commit('setRemovePL');
+  },
+  chooseSong(store, choice) {
+    store.commit('setChosenSong', choice);
+  },
+  selectPL(store, playlist) {
+    store.commit('setSelectedPL', playlist);
+  },
+  chooseAction(store, choice) {
+    store.commit('setAction', choice);
+  },
+  toggleAddToPlPopup(store) {
+    store.commit('setAddToPlPopup');
   }
 }
 export default createStore({ state, mutations, actions})

@@ -29,12 +29,13 @@ module.exports = (app,models) => {
     console.log("songs ", songs);
     console.log("songid ", req.params.songid);
     let song = await songs.findById(req.params.songid);
-    if(req.body.songList.includes(req.params.songid)) {
+    docs.songList.push(song);
+  /*   if(req.body.songList.includes(req.params.songid)) {
       req.json('Playlist already contains song');
       return;
     } else {
       docs.songList.push(song);
-    }
+    } */
 
     await docs.save();
     res.json(docs);
