@@ -111,7 +111,12 @@ const actions = {
     let playlists = await fetch('/rest/playlists/user/' + userId);
     playlists = await playlists.json();
     console.log(playlists);
-    store.commit('setPlaylist', playlists);
+    if (playlists.length > 0) {
+      store.commit('setPlaylist', playlists);
+    } else {
+      store.commit('setPlaylist', []);
+    }
+   
   },
   async addSong(store, song) {
     let res = await fetch('/rest/songs', {
@@ -142,10 +147,11 @@ const actions = {
     console.log(playlists._id);
     store.commit('addPlaylist', playlists);
   },
-  async addSongToPL(store, playlist, songid) {
-    let res = await fetch(('/rest/playlists/' + playlist._id + '/' + songid), {
+  async addSongToPL(store, data) {
+    console.log('data',data)
+    let res = await fetch(('/rest/playlists/' + data.id + '/' + data.songid), {
       method: 'PUT',
-      body: JSON.stringify(playlist),
+      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -153,6 +159,8 @@ const actions = {
     res = await res.json();
     console.log(res);
     store.commit('setPlaylist', res);
+    await this.dispatch('getPlaylists',data.id)
+
   },
   async logout(store) {
     let res = await fetch('/api/login', {
@@ -160,6 +168,7 @@ const actions = {
     });
     res = await res.json();
     store.commit('setCurrentUser', null);
+    store.commit('setLoggedIn', res.email);
   },
   async getLoggedIn(store) {
     let res = await fetch('/api/login', {
@@ -168,6 +177,8 @@ const actions = {
     });
     res = await res.json();
     store.commit('setCurrentUser', res);
+    store.commit('setLoggedIn', res.email);
+    
   },
   async deletePlaylist(store) {
     let res = await fetch(('/rest/playlists/' + this.state.selectedPL._id), {

@@ -43,7 +43,7 @@ export default {
       this.$store.dispatch('toggleAddToPlPopup');
       this.$store.dispatch('chooseSong', null);
     },
-    choose(playlist) {
+    async choose(playlist) {
       if(this.chosenSong) {
         let song = {
           link: 'https://yt-music-api.herokuapp.com/api/yt/search/' + this.chosenSong.videoId,
@@ -54,12 +54,13 @@ export default {
           thumbnail: this.chosenSong.thumbnails[0].url,
           ytid: this.chosenSong.videoId
         }
-        this.$store.dispatch('addSong', song);
+        await this.$store.dispatch('addSong', song);
         console.log(this.songs);
         this.close();
+        this.songs = this.$store.state.allSongs
         let lastSong = this.songs[this.songs.length - 1];
-        
-        this.$store.dispatch('addSongToPL', playlist, lastSong._id);
+        let data = {'id':playlist._id,'songid':lastSong._id}
+        await this.$store.dispatch('addSongToPL', data);
       }
     }
   }
