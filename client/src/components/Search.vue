@@ -95,7 +95,11 @@
           <div class="actionbtns-wrap">
             <AddToPlaylisticon @click="displayPlaylists(result)" class="actionbtn"/>
             <Likeicon class="actionbtn"/>
-            <SongPlayBtn class="actionbtn"/>
+            <SongPlayBtn @click="
+            () => {
+              printVideoId(result.videoId);
+            }
+          " class="actionbtn"/>
           </div>
         </div>
         <div v-if="showMore == false && this.list.length > 4">
@@ -232,7 +236,7 @@ export default {
       this.fiveSongs = [...this.songArray];
 
       this.playlist.songs = [...this.songArray];
-      //this.$store.commit("setPlaylist", this.songArray);
+     
       this.showHeaders = true;
       this.fiveSongs.splice(5, 15);
     },
@@ -247,7 +251,7 @@ export default {
     async fetchPlaylists() {
       this.listPlaylistArray = [];
       let search = document.querySelector(".input").value;
-      //document.querySelector(".input").value = "";
+     
       let res = await fetch(this.urlPlaylist + search);
       let data = await res.json();
 
