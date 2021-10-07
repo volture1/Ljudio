@@ -20,6 +20,8 @@
     <div class="content responsive mobilec desktop">
       <div class="left">
         <div class="texthold">
+          <h3 class="productname">Ljudio</h3>
+        <img src="../assets/Logo.png" alt="" class="mobileLogo">
           <h1 class="title">Discover, listen & share</h1>
           
            <h3 class="description">Browse among the oldest songs, videos and artists and share your music experience with others</h3>
@@ -63,6 +65,13 @@
   position: absolute;
   top: 8px;
   left: 110px;
+  font-size: 18px;
+}
+
+.mobileLogo {
+  position: absolute;
+  top: 105px;
+  left: 180px;
   font-size: 18px;
 }
 
