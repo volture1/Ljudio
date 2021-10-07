@@ -54,7 +54,7 @@ export default {
   methods: {
     sendVideoId(id) {
       this.$store.commit("setSongId", id);
-      this.$store.commit("setPlaylist", this.songs);
+      this.$store.commit("setSongList", this.songs);
     },
     async getAlbum() {
       let res = await fetch(this.url + this.$route.params.id);

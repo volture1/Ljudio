@@ -170,7 +170,7 @@ export default {
   methods: {
     printVideoId(id) {
       this.$store.commit("setSongId", id);
-      this.$store.commit("setPlaylist", this.songArray);
+      this.$store.commit("setSongList", this.songArray);
     },
     calculateDuration(duration) {
       let time = new Date(duration);

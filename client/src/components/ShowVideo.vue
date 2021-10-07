@@ -32,7 +32,7 @@ export default {
     this.test();
     document.getElementById("yt-player").style.display = "inline";
     this.$store.commit("setSongId", this.$route.params.id)
-    this.$store.commit("setPlaylist", this.videoId)
+    this.$store.commit("setSongList", this.videoId)
     console.log(this.videoId)
     },
   },

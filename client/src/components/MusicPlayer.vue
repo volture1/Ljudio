@@ -139,7 +139,7 @@ export default {
   },
   computed: {
     playlistFetched() {
-      return this.$store.state.playlist;
+      return this.$store.state.currentSongList;
     },
     songId() {
       return this.$store.state.currentSong;

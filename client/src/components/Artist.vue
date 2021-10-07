@@ -79,7 +79,7 @@ export default {
       this.topFive.splice(5, 15);
 
       
-      this.$store.commit("setPlaylist", this.topFive);
+      this.$store.commit("setSongList", this.topFive);
     },
     async getArtist() {
       let res = await fetch(this.url + this.$route.params.id);
