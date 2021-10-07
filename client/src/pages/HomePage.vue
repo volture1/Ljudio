@@ -187,6 +187,12 @@ export default ({
     margin-left: 20vw;
     overflow-y:scroll;
   }
+  @media screen and (max-width: 950px) {
+  .homepage{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 
   .section {
     display: flex;
