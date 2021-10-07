@@ -199,8 +199,9 @@ export default {
   methods: {
     displayPlaylists(result) {
       this.$store.dispatch('toggleAddToPlPopup');
-      console.log(result);
+      console.log("clicked song ", result);
       this.$store.dispatch('chooseSong', result);
+      console.log("chosen song in store ", this.$store.state.chosenSong);
     },
     printVideoId(id) {
       this.$store.commit("setSongId", id);

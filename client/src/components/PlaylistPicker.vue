@@ -33,25 +33,33 @@ export default {
     },
     chosenSong() {
       return this.$store.state.chosenSong;
+    },
+    songs() {
+      return this.$store.state.allSongs;
     }
   },
   methods: {
     close() {
       this.$store.dispatch('toggleAddToPlPopup');
+      this.$store.dispatch('chooseSong', null);
     },
     choose(playlist) {
       if(this.chosenSong) {
         let song = {
-          link: 'https://yt-music-api.herokuapp.com/api/yt/search/2NiyrtYegso',
+          link: 'https://yt-music-api.herokuapp.com/api/yt/search/' + this.chosenSong.videoId,
           title: this.chosenSong.name,
           artist: this.chosenSong.artist.name,
           duration: this.chosenSong.duration,
           onlySound: true,
           thumbnail: this.chosenSong.thumbnails[0].url,
-          ytId: '2NiyrtYegso'
+          ytid: this.chosenSong.videoId
         }
         this.$store.dispatch('addSong', song);
-        this.$store.dispatch('addSongToPL', playlist._id);
+        console.log(this.songs);
+        this.close();
+        let lastSong = this.songs[this.songs.length - 1];
+        
+        this.$store.dispatch('addSongToPL', playlist, lastSong._id);
       }
     }
   }

@@ -123,6 +123,7 @@ const actions = {
     })
     res = await res.json();
     store.commit('addSong', res);
+    console.log("all songs ", this.state.allSongs);
   },
   async getSongs(store) {
     let songs = await fetch('/rest/songs');
@@ -141,8 +142,8 @@ const actions = {
     console.log(playlists._id);
     store.commit('addPlaylist', playlists);
   },
-  async addSongToPL(store, playlist) {
-    let res = await fetch(('/rest/playlists/' + playlist._id), {
+  async addSongToPL(store, playlist, songid) {
+    let res = await fetch(('/rest/playlists/' + playlist._id + '/' + songid), {
       method: 'PUT',
       body: JSON.stringify(playlist),
       headers: {
@@ -150,6 +151,7 @@ const actions = {
       }
     })
     res = await res.json();
+    console.log(res);
     store.commit('setPlaylist', res);
   },
   async logout(store) {
