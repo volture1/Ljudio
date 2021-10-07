@@ -52,10 +52,12 @@
           <p class="route">Search</p>
         </div>
       </router-link>
-      <div class="route-container">
+      <router-link :to="'/liked'" class="router-like" >
+        <div class="route-container">
         <Likedicon />
         <p class="route">Liked</p>
       </div>
+      </router-link>      
       <div class="route-container">
         <Socialicon />
         <p class="route">Social</p>
