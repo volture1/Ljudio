@@ -61,6 +61,9 @@ const Song = mongoose.model('Song',{
     },
     thumbnail: {
         type: String
+    },
+    ytId:{
+        type: String
     }
 
 })

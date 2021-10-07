@@ -9,7 +9,13 @@ const state = {
   duplicateEmail:'',
   allSongs: [],
   toggleCreatePl: false,
-  togglePopupPl: true
+  togglePopupPl: false,
+  editModePL: false,
+  removeModePL: false,
+  chosenSong : null,
+  selectedPL: null,
+  action: ''
+  
 }
 const mutations = {
   setSongId(state, currentSong){
@@ -38,6 +44,21 @@ const mutations = {
   },
   setTogglePopupPl(state) {
     state.togglePopupPl = !state.togglePopupPl;
+  },
+  setEditPL(state) {
+    state.editModePL = !state.editModePL;
+  },
+  setRemovePL(state) {
+    state.removeModePL = !state.removeModePL;
+  },
+  setChosenSong(state, choice) {
+    state.chosenSong = choice;
+  },
+  setSelectedPL(state, playlist) {
+    state.selectedPL = playlist;
+  },
+  setAction(state, choice) {
+    state.action = choice;
   }
 }
 const actions = {
@@ -116,8 +137,30 @@ const actions = {
     res = await res.json();
     store.commit('setCurrentUser', res);
   },
+  async deletePlaylist(store) {
+    let res = await fetch(('/rest/playlists/' + this.state.selectedPL._id), {
+      method: 'DELETE'
+    });
+    res = await res.json();
+    store.dispatch('getPlaylists', this.state.currentUser._id);
+  },
   togglePopupPl(store) {
     store.commit('setTogglePopupPl');
+  },
+  editmode(store) {
+    store.commit('setEditPL');
+  },
+  removemode(store) {
+    store.commit('setRemovePL');
+  },
+  chooseSong(store, choice) {
+    store.commit('setChosenSong', choice);
+  },
+  selectPL(store, playlist) {
+    store.commit('setSelectedPL', playlist);
+  },
+  chooseAction(store, choice) {
+    store.commit('setAction', choice);
   }
 }
 export default createStore({ state, mutations, actions})

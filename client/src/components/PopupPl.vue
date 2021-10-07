@@ -4,19 +4,40 @@
       <p @click="hide()" class="close choice">Close</p>
     </div>
     <div class="editdiv">
-      <p class="edit choice">Edit</p>
+      <p @click="edit('edit')" class="edit choice">Edit</p>
     </div>
     <div class="removediv">
-      <p class="remove choice">Remove</p>
+      <p @click="remove('remove')" class="remove choice">Remove</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  computed: {
+    action() {
+      return this.$store.state.action;
+    },
+    selectedPlaylist() {
+      return this.$store.state.selectedPL;
+    }
+  },
   methods: {
     hide() {
       this.$store.dispatch('togglePopupPl');
+    },
+    edit(action) {
+      this.$store.dispatch('editmode');
+      this.$store.dispatch('chooseAction', action);
+      console.log(this.$store.state.action);
+    },
+    remove(action) {
+      if(this.action === 'remove' && this.selectedPlaylist) {
+        this.$store.dispatch('deletePlaylist', this.selectedPlaylist._id)
+      }
+      this.$store.dispatch('removemode');
+      this.$store.dispatch('chooseAction', action);
+      console.log(this.$store.state.action);
     }
   }
 }
@@ -45,7 +66,7 @@ export default {
   .choice {
     font-size: 14px;
     font-weight: 900;
-    text-decoration: underline;
+    /* text-decoration: underline; */
     cursor: pointer;
   }
 
