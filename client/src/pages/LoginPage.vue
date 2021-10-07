@@ -45,7 +45,6 @@ export default {
       return this.$store.state.loggedIn;
     },
     currentUser(){      
-      console.log('currentUser',this.$store.state.currentUser)
       return this.$store.state.currentUser;
     },
     checkEmail(){
@@ -74,7 +73,6 @@ export default {
           return
       }
       if (this.isLoggedIn && credentials.email !== this.currentUser.email){
-          console.log('this.isLoggedIn',this.isLoggedIn)
           this.tempError = "You must logout first"          
           return
       }

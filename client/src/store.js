@@ -20,6 +20,9 @@ const mutations = {
   setCurrentUser(state, user) {
     state.currentUser = user;
   },
+  setCurrentSongList(state,currentSongList){
+    state.currentSongList = currentSongList
+  },
   setPlaylist(state, playlist) {
     state.playlist = playlist
   },

@@ -57,20 +57,12 @@ module.exports = (app, models, dbCloudUrl) => {
     // Encrypt password
 
     let password = req.body.password
-    console.log('password before hash',password)
-    console.log('req.body',req.body);
     
     const hash = crypto.createHmac('sha256', salt)
     .update(req.body.password).digest('hex');
-    // Search for user
-    /* let user = await User.find({ $and: [{ email: req.body.email }, { password: hash }] }) */
     let user = await User.findOne({email: req.body.email, password: hash})
-    console.log(user);
     if(user) {
       req.session.user = user;
-      console.log("Logged in!");
-      console.log("session", session);
-      console.log("req.session.user", req.session.user);
       res.json(user);
     } else {
       res.json({error: 'No match found'});
@@ -79,24 +71,15 @@ module.exports = (app, models, dbCloudUrl) => {
 
   // Logout
   app.delete('/api/login', (req, res) => {
-    console.log("session", req.session.user);
     if (req.session.user) {
       delete req.session.user;
       res.json({ success: 'Logged out' });
-      console.log("Logged out");
     }
     else {
       res.json({ error: 'Was not logged in' });
     }
   });
 
-
-  //get users
-  /* app.get('/api/users',async (req,res) =>{
-    let docs = await users.find()
-    res.json(docs)
-  }) */
-  
   // Check if logged in
   app.get('/api/login', (req, res) => {
     if (req.session.user !== undefined) {

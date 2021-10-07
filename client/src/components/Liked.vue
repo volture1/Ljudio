@@ -6,11 +6,10 @@
             <p class="more">More</p>
         </div>
         <div class="songlist"></div>
-        <div class="song" v-for="(liked,i) in likedSongs" :key="i">
+        <div class="song" v-for="(liked,i) in likedSongs" :key="i"  @click=" () => {printVideoId(liked.ytid);}">
              <img :src="liked.thumbnail" alt="" class="thumbnail"> 
             <div class="titile">{{liked.title}}</div>
             <div class="artist">{{liked.artist}}</div>
-            <div class="dateAdded">{{liked.dateAdded}}</div>
             <div class="duration">{{getDuration( parseInt(liked.duration))}}</div>
              <div class="options-btns">
               <div class="option-btn"></div>
@@ -25,6 +24,11 @@
 <script>
 import CalculateDuration from "../CalculateDuration.js"
 export default {
+    data() {
+      return {
+        songs:[]
+      }
+    },
     computed: {
         currentUser() {
           return this.$store.state.currentUser;
@@ -37,9 +41,27 @@ export default {
         },
     },
     async mounted(){
-        await this.$store.dispatch('getLikeds',this.currentUser._id);   
-    },
+        await this.$store.dispatch('getLikeds',this.currentUser._id); 
+        await this.formatSongs()  
+    },  
     methods: {
+       printVideoId(id) {
+        this.$store.commit("setSongId", id);
+        this.$store.commit("setCurrentSongList", this.songs); 
+      },
+      async formatSongs() {
+        let songVideoIds = []
+        let url = 'https://yt-music-api.herokuapp.com/api/yt/song/'
+        songVideoIds = this.likedSongs.map((a) => a.ytid);
+        for (let i = 0; i < songVideoIds.length; i++) {
+          let res = await fetch(url + songVideoIds[i]);
+          let data = await res.json();
+          if (data != null) {
+            this.songs.push(data);
+          } else {
+          }
+        }
+      },
       getDuration(ms) {
       let minutes = Math.floor(ms/60000);
       let seconds = ((ms % 60000) / 1000).toFixed(0);
@@ -99,7 +121,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 1em;
-    padding: 2em 10em;
     margin-top: 1em;
   }
 
