@@ -45,8 +45,7 @@ const Song = mongoose.model('Song',{
         require:true
     },
     dateAdded:{
-        type:Date,
-        require:true
+        type:Date
     },
     duration:{
         type:String,

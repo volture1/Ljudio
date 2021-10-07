@@ -1,8 +1,19 @@
 <template>
   <div class="container">
+    <PlaylistPicker v-if="playlistPicker"/>
     <div class="search">
-      <input type="text" class="input" />
-      <div class="submit">
+      <input type="text" class="input" placeholder="...."/>
+      <button @click="
+              async () => {
+                await fetch();
+                await fetchArtists();
+                await fetchPlaylists();
+                this.showMore = false;
+              }" 
+              class="searchbtn"
+      >Search
+      </button>
+      <!-- <div class="submit">
         <img
           src="https://i.imgur.com/nPCknKH.png"
           height="40"
@@ -17,14 +28,24 @@
           "
           class="submit-btn"
         />
-      </div>
+      </div> -->
     </div>
-    <div v-if="showEmpty" class="empty-container">
+
+    <!-- 
+      @click="
+            () => {
+              printVideoId(result.videoId);
+              testie(this.testId);
+            }
+          "
+     -->
+
+    <!-- <div v-if="showEmpty" class="empty-container">
       <img class="empty-image" src="https://i.imgur.com/v9DnpGQ.png" />
       <h1 class="empty-text">
         Find your favorite songs, artists and playlists!
       </h1>
-    </div>
+    </div> -->
     <div v-if="!doneLoading && !showEmpty" class="lds-ring">
       <div></div>
       <div></div>
@@ -42,12 +63,6 @@
           @change="
             () => {
               this.testId++;
-            }
-          "
-          @click="
-            () => {
-              printVideoId(result.videoId);
-              //testie(this.testId);
             }
           "
         >
@@ -74,9 +89,14 @@
               </p>
             </div>
           </div>
-          <p id="result-text">
+          <p id="result-text" class="duration-p">
             {{ calculateDuration(result.duration) }}
           </p>
+          <div class="actionbtns-wrap">
+            <AddToPlaylisticon @click="displayPlaylists(result)" class="actionbtn"/>
+            <Likeicon class="actionbtn"/>
+            <SongPlayBtn class="actionbtn"/>
+          </div>
         </div>
         <div v-if="showMore == false && this.list.length > 4">
           <p
@@ -131,7 +151,13 @@
 </template>
 
 <script>
+import Likeicon from '../assets/icons/Likeicon.vue';
+import AddToPlaylisticon from '../assets/icons/AddToPlaylisticon.vue';
+import SongPlayBtn from '../assets/icons/SongPlayBtn.vue';
+import PlaylistPicker from './PlaylistPicker.vue'
+
 export default {
+  components: {Likeicon, AddToPlaylisticon, SongPlayBtn, PlaylistPicker},
   data() {
     return {
       api_key: "AIzaSyDXqGC3bzyIcfV90q_V61IZaM68S6I4m9E",
@@ -166,8 +192,16 @@ export default {
     listPlaylist() {
       return this.playlistArray;
     },
+    playlistPicker() {
+      return this.$store.state.addToPLPopup;
+    }
   },
   methods: {
+    displayPlaylists(result) {
+      this.$store.dispatch('toggleAddToPlPopup');
+      console.log(result);
+      this.$store.dispatch('chooseSong', result);
+    },
     printVideoId(id) {
       this.$store.commit("setSongId", id);
       this.$store.commit("setPlaylist", this.songArray);
@@ -227,38 +261,61 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
+* {
+  font-family: "PT Sans", sans-serif;
+}
+
 h1 {
   font-size: 25px;
-  font-family: "Poppins", sans-serif;
+  font-family: "PT Sans", sans-serif;
 
   padding-top: 10px;
   padding-bottom: 10px;
 }
 p {
   user-select: none;
-  font-family: "Poppins", sans-serif;
+  font-family: "PT Sans", sans-serif;
   font-size: 14px;
 }
 
 .container {
-  width: 75%;
+  width: 80vw;
   display: flex;
   flex-direction: column;
   margin-left: 20vw;
+  padding: 1em 2em;
+}
+
+.search {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 0.5em;
   padding: 1em;
 }
 
 .input {
-  padding: 1em;
+  /* padding: 1em;
   width: 25vw;
   border-radius: 10px;
   background-color: black;
   margin-top: 1em;
+  color: white; */
+  /* --- */
+  width: 30vw;
+  border-radius: 5px;
+  background-color: rgba(73, 73, 73, 0.1);
+  outline: none;
+  border: none;
+  padding: 1em;
   color: white;
+  font-weight: 900;
+  font-size: 14px;
+  align-self: flex-end;
 }
 .artist-name {
   text-align: center;
-  margin-top: 5px;
+  /* margin-top: 5px; */
   color: #ffffff;
 }
 .artist-image {
@@ -301,6 +358,8 @@ p {
   display: flex;
   gap: 1em;
   flex-direction: column;
+  width: 75%;
+ 
 }
 
 .result {
@@ -311,28 +370,41 @@ p {
    align-content: center;
    flex-direction: row; */
   margin-right: 5px;
-  height: 50px;
+  /* height: 50px; */
   border-radius: 5px;
-  background-color: #c4c4c421;
+  /* background-color: #c4c4c421; */
+  background-color: rgba(85, 85, 85, 0.15);
+  display: flex;
+  padding: 0.25em;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
 }
+
+.result:hover {
+  border: 2px solid rgba(22, 96, 165);
+}
+
 #result-text {
   width: 20%;
-  margin-top: 15px;
+  /* margin-top: 15px; */
   float: left;
   display: inline;
 }
 #result-image {
-  margin-right: 12%;
+  /* margin-right: 12%;
   margin-left: 2%;
-  margin-top: 5px;
+  margin-top: 5px; */
+  border-radius: 5px;
   float: left;
   display: inline;
 }
 
 .result-multiple-artists {
   /* position: relative; */
-  width: 20%;
-  margin-top: 10px;
+  /* width: 20%;
+  margin-top: 10px; */
   float: left;
   display: inline;
 }
@@ -342,7 +414,7 @@ p {
   flex-direction: column;
   flex-grow: 0;
 }
-.result:hover {
+/* .result:hover {
   background-image: linear-gradient(
     rgba(104, 104, 219, 0.301),
     rgb(199, 207, 247, 0.301)
@@ -350,7 +422,7 @@ p {
   
   box-shadow: 5px 5px 5px teal;
   cursor: pointer;
-}
+} */
 .result-artist {
   background-color: gray;
   height: 120px;
@@ -382,12 +454,12 @@ p {
   display: flex;
   flex-wrap: wrap;
 }
-.search {
+/* .search {
   display: flex;
   padding-bottom: 20px;
   height: 100px;
   align-items: center;
-}
+} */
 .empty-container {
   display: flex;
 }
@@ -447,4 +519,39 @@ p {
   position: absolute;
   clip: rect(0, 120px, 40px, 0);
 } */
+
+.searchbtn {
+  padding: 0 1em;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  font-weight: 900;
+  background-color: rgba(73, 73, 73, 0.1);
+  color: white;
+  cursor: pointer;
+}
+
+.searchbtn:hover {
+  opacity: 0.5;
+}
+
+.actionbtns-wrap {
+  display: flex;
+  gap: 0.75em;
+  padding-right: 0.5em;
+}
+
+.actionbtn {
+  cursor: pointer;
+}
+
+.actionbtn:hover {
+  opacity: 0.5;
+}
+
+.duration-p {
+  opacity: 0.5;
+  width: 0px !important;
+  margin: 0 2em;
+}
 </style>

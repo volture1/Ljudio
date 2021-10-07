@@ -30,7 +30,6 @@ export default {
         createdDate: date
       };
       this.$store.dispatch('createPlaylist', playlist);
-      console.log(this.currentUser);
       this.$store.commit('setToggleCreatePl', false);
     },
     close() {
@@ -48,13 +47,13 @@ export default {
     display: flex;
     gap: 0.5em;
     background-color: rgba(5, 5, 5, 0.411);
+    backdrop-filter: blur(4px);
     border-radius: 5px;
     justify-content: space-between;
     align-items: center;
     position: absolute;
     bottom: 19.5vh;
     left: 7vw;
-    backdrop-filter: blur(4px);
   }
 
   .playlistname-input  {

@@ -14,7 +14,8 @@ const state = {
   removeModePL: false,
   chosenSong : null,
   selectedPL: null,
-  action: ''
+  action: '',
+  addToPLPopup: false
   
 }
 const mutations = {
@@ -39,6 +40,9 @@ const mutations = {
   setSongs(state, songs) {
     state.allSongs = songs;
   },
+  addSong(state, song) {
+    state.allSongs.push(song);
+  },
   setToggleCreatePl(state, show) {
     state.toggleCreatePl = show;
   },
@@ -59,6 +63,9 @@ const mutations = {
   },
   setAction(state, choice) {
     state.action = choice;
+  },
+  setAddToPlPopup(state) {
+    state.addToPLPopup = !state.addToPLPopup;
   }
 }
 const actions = {
@@ -106,6 +113,17 @@ const actions = {
     console.log(playlists);
     store.commit('setPlaylist', playlists);
   },
+  async addSong(store, song) {
+    let res = await fetch('/rest/songs', {
+      method: 'POST',
+      body: JSON.stringify(song),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    res = await res.json();
+    store.commit('addSong', res);
+  },
   async getSongs(store) {
     let songs = await fetch('/rest/songs');
     songs = await songs.json();
@@ -122,6 +140,17 @@ const actions = {
     playlists = await playlists.json();
     console.log(playlists._id);
     store.commit('addPlaylist', playlists);
+  },
+  async addSongToPL(store, playlist) {
+    let res = await fetch(('/rest/playlists/' + playlist._id), {
+      method: 'PUT',
+      body: JSON.stringify(playlist),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    res = await res.json();
+    store.commit('setPlaylist', res);
   },
   async logout(store) {
     let res = await fetch('/api/login', {
@@ -164,6 +193,9 @@ const actions = {
   },
   chooseAction(store, choice) {
     store.commit('setAction', choice);
+  },
+  toggleAddToPlPopup(store) {
+    store.commit('setAddToPlPopup');
   }
 }
 export default createStore({ state, mutations, actions})
