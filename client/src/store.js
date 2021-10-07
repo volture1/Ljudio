@@ -120,7 +120,8 @@ const actions = {
       }
     })
     playlists = await playlists.json();
-    store.commit('addPlaylist', playlist);
+    console.log(playlists._id);
+    store.commit('addPlaylist', playlists);
   },
   async logout(store) {
     let res = await fetch('/api/login', {
@@ -143,6 +144,8 @@ const actions = {
     });
     res = await res.json();
     store.dispatch('getPlaylists', this.state.currentUser._id);
+    store.commit('setSelectedPL', null);
+    store.commit('setAction', '');
   },
   togglePopupPl(store) {
     store.commit('setTogglePopupPl');

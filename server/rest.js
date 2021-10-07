@@ -81,7 +81,7 @@ module.exports = (app,models) => {
   // Delete playlist 
   app.delete('/rest/playlists/:id', async (req, res) => {
     let playListId = req.params.id
-    let playList = await models['playlists'].remove({ _id: playListId })
+    let playList = await models['playlists'].deleteOne({ _id: playListId })
     res.json(playList)
   })
 

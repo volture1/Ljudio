@@ -132,7 +132,7 @@ export default {
     select(playlist) {
       console.log(playlist);
       this.$store.dispatch('selectPL', playlist);
-      console.log("selected playlist ", this.$store.state.selectedPL);
+      console.log("selected playlist ", this.$store.state.selectedPL._id);
     },
     toggle() {
       this.$store.dispatch('togglePopupPl');
