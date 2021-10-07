@@ -51,7 +51,7 @@ export default {
     methods: {  
        printVideoId(id) {
         this.$store.commit("setSongId", id);
-        this.$store.commit("setCurrentSongList", this.songs); 
+        this.$store.commit("setSongList", this.songs); 
       },     
       async formatSongs() {
         let songVideoIds = []
