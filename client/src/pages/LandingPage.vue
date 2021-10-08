@@ -20,11 +20,13 @@
     <div class="content responsive mobilec desktop">
       <div class="left">
         <div class="texthold">
-          <h3 class="productname">Ljudio</h3>
-        <img src="../assets/Logo.png" alt="" class="mobileLogo">
+         
+          <img src="../assets/Ljudio Logo.png" alt="" class="mobileLogoName responsive mobile">
+        <img src="../assets/Logo.png" alt="" class="mobileLogo responsive mobile">
           <h1 class="title">Discover, listen & share</h1>
           
-           <h3 class="description">Browse among the oldest songs, videos and artists and share your music experience with others</h3>
+           <h3 class="description responsive desktop">Browse among the oldest songs, videos and artists and share your music experience with others</h3>
+           <h3 class="descriptionMobile responsive mobile">Browse among the oldest songs, videos and artists and share your music experience with others</h3>
         </div>
         <div class="imghold">
           <img src="../assets/SoundwaveBtn.png" alt="" class="soundwave-img responsive desktop">
@@ -70,8 +72,15 @@
 
 .mobileLogo {
   position: absolute;
-  top: 105px;
-  left: 180px;
+  top: 125px;
+  left: 190px;
+  font-size: 18px;
+}
+
+.mobileLogoName {
+  position: absolute;
+  top: 120px;
+  left: 90px;
   font-size: 18px;
 }
 
@@ -122,10 +131,16 @@
     font-size: 48px;
   }
 
-  .description {
-    font-size: 34px;
+  .descriptionMobile {
+    font-size: 20px;
     opacity: 0.5;
-    width: 25vw;
+    width: 100vw;
+  }
+
+  .description {
+    font-size: 20px;
+    opacity: 0.5;
+    width: 30vw;
   }
 
   .content {
