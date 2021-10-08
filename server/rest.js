@@ -14,8 +14,6 @@ module.exports = (app,models) => {
   app.put('/rest/playlists/:id/:songid', async (req, res) => {
     let model = models['playlists'];
     let docs = await model.findById(req.params.id);
-    console.log("req.body1 ", req.body);
-    console.log("docs.songList1 " , docs.songList);
     /* for(let song of req.body.songList) {
       if(docs.songList.includes(song)) {
         res.json('Playlist already contains song');
@@ -26,17 +24,8 @@ module.exports = (app,models) => {
       }
     } */
     let songs = models['songs'];
-    console.log("songs ", songs);
-    console.log("songid ", req.params.songid);
     let song = await songs.findById(req.params.songid);
     docs.songList.push(song);
-  /*   if(req.body.songList.includes(req.params.songid)) {
-      req.json('Playlist already contains song');
-      return;
-    } else {
-      docs.songList.push(song);
-    } */
-
     await docs.save();
     res.json(docs);
   })

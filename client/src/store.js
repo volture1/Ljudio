@@ -98,18 +98,14 @@ const actions = {
       }
     })
       let user = await res.json();
-      console.log('user when register',user)
       if (user.error == 'Email already in use'){
         store.commit('setDuplicateEmail','Email already in use')  
-        store.commit('setLoggedIn',false);        
-        console.log('duplicateEmail',this.state.duplicateEmail)
+        store.commit('setLoggedIn',false);      
         return;
       }
       store.commit('setDuplicateEmail','')  
-      console.log('success');     
       store.commit('setCurrentUser', user); 
       store.commit('setLoggedIn', true);
-      console.log(this.state.loggedIn);
   },
   //Login
   async login(store,credentials){
@@ -126,7 +122,6 @@ const actions = {
   async getPlaylists(store, userId) {
     let playlists = await fetch('/rest/playlists/user/' + userId);
     playlists = await playlists.json();
-    console.log(playlists);
     if (playlists.length > 0) {
       store.commit('setPlaylist', playlists);
     } else {
@@ -173,7 +168,6 @@ const actions = {
       }
     })
     res = await res.json();
-    console.log(res);
     store.commit('setPlaylist', res);
     await this.dispatch('getPlaylists',data.id)
 
