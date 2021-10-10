@@ -47,15 +47,36 @@
           @click="
             () => {
               printVideoId(result.videoId);
-              //testie(this.testId);
+              
             }
           "
         >
-          <img :src="result.thumbnails[1].url" height="40" width="40" />
-          <p>{{ result.name }}</p>
-          <p>{{ result.album.name }}</p>
-          <p>{{ result.artist.name }}</p>
-          <p>{{ calculateDuration(result.duration) }}</p>
+          <img
+            id="result-image"
+            :src="result.thumbnails[1].url"
+            height="40"
+            width="40"
+          />
+
+          <p id="result-text">{{ result.name }}</p>
+          <p id="result-text">{{ result.album.name }}</p>
+          <div v-if="result.artist.name">
+            <p id="result-text">{{ result.artist.name }}</p>
+          </div>
+          <div class="result-multiple-artists" v-else>
+            <div class="result-single-artist">
+              <p
+                v-for="artist in result.artist"
+                :key="artist"
+                id="result-text-artist"
+              >
+                {{ artist.name }}
+              </p>
+            </div>
+          </div>
+          <p id="result-text">
+            {{ calculateDuration(result.duration) }}
+          </p>
         </div>
         <div v-if="showMore == false && this.list.length > 4">
           <p
@@ -73,6 +94,7 @@
           v-for="result in this.listArtists"
           :key="result"
           class="result-artist"
+          @click="$router.push('/artist/' + result.browseId)"
         >
           <img :src="result.thumbnails[1].url" class="artist-image" />
           <p class="artist-name">{{ result.name }}</p>
@@ -116,13 +138,11 @@ export default {
       url: "https://yt-music-api.herokuapp.com/api/yt/songs/",
       urlArtist: "https://yt-music-api.herokuapp.com/api/yt/artists/",
       urlPlaylist: "https://yt-music-api.herokuapp.com/api/yt/playlists/",
-      test: null,
       songArray: [],
       fiveSongs: [],
       artistArray: [],
       playlistArray: [],
       doneLoading: false,
-      playlist: [{ videoId: null, songs: [] }],
       showMore: false,
       showEmpty: true,
       showHeaders: false,
@@ -148,6 +168,7 @@ export default {
   methods: {
     printVideoId(id) {
       this.$store.commit("setSongId", id);
+      this.$store.commit("setSongList", this.songArray);
     },
     calculateDuration(duration) {
       let time = new Date(duration);
@@ -156,9 +177,6 @@ export default {
         second: "2-digit",
       });
       return newTime;
-    },
-    testie(id) {
-      console.log(id);
     },
     increment() {
       this.testId++;
@@ -173,9 +191,7 @@ export default {
 
       this.songArray = [...data.content];
       this.fiveSongs = [...this.songArray];
-      
-      this.playlist.songs = [...this.songArray];
-      this.$store.commit("setPlaylist", this.songArray);
+     
       this.showHeaders = true;
       this.fiveSongs.splice(5, 15);
     },
@@ -190,7 +206,7 @@ export default {
     async fetchPlaylists() {
       this.listPlaylistArray = [];
       let search = document.querySelector(".input").value;
-      //document.querySelector(".input").value = "";
+      
       let res = await fetch(this.urlPlaylist + search);
       let data = await res.json();
 
@@ -217,12 +233,20 @@ p {
   font-size: 14px;
 }
 
+
 .container {
-  margin: 0 auto;
-  width: 50vw;
+  width: 75%;
   display: flex;
   flex-direction: column;
+  margin-left: 20vw;
+  padding: 1em;
 }
+ @media screen and (max-width: 950px) {
+  .container{
+    margin-left: 5%;
+    width: 95%;
+  }
+} 
 
 .input {
   padding: 1em;
@@ -249,9 +273,7 @@ p {
   margin-right: auto;
   margin-top: auto;
   border-radius: 50%;
-  /*---to cut off the image in any way
-   -webkit-clip-path: polygon(0 0, 0 100px, 100px 80px, 100px 0);
-  clip-path: polygon(0 0, 0 100px, 150px 1px, 100px 0); */
+ 
 }
 .playlist-image {
   display: block;
@@ -280,22 +302,43 @@ p {
 }
 
 .result {
-  display: flex;
-  justify-content: space-between;
-  row-gap: 10px;
-  align-items: center;
-  padding-right: 1em;
-  padding-left: 1em;
   height: 50px;
   border-radius: 5px;
   background-color: #c4c4c421;
+}
+#result-text {
+  width: 15%;
+  margin-top: 15px;
+  float: left;
+  display: inline;
+}
+
+#result-image {
+  margin-right: 12%;
+  margin-left: 2%;
+  margin-top: 5px;
+  float: left;
+  display: inline;
+}
+
+.result-multiple-artists {
+  width: 20%;
+  margin-top: 10px;
+  float: left;
+  display: inline;
+}
+.result-single-artist {
+  flex-basis: 10%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
 }
 .result:hover {
   background-image: linear-gradient(
     rgba(104, 104, 219, 0.301),
     rgb(199, 207, 247, 0.301)
   );
-  z-index: 99;
+  
   box-shadow: 5px 5px 5px teal;
   cursor: pointer;
 }
@@ -390,9 +433,4 @@ p {
     transform: rotate(360deg);
   }
 }
-
-/* #clip {
-  position: absolute;
-  clip: rect(0, 120px, 40px, 0);
-} */
 </style>
