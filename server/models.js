@@ -33,7 +33,6 @@ const Liked = mongoose.model('Liked',{
 const Song = mongoose.model('Song',{
     link:{
         type:String,
-        unique:true,
         required:true
     },
     title:{
@@ -45,8 +44,7 @@ const Song = mongoose.model('Song',{
         require:true
     },
     dateAdded:{
-        type:Date,
-        require:true
+        type:Date
     },
     duration:{
         type:String,
@@ -62,8 +60,8 @@ const Song = mongoose.model('Song',{
     thumbnail: {
         type: String
     },
-    ytid: {
-        type:String
+    ytid:{
+        type: String
     }
 
 })

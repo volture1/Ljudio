@@ -11,11 +11,10 @@ module.exports = (app,models) => {
   })
 
   // update playlist
-  app.put('/rest/playlists/:id', async (req, res) => {
+  app.put('/rest/playlists/:id/:songid', async (req, res) => {
     let model = models['playlists'];
     let docs = await model.findById(req.params.id);
-
-    for(let song of req.body.songList) {
+    /* for(let song of req.body.songList) {
       if(docs.songList.includes(song)) {
         res.json('Playlist already contains song');
         return;
@@ -23,8 +22,10 @@ module.exports = (app,models) => {
         console.log(song);
         docs.songList.push(song);
       }
-    }
-
+    } */
+    let songs = models['songs'];
+    let song = await songs.findById(req.params.songid);
+    docs.songList.push(song);
     await docs.save();
     res.json(docs);
   })
@@ -130,7 +131,7 @@ module.exports = (app,models) => {
   // Delete playlist 
   app.delete('/rest/playlists/:id', async (req, res) => {
     let playListId = req.params.id
-    let playList = await models['playlists'].remove({ _id: playListId })
+    let playList = await models['playlists'].deleteOne({ _id: playListId })
     res.json(playList)
   })
 
