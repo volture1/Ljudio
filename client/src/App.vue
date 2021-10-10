@@ -4,6 +4,8 @@ import SideBar from "./components/Sidebar.vue";
 import LandingPage from "./pages/LandingPage.vue";
 </script>
 
+
+
 <template>
   <div>
     <div v-if="currentUser" class="container">
@@ -66,6 +68,7 @@ export default {
   },
 };
 </script>
+
 
 
 <style>
