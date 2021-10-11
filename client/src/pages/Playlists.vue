@@ -26,18 +26,8 @@
           <div class="playlist-wrapper">
             <div class="upper-playlist-part">
               <p class="playlist-title">{{playlist.name}}</p>
-              <!-- <div class="options-btns">
-                <div class="option-btn"></div>
-                <div class="option-btn"></div>
-                <div class="option-btn"></div>
-              </div> -->
               <p class="length-duration">{{playlist.songList.length}} songs • {{playlistDuration(playlist)}}</p>
             </div>
-            <!-- <router-link :to="'/playlists/' + playlist._id">
-              <div class="playlist-card">
-                <img class="single-thumbnail" :src="getThumbnail(playlist.songList[0])" alt="" :class="{'target' : editmode, 'remove': removemode}">
-              </div>
-            </router-link> -->
             <div class="playlist-card" @click="open(playlist)">
                 <img class="single-thumbnail" :src="getThumbnail(playlist.songList[0])" alt="" :class="{'target' : editmode, 'remove': removemode}">
             </div>
@@ -46,29 +36,8 @@
         <div v-else class="playlist">
           <div class="upper-playlist-part">
             <p class="playlist-title">{{playlist.name}}</p>
-            <!-- <div class="options-btns">
-              <div class="option-btn"></div>
-              <div class="option-btn"></div>
-              <div class="option-btn"></div>
-            </div> -->
             <p class="length-duration">{{playlist.songList.length}} songs • {{playlistDuration(playlist)}}</p>
           </div>
-          <!-- <router-link :to="'/playlists/' + playlist._id">
-            <div class="playlist-card multiple-thumbnails" :class="{'target' : editmode, 'remove': removemode}">
-              <div class="thumbnails">
-                <img class="thumbnail-100x100 top-left" :src="getThumbnail(playlist.songList[0])" alt="">
-              </div>
-              <div class="thumbnails">
-                <img class="thumbnail-100x100 top-right" :src="getThumbnail(playlist.songList[1])" alt="">
-              </div>
-              <div class="thumbnails">
-                <img class="thumbnail-100x100 bottom-left" :src="getThumbnail(playlist.songList[2])" alt="">
-              </div>
-              <div class="thumbnails">
-                <img class="thumbnail-100x100 bottom-right" :src="getThumbnail(playlist.songList[3])" alt="">
-              </div>
-            </div>
-          </router-link> -->
           <div @click="open(playlist)" class="playlist-card multiple-thumbnails" :class="{'target' : editmode, 'remove': removemode}">
               <div class="thumbnails">
                 <img class="thumbnail-100x100 top-left" :src="getThumbnail(playlist.songList[0])" alt="">
@@ -130,9 +99,7 @@ export default {
       this.$router.push('/playlists/' + playlist._id);
     },
     select(playlist) {
-      console.log(playlist);
       this.$store.dispatch('selectPL', playlist);
-      console.log("selected playlist ", this.$store.state.selectedPL._id);
     },
     toggle() {
       this.$store.dispatch('togglePopupPl');

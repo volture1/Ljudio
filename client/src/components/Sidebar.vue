@@ -1,9 +1,5 @@
 <template>
   <div class="sidebar">
-    <!-- <nav>
-      <h1 @click="$router.push('/')">Ljudio</h1>
-      <router-link to="/search">Search </router-link>
-    </nav> -->
     <div class="top-section">
       <router-link to='/Home' class="router-link">
       <h3 class="productname">Ljudio</h3>

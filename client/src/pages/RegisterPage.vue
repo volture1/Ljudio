@@ -110,18 +110,6 @@ export default {
         input.style.border = '3px solid rgba(182, 19, 19, 0.671)';
         this.noPasswordMatch = true;
       }
-     /*  if (this.$store.state.duplicateEmail == 'Email already in use'){        
-        this.isDuplicateEmail = true
-        console.log('this.duplicateEmail in register metod',this.isDuplicateEmail)
-      } */
-      /* if (this.isLoggedIn){
-         console.log('this.isLoggedIn before push to home',this.isLoggedIn)
-        this.$router.push('/Home');
-      } */
-      
-      /* for(let attr in this.user) {
-        attr = '';
-      } */
     }
   }
 }

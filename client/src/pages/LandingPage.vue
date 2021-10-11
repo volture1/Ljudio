@@ -30,7 +30,6 @@
         </div>
       </div>
       <div class="albumflow-wrap">
-        <!-- <img src="../assets/AlbumFlow.png" alt="" class="albumflow-img"> -->
       </div>
     </div>
   </div>

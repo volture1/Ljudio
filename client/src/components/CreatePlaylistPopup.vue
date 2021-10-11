@@ -69,12 +69,6 @@ export default {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
   }
-
-  .playlistname-input:focus {
-    /* border-bottom: 2px solid rgba(36, 37, 38, 0.5); */
-    /* border-bottom: 1px solid rgba(7, 104, 201, 0.5); */
-  }
-
   .save, .close {
     font-weight: 900;
     text-decoration: underline;
