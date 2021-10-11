@@ -1,11 +1,9 @@
 <template>
   <div class="sidebar">
-    <!-- <nav>
-      <h1 @click="$router.push('/')">Ljudio</h1>
-      <router-link to="/search">Search </router-link>
-    </nav> -->
     <div class="top-section">
+      <router-link to='/Home' class="router-link">
       <h3 class="productname">Ljudio</h3>
+      </router-link>  
       <img src="../assets/Logo.png" alt="">
     </div>
     <div class="user-section">
@@ -13,11 +11,7 @@
         <Usericon class="avatar"/>
         <h4 class="username">{{currentUser.firstname}} {{currentUser.lastname}}</h4>
       </div>
-      <div class="optionbtns-section">
-        <buttons class="optionbtn"></buttons>
-        <buttons class="optionbtn"></buttons>
-        <buttons class="optionbtn"></buttons>
-      </div>
+      
     </div>
     <div class="routes-section">
       <router-link to='/Home' class="router-link">
@@ -32,14 +26,6 @@
           <p class="route">Explore</p>
         </div>
       </router-link>
-      <div class="route-container">
-        <Popularicon />
-        <p class="route">Popular</p>
-      </div>
-      <div class="route-container">
-        <Genresicon />
-        <p class="route">Genres</p>
-      </div>
       <router-link :to="'/Playlists'" class="router-link">
         <div class="route-container">
           <Playlistsicon />
@@ -58,34 +44,16 @@
         <p class="route">Liked</p>
       </div>
       </router-link>      
-      <div class="route-container">
-        <Socialicon />
-        <p class="route">Social</p>
-      </div>
+     
     </div>
     <hr class="break">
     <div class="musicplayer-section">
-      <div class="musicplayer-option">
-        <Addicon />
-        <p class="musicplayer-option-name">Add</p>
-      </div>
+      
       <div class="musicplayer-option" @click="show()">
         <NewPlaylisticon />
         <p class="musicplayer-option-name">New playlist</p>
       </div>
       <CreatePlPopup v-if="toggle"/>
-      <div class="musicplayer-option">
-        <LikeSongicon />
-        <p class="musicplayer-option-name">Like song</p>
-      </div>
-      <div class="musicplayer-option">
-        <Shareicon />
-        <p class="musicplayer-option-name">Share</p>
-      </div>
-      <div class="musicplayer-option">
-        <Targeticon />
-        <p class="musicplayer-option-name">Target</p>
-      </div>
       <div @click="logout" class="musicplayer-option">
         <Logouticon />
         <p class="musicplayer-option-name">Log out</p>

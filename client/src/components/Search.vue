@@ -302,13 +302,7 @@ p {
 } 
 
 .input {
-  /* padding: 1em;
-  width: 25vw;
-  border-radius: 10px;
-  background-color: black;
-  margin-top: 1em;
-  color: white; */
-  /* --- */
+  
   width: 30vw;
   border-radius: 5px;
   background-color: rgba(73, 73, 73, 0.1);
@@ -322,7 +316,7 @@ p {
 }
 .artist-name {
   text-align: center;
-  /* margin-top: 5px; */
+  
   color: #ffffff;
 }
 .artist-image {
@@ -369,16 +363,8 @@ p {
 
 .result {
   height: 50px;
-  /*   display: flex;
- justify-content: space-between;
-  
-
-   align-content: center;
-   flex-direction: row; */
   margin-right: 5px;
-  /* height: 50px; */
   border-radius: 5px;
-  /* background-color: #c4c4c421; */
   background-color: rgba(85, 85, 85, 0.15);
   display: flex;
   padding: 0.25em;
@@ -400,9 +386,6 @@ p {
 }
 
 #result-image {
-  /* margin-right: 12%;
-  margin-left: 2%;
-  margin-top: 5px; */
   border-radius: 5px;
   float: left;
   display: inline;
@@ -420,15 +403,7 @@ p {
   flex-direction: column;
   flex-grow: 0;
 }
-/* .result:hover {
-  background-image: linear-gradient(
-    rgba(104, 104, 219, 0.301),
-    rgb(199, 207, 247, 0.301)
-  );
-  
-  box-shadow: 5px 5px 5px teal;
-  cursor: pointer;
-} */
+
 .result-artist {
   background-color: gray;
   height: 120px;
@@ -460,12 +435,7 @@ p {
   display: flex;
   flex-wrap: wrap;
 }
-/* .search {
-  display: flex;
-  padding-bottom: 20px;
-  height: 100px;
-  align-items: center;
-} */
+
 .empty-container {
   display: flex;
 }
@@ -521,10 +491,6 @@ p {
   }
 }
 
-/* #clip {
-  position: absolute;
-  clip: rect(0, 120px, 40px, 0);
-} */
 
 .searchbtn {
   padding: 0 1em;

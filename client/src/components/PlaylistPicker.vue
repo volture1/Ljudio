@@ -55,7 +55,6 @@ export default {
           ytid: this.chosenSong.videoId
         }
         await this.$store.dispatch('addSong', song);
-        console.log(this.songs);
         this.close();
         this.songs = this.$store.state.allSongs
         let lastSong = this.songs[this.songs.length - 1];
@@ -96,7 +95,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center
-    /* margin-bottom: 1em; */
+    
   }
 
   .playlist {

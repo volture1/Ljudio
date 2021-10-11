@@ -66,7 +66,6 @@ export default {
   .choice {
     font-size: 14px;
     font-weight: 900;
-    /* text-decoration: underline; */
     cursor: pointer;
   }
 
