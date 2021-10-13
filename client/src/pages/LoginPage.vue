@@ -2,9 +2,11 @@
     <div class="login">
       <div class="top">
         <router-link to="/">
-          <p class="goback-route">Home</p>
+          <p class="goback-route responsive desktop">Home</p>
+        <p class="goback-routeMobile responsive mobile">Home</p>
         </router-link>  
-        <h1 class="pagetitle">Login</h1>
+        <h1 class="pagetitle responsive desktop">Login</h1>
+      <h1 class="pagetitleMobile responsive mobile">Login</h1>
       </div>
       <div class="productname-icon">
         <h3 class="productname">Ljudio</h3>
@@ -12,7 +14,7 @@
       </div>
       <hr class="break">
       <form @submit.prevent="handleSubmit">
-        <div class="fields">
+        <div class="fields fieldsMobile">
           <input class="input" v-model="email" type="email" placeholder="Email" >
           <input class="input" v-model="password" type="password" placeholder="Password" >
           <div v-if="tempError" class="error">{{tempError}}</div>
@@ -119,10 +121,27 @@ export default {
     opacity: 0.5;
   }
 
+  .goback-routeMobile {
+    font-size: 12px;
+    margin-bottom: 2em;
+    text-decoration: underline;
+    font-weight: 900;
+    margin-left: -4em;
+    cursor: pointer
+    
+  }
+
   .pagetitle {
     margin-bottom: 1em;
     font-size: 46px;
     font-weight: 900;
+  }
+
+  .pagetitleMobile {
+    margin-bottom: 1em;
+    font-size: 46px;
+    font-weight: 900;
+    margin-left: 0.7em;
   }
 
   .productname-icon {
@@ -204,4 +223,37 @@ export default {
   .register-btn {
     margin-top: 0.25em;
   }
+
+    .responsive{
+  display: none;
+}
+
+   @media screen and (max-width: 450px) {
+  .fieldsMobile{
+      display: flex;
+    flex-direction: column;
+    gap: 2em;
+    width: 50vw;
+    margin: 0 auto;
+  }  
+}
+
+  @media screen and (max-width: 450px) {
+  .mobile{
+    display: block;
+  }  
+}
+
+  @media screen and (min-width: 451px) and (max-width: 750px) {
+  .tablet{
+    display: block;
+  }  
+}
+
+@media screen and (min-width: 751px) {
+  .desktop{
+    display: block;
+  }  
+}
+
 </style>
