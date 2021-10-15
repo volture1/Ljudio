@@ -1,9 +1,9 @@
 <template>
   <div class="homepage">
     <div class="section">
-      <h3 class="section-title">My media</h3>
+      <h3 class="section-title section-titleMobile">My media</h3>
       <div class="info-more-p">
-        <p class="details">{{playlists.length}} Playlist • {{userAllSongs()}} Song • {{durationAllSongs()}}</p>
+        <p class="details detailsMobile">{{playlists.length}} Playlist • {{userAllSongs()}} Song • {{durationAllSongs()}}</p>
         <p class="more">More</p>
       </div>
       <div class="content-preview">
@@ -199,9 +199,18 @@ export default ({
     flex-direction: column;
   }
 
-  .section-title {
+.section-title {
     font-size: 28px;
+    
   }
+
+  
+@media screen and (max-width: 450px) {
+  .section-titleMobile {
+    font-size: 28px;
+    margin-left: -8%;
+  }
+}
 
   .info-more-p {
     display: flex;
@@ -213,6 +222,21 @@ export default ({
     opacity: 0.5;
     font-weight: 900;
   }
+
+  @media screen and (max-width: 450px) {
+    .detailsMobile {
+    font-size: 14px;
+    opacity: 0.5;
+    font-weight: 900;
+    margin-left: -8%;
+    }
+  }
+
+ .ddetails {
+    font-size: 14px;
+    opacity: 0.5;
+    font-weight: 900;
+  } 
 
   .more {
     text-decoration: underline;
@@ -318,4 +342,22 @@ export default ({
     height: 100%;
     justify-content: space-between;
   }
+
+   @media screen and (max-width: 450px) {
+  .mobile{
+    display: block;
+  }  
+}
+
+  @media screen and (min-width: 451px) and (max-width: 750px) {
+  .tablet{
+    display: block;
+  }  
+}
+
+@media screen and (min-width: 751px) {
+  .desktop{
+    display: block;
+  }  
+}
 </style>
