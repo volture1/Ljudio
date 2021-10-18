@@ -23,7 +23,7 @@
       <input class="input" type="text" placeholder="Username (optional)" name="username">
       <input class="input" type="password" placeholder="Password" name="password" v-model="user.password" required minlength="3">
       <input class="input repeat-password-field" type="password" placeholder="Repeat Password" name="repeat-password" v-model="repeatedPassword" required>
-      <div class="birthinput-wrap">
+      <div class="responsive birthinput-wrapMobile birthinput-wrapDesktop">
         <input class="input" type="text" placeholder="Day" name="day" v-model="user.birthday" required>
         <input class="input" type="text" placeholder="Month" name="month" v-model="user.birthmonth" required>
         <input class="input input-year" type="text" placeholder="Year" name="year" v-model="user.birthyear" required>
@@ -239,25 +239,24 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 1.5em;
-    width: 75%;
-    margin: 0 auto;
-  }
-  .mobileFields {
-    display: flex;
-    flex-direction: column;
-    gap: 2em;
     width: 110%;
     margin: 0 auto;
   }
+ 
 
   .birthinput-wrap {
     display: flex;
     gap: 0.5em;
+    
   }
 
-  .input-year {
-    width: 50vw;
+.birthinput-wrapMobile {
+    display: flex;
+    gap: 1.5em;
+    flex-direction: column;
+    
   }
+  
 
   .gender-selection {
     display: flex;
@@ -295,6 +294,7 @@ export default {
   .submit-wrap {
     width: 50%;
     margin: 0 auto;
+    margin-bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -311,6 +311,7 @@ export default {
     color: white;
     font-size: 16px;
     font-weight: 900;
+    
   }
 
   .mbileSubmit {
@@ -337,6 +338,22 @@ export default {
   @media screen and (max-width: 450px) {
   .mobile{
     display: block;
+  }  
+}
+@media screen and (max-width: 450px) {
+  .birthinput-wrapMobile {
+    display: flex;
+    gap: 1.5em;
+    flex-direction: column;
+    
+  }
+}
+
+@media screen and (min-width: 751px) {
+  .birthinput-wrapDesktop{
+    display: flex;
+    gap: 1.5em;
+    width: 100%;
   }  
 }
 

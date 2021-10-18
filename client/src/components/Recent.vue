@@ -1,8 +1,8 @@
 <template>
     <div class="section">
-        <h3 class="section-title">Recent</h3>
+        <h3 class="section-title section-titleMobile">Recent</h3>
         <div class="info-more-p">
-            <p class="details">{{recentSongs.length}} Song • {{getSongListDuration()}}</p>            
+            <p class="details detailsMobile">{{recentSongs.length}} Song • {{getSongListDuration()}}</p>            
             <p class="more">More</p>
         </div>
         <div class="songlist"></div>
@@ -98,6 +98,14 @@ export default {
     opacity: 0.5;
     font-weight: 900;
   }
+   @media screen and (max-width: 450px) {
+    .detailsMobile {
+    font-size: 14px;
+    opacity: 0.5;
+    font-weight: 900;
+    margin-left: -8%;
+    }
+  }
 
   .more {
     text-decoration: underline;
@@ -171,6 +179,13 @@ export default {
     font-size: 16px;
     font-weight: 900;
   }
+
+  @media screen and (max-width: 450px) {
+  .section-titleMobile {
+    font-size: 28px;
+    margin-left: -8%;
+  }
+}
 
 
 </style>

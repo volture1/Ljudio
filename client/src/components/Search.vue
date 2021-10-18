@@ -302,13 +302,21 @@ p {
 } 
 
 .input {
-  
-  width: 30vw;
-  border-radius: 5px;
-  background-color: rgba(73, 73, 73, 0.1);
-  outline: none;
-  border: none;
   padding: 1em;
+  width: 25vw;
+  width: 80%;
+  border-radius: 100px;
+  background-color: black;
+  margin-top: 1em;
+  color: white;
+}
+
+.iinput {
+  padding: 1em;
+  width: 25vw;
+  border-radius: 10px;
+  background-color: black;
+  margin-top: 1em;
   color: white;
   font-weight: 900;
   font-size: 14px;
@@ -440,6 +448,13 @@ p {
   display: flex;
 }
 .empty-image {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  height: 200px;
+  margin-left: 2px;
+}
+
+.empty-iimage {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
   height: 200px;
