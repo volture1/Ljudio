@@ -2,7 +2,7 @@
   <div>
     <div class="music-player-container">
       <div
-        @click="$router.push('/video/' + this.playlistVideoIds[this.testId])"
+        @click="$router.push('/video/' + this.playlistVideoIds[this.playlistIndex])"
         class="song-content-container"
       >
         <p style="text-decoration: underline">Currently Playing</p>

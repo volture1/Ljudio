@@ -2,8 +2,10 @@
     <div class="section">
         <h3 class="section-title section-titleMobile">Liked</h3>
         <div class="info-more-p">
+
             <p class="details detailsMobile">{{likedSongs.length}} Song • {{getSongListDuration()}}</p>
             <p class="more">More</p>
+
         </div>
         <div class="songlist"></div>
         <div class="song" v-for="(liked,i) in likedSongs" :key="i"  @click=" () => {printVideoId(liked.ytid);}">
