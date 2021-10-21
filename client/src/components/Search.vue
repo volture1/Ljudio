@@ -126,32 +126,8 @@
           <p class="artist-name">{{ result.name }}</p>
         </div>
       </div>
-      <h1 v-if="showHeaders == true">Playlists</h1>
-      <div class="search-list-playlist">
-        <p v-if="this.listPlaylist < 1">No songs found :/</p>
-        <div
-          v-for="result in this.listPlaylist"
-          :key="result"
-          class="result-playlist"
-        >
-          <div v-if="result.thumbnails.url">
-            <img
-              id="clip"
-              :src="result.thumbnails.url"
-              class="playlist-image"
-            />
-            <p class="playlist-name">{{ result.title }}</p>
-          </div>
-          <div v-else>
-            <img
-              id="clip"
-              :src="result.thumbnails[0].url"
-              class="playlist-image"
-            />
-            <p class="playlist-name">{{ result.title }}</p>
-          </div>
-        </div>
-      </div>
+      
+      
     </div>
   </div>
 </template>
@@ -243,16 +219,6 @@ export default {
 
       this.artistArray = [...data.content];
       this.artistArray.splice(1, 99);
-    },
-    async fetchPlaylists() {
-      this.listPlaylistArray = [];
-      let search = document.querySelector(".input").value;
-      
-      let res = await fetch(this.urlPlaylist + search);
-      let data = await res.json();
-
-      this.playlistArray = [...data.content];
-      this.playlistArray.splice(5, 15);
       this.doneLoading = true;
     },
   },

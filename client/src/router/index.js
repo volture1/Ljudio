@@ -9,8 +9,7 @@ import AlbumPage from '../pages/AlbumPage.vue';
 import VideoPage from '../pages/VideoPage.vue'
 import Playlists from '../pages/Playlists.vue';
 import SinglePlaylist from '../pages/SinglePlaylist.vue'
-import Song from '../pages/Song.vue'
-import Explore from '../pages/Explore.vue'
+
 import LikedPage from '../pages/LikedPage.vue'
 
 const routes = [
@@ -64,16 +63,7 @@ const routes = [
     name: 'SinglePlaylist',
     component: SinglePlaylist
   },
-  {
-    path: '/song/:id',
-    name: "Song",
-    component: Song
-  },
-  {
-    path: '/explore',
-    name: "Explore",
-    component: Explore
-  },
+ 
   {
     path:'/liked',
     name:"LikedPage",

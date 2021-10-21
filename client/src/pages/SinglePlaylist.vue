@@ -8,7 +8,6 @@
     </div>
     <div class="songlist">
       <div class="song" v-for="song in songs" :key="song._id">
-        <router-link :to="'/song/' + song._id" class="router">
           <img :src="song.thumbnail" alt="" class="thumbnail">
           <p class="songtitle">{{song.title}}</p>
           <p class="artist">{{song.artist}}</p>
@@ -18,7 +17,6 @@
             <div class="option-btn"></div>
             <div class="option-btn"></div>
           </div>
-        </router-link>
       </div>
     </div>
   </div>

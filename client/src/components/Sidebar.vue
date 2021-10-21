@@ -20,12 +20,6 @@
           <p class="route">Home</p>
         </div>
       </router-link>  
-      <router-link to='/explore' class="router-link">
-        <div class="route-container">
-          <Exploreicon />
-          <p class="route">Explore</p>
-        </div>
-      </router-link>
       <router-link :to="'/Playlists'" class="router-link">
         <div class="route-container">
           <Playlistsicon />
@@ -66,7 +60,6 @@
 
 import Usericon from '../assets/icons/Useravatar.vue'
 import Homeicon from '../assets/icons/Homeicon.vue'
-import Exploreicon from '../assets/icons/Exploreicon.vue'
 import Popularicon from '../assets/icons/Popularicon.vue'
 import Genresicon from '../assets/icons/Genresicon.vue'
 import Playlistsicon from '../assets/icons/Playlistsicon.vue'
@@ -90,7 +83,7 @@ export default {
     }
   },
   components: {
-    Usericon, Homeicon, Exploreicon, Popularicon, Genresicon, Playlistsicon, Searchicon, Likedicon, Socialicon, Addicon, NewPlaylisticon, LikeSongicon, Shareicon, Targeticon, Logouticon, CreatePlPopup},
+    Usericon, Homeicon, Popularicon, Genresicon, Playlistsicon, Searchicon, Likedicon, Socialicon, Addicon, NewPlaylisticon, LikeSongicon, Shareicon, Targeticon, Logouticon, CreatePlPopup},
   computed: {
     currentUser() {
       return this.$store.state.currentUser;
