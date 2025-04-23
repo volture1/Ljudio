@@ -1,27 +1,44 @@
-global.mongoose = require('mongoose')
-const express = require('express')
-const models = require('./models.js')
-//-----------------------------
-global.session = require('express-session');
-global.crypto = require('crypto');
-global.ConnectMongo = require('connect-mongo');
-//-------------------------------------------
+const express = require("express");
+const session = require("express-session");
+const crypto = require("crypto");
+const { sequelize } = require("./models.js");
+const models = require("./models.js");
 
-const app = express()
-app.use(express.json())
+const app = express();
+app.use(express.json());
 
-const dbCloudUrl = 'mongodb+srv://spotifyColon:spotify123@cluster0.lyvtd.mongodb.net/ljudio?retryWrites=true&w=majority'
+// Session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "dev_secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
 
-mongoose.connect(dbCloudUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-},() => {
-  console.log("connect DB!")
-})
+const auth = require("./auth.js");
+const rest = require("./rest.js");
 
-const auth = require('./auth.js');
-const rest = require('./rest.js');
+// Initialize database and start server
+async function startServer() {
+  try {
+    await sequelize.sync();
+    console.log("Database synchronized");
 
-rest(app, models)
-auth(app,models,dbCloudUrl)
-app.listen(3001, () => { console.log('Server started on port 3001') })
+    rest(app, models);
+    auth(app, models);
+
+    const PORT = process.env.PORT || 3001;
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Unable to start server:", error);
+  }
+}
+
+startServer();

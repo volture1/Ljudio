@@ -1,109 +1,85 @@
-const mongoose = global.mongoose
+const { DataTypes } = require("sequelize");
+const sequelize = require("./config/database");
 
-//schemas for entities in mongo Atlas
-const Playlist = mongoose.model('Playlist',{
-    name:{
-        type:String,
-        required:true
-    },
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
-    },
-    songList:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Song'
-    }],
-    createdDate: {
-        type: Date
-    }
-})
+const User = sequelize.define("User", {
+  email: {
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  firstname: DataTypes.STRING,
+  lastname: DataTypes.STRING,
+  birthday: DataTypes.DATE,
+  gender: DataTypes.STRING,
+});
 
-const Liked = mongoose.model('Liked',{
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
-    },
-    songList:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Song'
-    }]
-})
+const Song = sequelize.define("Song", {
+  link: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  artist: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  dateAdded: DataTypes.DATE,
+  duration: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  genre: DataTypes.STRING,
+  onlySound: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
+  thumbnail: DataTypes.STRING,
+  ytid: DataTypes.STRING,
+});
 
-const Song = mongoose.model('Song',{
-    link:{
-        type:String,
-        required:true
-    },
-    title:{
-        type:String,
-        require:true
-    },
-    artist:{
-        type:String,
-        require:true
-    },
-    dateAdded:{
-        type:Date
-    },
-    duration:{
-        type:String,
-        require:true
-    },
-    genre:{
-        type:String  
-    },
-    onlySound:{
-        type:Boolean,
-        require:true
-    },
-    thumbnail: {
-        type: String
-    },
-    ytid:{
-        type: String
-    }
+const Playlist = sequelize.define("Playlist", {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  createdDate: DataTypes.DATE,
+});
 
-})
-const User = mongoose.model('User',{
-    email:{
-        type:String,
-        unique:true,
-        required:true
-    },
-    password:{
-        type:String,
-        required:true
-    },
-    firstname:String,
-    lastname:String,
-    birthday:Date,
-    gender:String,
-    playList:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Playlist' 
-    }],
-    liked:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Liked' 
-    }]
-})
+const Liked = sequelize.define("Liked", {});
 
-const RecentlyPlayed = mongoose.model('RecentlyPlayed',{
-    userId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User'
-    },
-    songList:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Song'
-    }] 
-})
+const RecentlyPlayed = sequelize.define("RecentlyPlayed", {});
+
+// Define relationships
+User.hasMany(Playlist);
+Playlist.belongsTo(User);
+
+User.hasOne(Liked);
+Liked.belongsTo(User);
+
+User.hasOne(RecentlyPlayed);
+RecentlyPlayed.belongsTo(User);
+
+Playlist.belongsToMany(Song, { through: "PlaylistSongs" });
+Song.belongsToMany(Playlist, { through: "PlaylistSongs" });
+
+Liked.belongsToMany(Song, { through: "LikedSongs" });
+Song.belongsToMany(Liked, { through: "LikedSongs" });
+
+RecentlyPlayed.belongsToMany(Song, { through: "RecentlyPlayedSongs" });
+Song.belongsToMany(RecentlyPlayed, { through: "RecentlyPlayedSongs" });
 
 module.exports = {
-    users:User,
-    likeds:Liked,
-    playlists:Playlist,
-    songs:Song,
-    recentlyplayeds:RecentlyPlayed
-}
+  sequelize,
+  users: User,
+  likeds: Liked,
+  playlists: Playlist,
+  songs: Song,
+  recentlyplayeds: RecentlyPlayed,
+};
